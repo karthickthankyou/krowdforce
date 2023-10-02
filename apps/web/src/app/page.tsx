@@ -1,3 +1,4 @@
+import { DisplayUser } from '@/components/DisplayUser'
 import { Button } from '@krowdforce/ui/src/components/ui/button'
 import { ModeToggle } from '@krowdforce/ui/src/components/ui/mode-toggle'
 import {
@@ -8,10 +9,16 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@krowdforce/ui/src/components/ui/sheet'
+import { getServerSession } from 'next-auth'
+import Link from 'next/link'
+import { authOptions } from './api/auth/authOptions'
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerSession(authOptions)
+
   return (
     <main>
+      <div>{session?.user?.name}</div>
       <Button variant={'outline'}>Hey here.</Button>
       <Sheet>
         <SheetTrigger>Open</SheetTrigger>
@@ -24,7 +31,9 @@ export default function Home() {
             </SheetDescription>
           </SheetHeader>
         </SheetContent>
+        <Link href={'/api/auth/signin'}>Sign in</Link>
       </Sheet>
+      <DisplayUser />
       <ModeToggle />
     </main>
   )
