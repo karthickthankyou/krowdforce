@@ -1,0 +1,541 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  name: String
+  image: String
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Employee {
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Employer {
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Job {
+  addressId: Int
+  status: JobStatus!
+  type: JobType!
+  start: DateTime
+  end: DateTime
+  salary: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  id: Int!
+  title: String!
+  description: String!
+  employerId: String!
+}
+
+enum JobStatus {
+  DRAFT
+  OPEN
+  CLOSED
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+}
+
+type Category {
+  name: String!
+}
+
+type SubCategory {
+  name: String!
+  categoryName: String!
+}
+
+type Address {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  address: String!
+  lat: Int!
+  lng: Int!
+}
+
+type Query {
+  users(distinct: [UserScalarFieldEnum!], where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int): [User!]!
+  user(where: UserWhereUniqueInput): User!
+  employees(distinct: [EmployeeScalarFieldEnum!], where: EmployeeWhereInput, orderBy: [EmployeeOrderByWithRelationInput!], cursor: EmployeeWhereUniqueInput, take: Int, skip: Int): [Employee!]!
+  employee(where: EmployeeWhereUniqueInput): Employee!
+  employers(distinct: [EmployerScalarFieldEnum!], where: EmployerWhereInput, orderBy: [EmployerOrderByWithRelationInput!], cursor: EmployerWhereUniqueInput, take: Int, skip: Int): [Employer!]!
+  employer(where: EmployerWhereUniqueInput): Employer!
+  jobs(distinct: [JobScalarFieldEnum!], where: JobWhereInput, orderBy: [JobOrderByWithRelationInput!], cursor: JobWhereUniqueInput, take: Int, skip: Int): [Job!]!
+  job(where: JobWhereUniqueInput): Job!
+  addresses(distinct: [AddressScalarFieldEnum!], where: AddressWhereInput, orderBy: [AddressOrderByWithRelationInput!], cursor: AddressWhereUniqueInput, take: Int, skip: Int): [Address!]!
+  address(where: AddressWhereUniqueInput): Address!
+  categories(distinct: [CategoryScalarFieldEnum!], where: CategoryWhereInput, orderBy: [CategoryOrderByWithRelationInput!], cursor: CategoryWhereUniqueInput, take: Int, skip: Int): [Category!]!
+  category(where: CategoryWhereUniqueInput): Category!
+  subCategories(distinct: [SubCategoryScalarFieldEnum!], where: SubCategoryWhereInput, orderBy: [SubCategoryOrderByWithRelationInput!], cursor: SubCategoryWhereUniqueInput, take: Int, skip: Int): [SubCategory!]!
+  subCategory(where: SubCategoryWhereUniqueInput): SubCategory!
+}
+
+enum UserScalarFieldEnum {
+  uid
+  createdAt
+  updatedAt
+  name
+  image
+}
+
+input UserWhereInput {
+  uid: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  name: StringFilter
+  image: StringFilter
+  employee: EmployeeRelationFilter
+  employer: EmployerRelationFilter
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+}
+
+input StringFilter {
+  mode: QueryMode
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: String
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input DateTimeFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+}
+
+input EmployeeRelationFilter {
+  is: EmployeeWhereInput
+  isNot: EmployeeWhereInput
+}
+
+input EmployeeWhereInput {
+  uid: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  skills: SubCategoryListRelationFilter
+  AND: [EmployeeWhereInput!]
+  OR: [EmployeeWhereInput!]
+  NOT: [EmployeeWhereInput!]
+}
+
+input UserRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
+input SubCategoryListRelationFilter {
+  every: SubCategoryWhereInput
+  some: SubCategoryWhereInput
+  none: SubCategoryWhereInput
+}
+
+input SubCategoryWhereInput {
+  name: StringFilter
+  categoryName: StringFilter
+  Category: CategoryRelationFilter
+  employees: EmployeeListRelationFilter
+  jobs: JobListRelationFilter
+  AND: [SubCategoryWhereInput!]
+  OR: [SubCategoryWhereInput!]
+  NOT: [SubCategoryWhereInput!]
+}
+
+input CategoryRelationFilter {
+  is: CategoryWhereInput
+  isNot: CategoryWhereInput
+}
+
+input CategoryWhereInput {
+  name: StringFilter
+  subCategories: SubCategoryListRelationFilter
+  AND: [CategoryWhereInput!]
+  OR: [CategoryWhereInput!]
+  NOT: [CategoryWhereInput!]
+}
+
+input EmployeeListRelationFilter {
+  every: EmployeeWhereInput
+  some: EmployeeWhereInput
+  none: EmployeeWhereInput
+}
+
+input JobListRelationFilter {
+  every: JobWhereInput
+  some: JobWhereInput
+  none: JobWhereInput
+}
+
+input JobWhereInput {
+  status: JobStatus
+  type: JobType
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  id: IntFilter
+  title: StringFilter
+  description: StringFilter
+  employerId: StringFilter
+  addressId: IntFilter
+  start: DateTimeFilter
+  end: DateTimeFilter
+  salary: IntFilter
+  employer: EmployerRelationFilter
+  skills: SubCategoryListRelationFilter
+  address: AddressRelationFilter
+  AND: [JobWhereInput!]
+  OR: [JobWhereInput!]
+  NOT: [JobWhereInput!]
+}
+
+input IntFilter {
+  equals: Int
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+}
+
+input EmployerRelationFilter {
+  is: EmployerWhereInput
+  isNot: EmployerWhereInput
+}
+
+input EmployerWhereInput {
+  uid: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  jobs: JobListRelationFilter
+  AND: [EmployerWhereInput!]
+  OR: [EmployerWhereInput!]
+  NOT: [EmployerWhereInput!]
+}
+
+input AddressRelationFilter {
+  is: AddressWhereInput
+  isNot: AddressWhereInput
+}
+
+input AddressWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  address: StringFilter
+  lat: FloatFilter
+  lng: FloatFilter
+  job: JobListRelationFilter
+  AND: [AddressWhereInput!]
+  OR: [AddressWhereInput!]
+  NOT: [AddressWhereInput!]
+}
+
+input FloatFilter {
+  equals: Int
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: Int
+}
+
+input UserOrderByWithRelationInput {
+  uid: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  name: SortOrder
+  image: SortOrder
+  employee: EmployeeOrderByWithRelationInput
+  employer: EmployerOrderByWithRelationInput
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input EmployeeOrderByWithRelationInput {
+  uid: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  skills: SubCategoryOrderByRelationAggregateInput
+}
+
+input SubCategoryOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input EmployerOrderByWithRelationInput {
+  uid: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  jobs: JobOrderByRelationAggregateInput
+}
+
+input JobOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input UserWhereUniqueInput {
+  uid: String!
+}
+
+enum EmployeeScalarFieldEnum {
+  uid
+  createdAt
+  updatedAt
+}
+
+input EmployeeWhereUniqueInput {
+  uid: String!
+}
+
+enum EmployerScalarFieldEnum {
+  uid
+  createdAt
+  updatedAt
+}
+
+input EmployerWhereUniqueInput {
+  uid: String!
+}
+
+enum JobScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  title
+  description
+  employerId
+  addressId
+  status
+  type
+  start
+  end
+  salary
+}
+
+input JobOrderByWithRelationInput {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  id: SortOrder
+  title: SortOrder
+  description: SortOrder
+  employerId: SortOrder
+  addressId: SortOrder
+  status: SortOrder
+  type: SortOrder
+  start: SortOrder
+  end: SortOrder
+  salary: SortOrder
+  employer: EmployerOrderByWithRelationInput
+  skills: SubCategoryOrderByRelationAggregateInput
+  address: AddressOrderByWithRelationInput
+}
+
+input AddressOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  address: SortOrder
+  lat: SortOrder
+  lng: SortOrder
+  job: JobOrderByRelationAggregateInput
+}
+
+input JobWhereUniqueInput {
+  id: Int
+}
+
+enum AddressScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  address
+  lat
+  lng
+}
+
+input AddressWhereUniqueInput {
+  id: Int
+}
+
+enum CategoryScalarFieldEnum {
+  name
+}
+
+input CategoryOrderByWithRelationInput {
+  name: SortOrder
+  subCategories: SubCategoryOrderByRelationAggregateInput
+}
+
+input CategoryWhereUniqueInput {
+  name: String!
+}
+
+enum SubCategoryScalarFieldEnum {
+  name
+  categoryName
+}
+
+input SubCategoryOrderByWithRelationInput {
+  name: SortOrder
+  categoryName: SortOrder
+  Category: CategoryOrderByWithRelationInput
+  employees: EmployeeOrderByRelationAggregateInput
+  jobs: JobOrderByRelationAggregateInput
+}
+
+input EmployeeOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input SubCategoryWhereUniqueInput {
+  name: String!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(where: UserWhereUniqueInput): User!
+  createEmployee(createEmployeeInput: CreateEmployeeInput!): Employee!
+  updateEmployee(updateEmployeeInput: UpdateEmployeeInput!): Employee!
+  removeEmployee(where: EmployeeWhereUniqueInput): Employee!
+  createEmployer(createEmployerInput: CreateEmployerInput!): Employer!
+  updateEmployer(updateEmployerInput: UpdateEmployerInput!): Employer!
+  removeEmployer(where: EmployerWhereUniqueInput): Employer!
+  createJob(createJobInput: CreateJobInput!): Job!
+  updateJob(updateJobInput: UpdateJobInput!): Job!
+  removeJob(where: JobWhereUniqueInput): Job!
+  createAddress(createAddressInput: CreateAddressInput!): Address!
+  updateAddress(updateAddressInput: UpdateAddressInput!): Address!
+  removeAddress(where: AddressWhereUniqueInput): Address!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(where: CategoryWhereUniqueInput): Category!
+  createSubCategory(createSubCategoryInput: CreateSubCategoryInput!): SubCategory!
+  updateSubCategory(updateSubCategoryInput: UpdateSubCategoryInput!): SubCategory!
+  removeSubCategory(where: SubCategoryWhereUniqueInput): SubCategory!
+}
+
+input CreateUserInput {
+  name: String
+  image: String
+  uid: String!
+}
+
+input UpdateUserInput {
+  name: String
+  image: String
+  uid: String!
+}
+
+input CreateEmployeeInput {
+  uid: String!
+}
+
+input UpdateEmployeeInput {
+  uid: String!
+}
+
+input CreateEmployerInput {
+  uid: String!
+}
+
+input UpdateEmployerInput {
+  uid: String!
+}
+
+input CreateJobInput {
+  addressId: Int
+  status: JobStatus!
+  type: JobType!
+  start: DateTime
+  end: DateTime
+  salary: Int
+  title: String!
+  description: String!
+  employerId: String!
+}
+
+input UpdateJobInput {
+  addressId: Int
+  status: JobStatus
+  type: JobType
+  start: DateTime
+  end: DateTime
+  salary: Int
+  title: String
+  description: String
+  employerId: String
+  id: Int!
+}
+
+input CreateAddressInput {
+  address: String!
+  lat: Int!
+  lng: Int!
+}
+
+input UpdateAddressInput {
+  address: String
+  lat: Int
+  lng: Int
+  id: Int!
+}
+
+input CreateCategoryInput {
+  name: String!
+}
+
+input UpdateCategoryInput {
+  name: String!
+}
+
+input CreateSubCategoryInput {
+  name: String!
+  categoryName: String!
+}
+
+input UpdateSubCategoryInput {
+  name: String!
+  categoryName: String
+}

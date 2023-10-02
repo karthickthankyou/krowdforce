@@ -1,0 +1,7 @@
+npx nestjs-prisma-codegen --entity User
+npx nestjs-prisma-codegen --entity Employee
+npx nestjs-prisma-codegen --entity Employer
+npx nestjs-prisma-codegen --entity Job
+npx nestjs-prisma-codegen --entity Address
+npx nestjs-prisma-codegen --entity Category
+npx nestjs-prisma-codegen --entity SubCategory
