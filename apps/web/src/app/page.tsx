@@ -12,6 +12,7 @@ import {
 import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import { authOptions } from './api/auth/authOptions'
+import { ToastButton } from '@/components/ToastButton'
 
 export default async function Home() {
   const session = await getServerSession(authOptions)
@@ -35,6 +36,7 @@ export default async function Home() {
       </Sheet>
       <DisplayUser />
       <ModeToggle />
+      <ToastButton />
     </main>
   )
 }
