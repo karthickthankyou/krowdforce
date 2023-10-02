@@ -17,7 +17,7 @@ export class SubCategoryOrderByWithRelationInputStrict
   name: Prisma.SortOrder;
   @Field(() => Prisma.SortOrder)
   categoryName: Prisma.SortOrder;
-  Category: CategoryOrderByWithRelationInput;
+  category: CategoryOrderByWithRelationInput;
   employees: EmployeeOrderByRelationAggregateInput;
   jobs: JobOrderByRelationAggregateInput;
   // Todo: Add below field decorator to the SortOrder properties.

@@ -8,6 +8,8 @@ type User {
   uid: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  employee: Employee!
+  employer: Employer!
 }
 
 """
@@ -19,12 +21,24 @@ type Employee {
   uid: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  user: User!
+  skills: [SubCategory!]!
 }
 
 type Employer {
   uid: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  user: User!
+  jobs: [Job!]!
+}
+
+type SubCategory {
+  name: String!
+  categoryName: String!
+  jobs: [Job!]!
+  employees: [Employee!]!
+  category: Category!
 }
 
 type Job {
@@ -40,6 +54,9 @@ type Job {
   title: String!
   description: String!
   employerId: String!
+  employer: Employer!
+  address: Address
+  skills: [SubCategory!]!
 }
 
 enum JobStatus {
@@ -54,15 +71,6 @@ enum JobType {
   CONTRACT
 }
 
-type Category {
-  name: String!
-}
-
-type SubCategory {
-  name: String!
-  categoryName: String!
-}
-
 type Address {
   id: Int!
   createdAt: DateTime!
@@ -70,6 +78,12 @@ type Address {
   address: String!
   lat: Int!
   lng: Int!
+  skills: [Job!]!
+}
+
+type Category {
+  name: String!
+  subCategories: [SubCategory!]!
 }
 
 type Query {
@@ -170,7 +184,7 @@ input SubCategoryListRelationFilter {
 input SubCategoryWhereInput {
   name: StringFilter
   categoryName: StringFilter
-  Category: CategoryRelationFilter
+  category: CategoryRelationFilter
   employees: EmployeeListRelationFilter
   jobs: JobListRelationFilter
   AND: [SubCategoryWhereInput!]
@@ -419,7 +433,7 @@ enum SubCategoryScalarFieldEnum {
 input SubCategoryOrderByWithRelationInput {
   name: SortOrder
   categoryName: SortOrder
-  Category: CategoryOrderByWithRelationInput
+  category: CategoryOrderByWithRelationInput
   employees: EmployeeOrderByRelationAggregateInput
   jobs: JobOrderByRelationAggregateInput
 }

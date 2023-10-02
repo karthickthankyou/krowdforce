@@ -20,7 +20,7 @@ export class SubCategoryWhereInputStrict
 {
   name: StringFilter;
   categoryName: StringFilter;
-  Category: CategoryRelationFilter;
+  category: CategoryRelationFilter;
   employees: EmployeeListRelationFilter;
   jobs: JobListRelationFilter;
   // Todo: Add the below field decorator only to the $Enums types.

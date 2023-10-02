@@ -80,7 +80,7 @@ model Category {
 
 model SubCategory {
     name         String   @id
-    Category     Category @relation(fields: [categoryName], references: [name])
+    category     Category @relation(fields: [categoryName], references: [name])
     categoryName String
 
     employees Employee[]
