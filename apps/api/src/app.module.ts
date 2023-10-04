@@ -13,6 +13,7 @@ import { CategoriesModule } from './models/categories/categories.module';
 import { SubCategoriesModule } from './models/sub-categories/sub-categories.module';
 import { AddressesModule } from './models/addresses/addresses.module';
 import { PrismaModule } from './common/prisma/prisma.module';
+import { AuthModule } from './common/auth/auth.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PrismaModule } from './common/prisma/prisma.module';
     AddressesModule,
     CategoriesModule,
     SubCategoriesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

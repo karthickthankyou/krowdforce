@@ -14,6 +14,8 @@ import { UpdateUserInput } from './dtos/update-user.input';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { Employee } from '../employees/entity/employee.entity';
 import { Employer } from '../employers/entity/employer.entity';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -27,6 +29,7 @@ export class UsersResolver {
     return this.usersService.create(args);
   }
 
+  @UseGuards(AuthGuard)
   @Query(() => [User], { name: 'users' })
   findAll(@Args() args: FindManyUserArgs) {
     return this.usersService.findAll(args);

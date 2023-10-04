@@ -1,7 +1,7 @@
 import { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import CredentialsProvider from 'next-auth/providers/credentials'
-import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import { JWT } from 'next-auth/jwt'
 
 // import { prisma } from '@/prisma/client'
 export const authOptions: NextAuthOptions = {
@@ -14,28 +14,48 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
 
-  callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      console.log('User', user, account, profile, email, credentials)
-      return true
-    },
-    session: ({ session, token }) => {
-      console.log('token ', token)
-      if (token && session?.user) {
-        // @ts-ignore
-        session.user.uid = token.sub
-        session.user.name = token.name
-        session.user.email = token.email
-        session.user.image = token.picture
+  jwt: {
+    async encode({ token, secret, maxAge }): Promise<string> {
+      // Create a JWT using the jsonwebtoken library
+      if (!token) {
+        throw new Error('Token is undefined')
       }
-      // @ts-ignore
-      session.test = 'hi'
-      console.log('🚀 ~ file: auth.ts:41 ~ session:', session)
+
+      const jwtToken = jwt.sign(token, secret, {
+        algorithm: 'HS256',
+      })
+      return jwtToken
+    },
+    async decode({ token, secret }): Promise<JWT | null> {
+      if (!token) {
+        throw new Error('Token is undefined')
+      }
+      try {
+        const decodedToken = jwt.verify(token, secret, {
+          algorithms: ['HS256'],
+        })
+        return decodedToken as JWT
+      } catch (error) {
+        console.error('JWT decode error', error)
+        return null
+      }
+    },
+  },
+  callbacks: {
+    async session({ token, session }) {
+      if (token) {
+        session.user = {
+          image: token.picture,
+          uid: (token.sub as string) || '',
+          email: token.email,
+          name: token.name,
+        }
+      }
       return session
     },
   },
+
   pages: {
     signIn: '/signin',
   },
-  // ...other options
 }

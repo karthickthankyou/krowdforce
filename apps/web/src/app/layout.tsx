@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from '@krowdforce/ui/src/components/ui/toaster'
+import { ApolloProvider } from '@krowdforce/network/auth/config/apollo'
 
 const inter = Inter({ subsets: ['latin'] })
 import { ThemeProvider } from '@krowdforce/ui/src/components/theme-provider'
@@ -21,15 +22,17 @@ export default function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         <AuthProvider>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-            <Toaster />
-          </ThemeProvider>
+          <ApolloProvider>
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='system'
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </ApolloProvider>
         </AuthProvider>
       </body>
     </html>

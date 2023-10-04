@@ -17,6 +17,8 @@ import { ToastButton } from '@/components/ToastButton'
 export default async function Home() {
   const session = await getServerSession(authOptions)
 
+  console.log('session in front end: ', session)
+
   return (
     <main>
       <div>{session?.user?.name}</div>
