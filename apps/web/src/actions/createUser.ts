@@ -1,14 +1,13 @@
 'use server'
-import { fetchGraphQL } from '@/app/util/fetch'
-import { FormTypeCreateUser, formSchemaCreateUser } from '@/forms/CreateUser'
+
 import {
   CreateUserDocument,
-  CreateUserMutation,
-  CreateUserMutationVariables,
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { fetchGraphQLInfer } from '../app/util/fetch'
+import { FormTypeCreateUser, formSchemaCreateUser } from '../forms/CreateUser'
 
 export async function createUser(formData: FormTypeCreateUser) {
   const result = formSchemaCreateUser.safeParse(formData)
@@ -16,17 +15,12 @@ export async function createUser(formData: FormTypeCreateUser) {
   if (result.success) {
     console.log('result. data', result.data)
     const { uid, name, image } = result.data
-    const user = await fetchGraphQL<
-      CreateUserMutationVariables,
-      CreateUserMutation
-    >({
-      query: CreateUserDocument,
-      variables: {
-        createUserInput: {
-          uid,
-          name,
-          image,
-        },
+
+    const { data, error } = await fetchGraphQLInfer(CreateUserDocument, {
+      createUserInput: {
+        uid,
+        name,
+        image,
       },
     })
     revalidateTag(namedOperations.Query.Users)

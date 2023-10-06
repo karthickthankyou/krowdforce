@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
   },
   jwt: {
     maxAge: MAX_AGE,
-    async encode({ token, secret }): Promise<string> {
+    async encode({ token, secret, maxAge }): Promise<string> {
       // Create a JWT using the jsonwebtoken library
       if (!token) {
         throw new Error('Token is undefined')

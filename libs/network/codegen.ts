@@ -11,7 +11,7 @@ const config: CodegenConfig = {
         'typescript',
         'typescript-operations',
         'named-operations-object',
-        'typescript-react-apollo',
+        'typed-document-node',
       ],
       config: {
         avoidOptionals: false,

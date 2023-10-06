@@ -1,4 +1,3 @@
-import { DisplayUser } from '@/components/DisplayUser'
 import { Button } from '@krowdforce/ui/src/components/ui/button'
 import { ModeToggle } from '@krowdforce/ui/src/components/ui/mode-toggle'
 import {
@@ -13,39 +12,27 @@ import { getServerSession } from 'next-auth'
 import { getToken } from 'next-auth/jwt'
 import Link from 'next/link'
 import { authOptions } from './api/auth/authOptions'
-import { ToastButton } from '@/components/ToastButton'
-import { ServerQueryUser } from '@/components/ServerQueryUser'
-import { ServerOneUser } from '@/components/ServerOneUser'
-import { ServerGraphqlClient } from '@/components/ServerGrpahqlClient'
-import { ServerOneUserHardQuery } from '@/components/ServerOneUserHardQuery'
+import { ToastButton } from '../components/ToastButton'
+import { ServerQueryUser } from '../components/ServerQueryUser'
+import { ServerOneUser } from '../components/ServerOneUser'
+import { ServerGraphqlClient } from '../components/ServerGrpahqlClient'
+import { ServerOneUserHardQuery } from '../components/ServerOneUserHardQuery'
+import { DisplayUser } from '../components/DisplayUser'
 
 export default async function Home() {
   const session = await getServerSession(authOptions)
 
   return (
     <main>
-      <div>{session?.user?.name}</div>
-      <Button variant={'outline'}>Hey here.</Button>
-      <Sheet>
-        <SheetTrigger>Open</SheetTrigger>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Are you sure absolutely sure?</SheetTitle>
-            <SheetDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </SheetDescription>
-          </SheetHeader>
-        </SheetContent>
-        <Link href={'/api/auth/signin'}>Sign in</Link>
-      </Sheet>
+      <div>{session?.user?.uid}</div>
+
+      <Link href={'/api/auth/signin'}>Sign in</Link>
       <DisplayUser />
 
       {/* <ServerQueryUser /> */}
       {/* <ServerOneUser /> */}
       {/* <ServerGraphqlClient /> */}
       <ServerOneUserHardQuery />
-      <ModeToggle />
       <ToastButton />
     </main>
   )

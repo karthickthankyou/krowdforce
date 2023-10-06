@@ -1,9 +1,7 @@
 'use client'
 import Image from 'next/image'
-import { getCsrfToken, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useEffect } from 'react'
-import { useUsersQuery } from '@krowdforce/network/src/generated'
 
 export const DisplayUser = () => {
   const { data, status } = useSession()

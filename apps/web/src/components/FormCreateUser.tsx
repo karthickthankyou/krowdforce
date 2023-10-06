@@ -1,9 +1,9 @@
 'use client'
 
-import { createUser } from '@/actions/createUser'
-import { FormTypeCreateUser, formSchemaCreateUser } from '@/forms/CreateUser'
+import { FormTypeCreateUser, formSchemaCreateUser } from '../forms/CreateUser'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { createUser } from '../actions/createUser'
 
 export const CreateUser = () => {
   const { register, handleSubmit, reset } = useForm<FormTypeCreateUser>({

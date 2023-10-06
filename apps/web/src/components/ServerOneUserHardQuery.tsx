@@ -1,21 +1,19 @@
-
-import { fetchGraphQL } from '@/app/util/fetch'
+import { fetchGraphQLInfer } from '../app/util/fetch'
 import {
   UsersDocument,
-  UsersQuery,
-  UsersQueryVariables,
   namedOperations,
 } from '@krowdforce/network/src/generated'
 
 export const ServerOneUserHardQuery = async () => {
-  const { data, error } = await fetchGraphQL<UsersQueryVariables, UsersQuery>({
-    query: UsersDocument,
-    config: {
+  const { data, error } = await fetchGraphQLInfer(
+    UsersDocument,
+    {},
+    {
       next: {
         tags: [namedOperations.Query.Users],
       },
     },
-  })
+  )
 
   return (
     <div className='p-5'>

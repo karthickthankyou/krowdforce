@@ -2,11 +2,10 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from '@krowdforce/ui/src/components/ui/toaster'
-import { ApolloProvider } from '@krowdforce/network/auth/config/apollo'
-
+import { Header } from '@krowdforce/ui/src/components/molecules/Header'
 const inter = Inter({ subsets: ['latin'] })
 import { ThemeProvider } from '@krowdforce/ui/src/components/theme-provider'
-import AuthProvider from '@/components/AuthProvider'
+import AuthProvider from '../components/AuthProvider'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -22,17 +21,16 @@ export default function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         <AuthProvider>
-          <ApolloProvider>
-            <ThemeProvider
-              attribute='class'
-              defaultTheme='system'
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-              <Toaster />
-            </ThemeProvider>
-          </ApolloProvider>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
+            {children}
+            <Toaster />
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>

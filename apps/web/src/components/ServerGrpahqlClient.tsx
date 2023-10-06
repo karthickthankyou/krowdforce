@@ -1,6 +1,6 @@
 import {
-  UserDocument,
   UserQuery,
+  UserDocument,
   UserQueryVariables,
 } from '@krowdforce/network/src/generated'
 
@@ -8,12 +8,9 @@ import { GraphQLClient } from 'graphql-request'
 const client = new GraphQLClient('http://localhost:3000/graphql')
 
 export const ServerGraphqlClient = async () => {
-  const { user } = await client.request<UserQuery, UserQueryVariables>(
-    UserDocument,
-    {
-      where: { uid: '123' },
-    },
-  )
+  const { user } = await client.request(UserDocument, {
+    where: { uid: '12' },
+  })
   console.log('user ', user)
 
   return (
