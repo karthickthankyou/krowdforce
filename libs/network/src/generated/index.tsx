@@ -140,6 +140,28 @@ export type CategoryWhereUniqueInput = {
   name: Scalars['String'];
 };
 
+export type CompanyOrderByWithRelationInput = {
+  Employer?: InputMaybe<EmployerOrderByRelationAggregateInput>;
+  Job?: InputMaybe<JobOrderByRelationAggregateInput>;
+  id?: InputMaybe<SortOrder>;
+  name?: InputMaybe<SortOrder>;
+};
+
+export type CompanyRelationFilter = {
+  is?: InputMaybe<CompanyWhereInput>;
+  isNot?: InputMaybe<CompanyWhereInput>;
+};
+
+export type CompanyWhereInput = {
+  AND?: InputMaybe<Array<CompanyWhereInput>>;
+  Employer?: InputMaybe<EmployerListRelationFilter>;
+  Job?: InputMaybe<JobListRelationFilter>;
+  NOT?: InputMaybe<Array<CompanyWhereInput>>;
+  OR?: InputMaybe<Array<CompanyWhereInput>>;
+  id?: InputMaybe<IntFilter>;
+  name?: InputMaybe<StringFilter>;
+};
+
 export type CreateAddressInput = {
   address: Scalars['String'];
   lat: Scalars['Int'];
@@ -164,8 +186,8 @@ export type CreateEmployerInput = {
 
 export type CreateJobInput = {
   addressId?: InputMaybe<Scalars['Int']>;
+  companyId: Scalars['Int'];
   description: Scalars['String'];
-  employerId: Scalars['String'];
   end?: InputMaybe<Scalars['DateTime']>;
   salary?: InputMaybe<Scalars['Int']>;
   start?: InputMaybe<Scalars['DateTime']>;
@@ -250,16 +272,27 @@ export type EmployeeWhereUniqueInput = {
 
 export type Employer = {
   __typename?: 'Employer';
+  companyId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
-  jobs: Array<Job>;
   uid: Scalars['String'];
   updatedAt: Scalars['DateTime'];
   user: User;
 };
 
+export type EmployerListRelationFilter = {
+  every?: InputMaybe<EmployerWhereInput>;
+  none?: InputMaybe<EmployerWhereInput>;
+  some?: InputMaybe<EmployerWhereInput>;
+};
+
+export type EmployerOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
 export type EmployerOrderByWithRelationInput = {
+  company?: InputMaybe<CompanyOrderByWithRelationInput>;
+  companyId?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
-  jobs?: InputMaybe<JobOrderByRelationAggregateInput>;
   uid?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
   user?: InputMaybe<UserOrderByWithRelationInput>;
@@ -271,6 +304,7 @@ export type EmployerRelationFilter = {
 };
 
 export enum EmployerScalarFieldEnum {
+  CompanyId = 'companyId',
   CreatedAt = 'createdAt',
   Uid = 'uid',
   UpdatedAt = 'updatedAt'
@@ -280,8 +314,9 @@ export type EmployerWhereInput = {
   AND?: InputMaybe<Array<EmployerWhereInput>>;
   NOT?: InputMaybe<Array<EmployerWhereInput>>;
   OR?: InputMaybe<Array<EmployerWhereInput>>;
+  company?: InputMaybe<CompanyRelationFilter>;
+  companyId?: InputMaybe<IntFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
-  jobs?: InputMaybe<JobListRelationFilter>;
   uid?: InputMaybe<StringFilter>;
   updatedAt?: InputMaybe<DateTimeFilter>;
   user?: InputMaybe<UserRelationFilter>;
@@ -312,10 +347,9 @@ export type Job = {
   __typename?: 'Job';
   address?: Maybe<Address>;
   addressId?: Maybe<Scalars['Int']>;
+  companyId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
   description: Scalars['String'];
-  employer: Employer;
-  employerId: Scalars['String'];
   end?: Maybe<Scalars['DateTime']>;
   id: Scalars['Int'];
   salary?: Maybe<Scalars['Int']>;
@@ -338,12 +372,12 @@ export type JobOrderByRelationAggregateInput = {
 };
 
 export type JobOrderByWithRelationInput = {
+  Company?: InputMaybe<CompanyOrderByWithRelationInput>;
   address?: InputMaybe<AddressOrderByWithRelationInput>;
   addressId?: InputMaybe<SortOrder>;
+  companyId?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   description?: InputMaybe<SortOrder>;
-  employer?: InputMaybe<EmployerOrderByWithRelationInput>;
-  employerId?: InputMaybe<SortOrder>;
   end?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   salary?: InputMaybe<SortOrder>;
@@ -357,9 +391,9 @@ export type JobOrderByWithRelationInput = {
 
 export enum JobScalarFieldEnum {
   AddressId = 'addressId',
+  CompanyId = 'companyId',
   CreatedAt = 'createdAt',
   Description = 'description',
-  EmployerId = 'employerId',
   End = 'end',
   Id = 'id',
   Salary = 'salary',
@@ -384,14 +418,14 @@ export enum JobType {
 
 export type JobWhereInput = {
   AND?: InputMaybe<Array<JobWhereInput>>;
+  Company?: InputMaybe<CompanyRelationFilter>;
   NOT?: InputMaybe<Array<JobWhereInput>>;
   OR?: InputMaybe<Array<JobWhereInput>>;
   address?: InputMaybe<AddressRelationFilter>;
   addressId?: InputMaybe<IntFilter>;
+  companyId?: InputMaybe<IntFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   description?: InputMaybe<StringFilter>;
-  employer?: InputMaybe<EmployerRelationFilter>;
-  employerId?: InputMaybe<StringFilter>;
   end?: InputMaybe<DateTimeFilter>;
   id?: InputMaybe<IntFilter>;
   salary?: InputMaybe<IntFilter>;
@@ -792,8 +826,8 @@ export type UpdateEmployerInput = {
 
 export type UpdateJobInput = {
   addressId?: InputMaybe<Scalars['Int']>;
+  companyId?: InputMaybe<Scalars['Int']>;
   description?: InputMaybe<Scalars['String']>;
-  employerId?: InputMaybe<Scalars['String']>;
   end?: InputMaybe<Scalars['DateTime']>;
   id: Scalars['Int'];
   salary?: InputMaybe<Scalars['Int']>;

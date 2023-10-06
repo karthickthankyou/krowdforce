@@ -7,7 +7,7 @@ export class CreateJobInput extends PickType(
   [
     'addressId',
     'description',
-    'employerId',
+    'companyId',
     'end',
     'salary',
     'start',

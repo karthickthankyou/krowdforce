@@ -2,9 +2,11 @@ import { Field, InputType, PartialType } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
 import {
   DateTimeFilter,
+  IntFilter,
   RestrictProperties,
   StringFilter,
 } from 'src/common/dtos/common.input';
+import { CompanyRelationFilter } from 'src/models/companies/dtos/where.args';
 import { JobListRelationFilter } from 'src/models/jobs/dtos/where.args';
 import { UserRelationFilter } from 'src/models/users/dtos/where.args';
 
@@ -18,13 +20,12 @@ export class EmployerWhereInputStrict
   implements
     RestrictProperties<EmployerWhereInputStrict, Prisma.EmployerWhereInput>
 {
+  companyId: IntFilter;
+  company: CompanyRelationFilter;
   uid: StringFilter;
   createdAt: DateTimeFilter;
   updatedAt: DateTimeFilter;
   user: UserRelationFilter;
-  jobs: JobListRelationFilter;
-  // Todo: Add the below field decorator only to the $Enums types.
-  // @Field(() => $Enums.x)
 
   AND: EmployerWhereInput[];
   OR: EmployerWhereInput[];

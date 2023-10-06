@@ -26,11 +26,11 @@ type Employee {
 }
 
 type Employer {
+  companyId: Int!
   uid: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   user: User!
-  jobs: [Job!]!
 }
 
 type SubCategory {
@@ -48,13 +48,12 @@ type Job {
   start: DateTime
   end: DateTime
   salary: Int
+  companyId: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   id: Int!
   title: String!
   description: String!
-  employerId: String!
-  employer: Employer!
   address: Address
   skills: [SubCategory!]!
 }
@@ -93,77 +92,21 @@ type Admin {
 }
 
 type Query {
-  users(
-    distinct: [UserScalarFieldEnum!]
-    where: UserWhereInput
-    orderBy: [UserOrderByWithRelationInput!]
-    cursor: UserWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [User!]!
+  users(distinct: [UserScalarFieldEnum!], where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int): [User!]!
   user(where: UserWhereUniqueInput): User!
-  admins(
-    distinct: [AdminScalarFieldEnum!]
-    where: AdminWhereInput
-    orderBy: [AdminOrderByWithRelationInput!]
-    cursor: AdminWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Admin!]!
+  admins(distinct: [AdminScalarFieldEnum!], where: AdminWhereInput, orderBy: [AdminOrderByWithRelationInput!], cursor: AdminWhereUniqueInput, take: Int, skip: Int): [Admin!]!
   admin(where: AdminWhereUniqueInput): Admin!
-  employees(
-    distinct: [EmployeeScalarFieldEnum!]
-    where: EmployeeWhereInput
-    orderBy: [EmployeeOrderByWithRelationInput!]
-    cursor: EmployeeWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Employee!]!
+  employees(distinct: [EmployeeScalarFieldEnum!], where: EmployeeWhereInput, orderBy: [EmployeeOrderByWithRelationInput!], cursor: EmployeeWhereUniqueInput, take: Int, skip: Int): [Employee!]!
   employee(where: EmployeeWhereUniqueInput): Employee!
-  employers(
-    distinct: [EmployerScalarFieldEnum!]
-    where: EmployerWhereInput
-    orderBy: [EmployerOrderByWithRelationInput!]
-    cursor: EmployerWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Employer!]!
+  employers(distinct: [EmployerScalarFieldEnum!], where: EmployerWhereInput, orderBy: [EmployerOrderByWithRelationInput!], cursor: EmployerWhereUniqueInput, take: Int, skip: Int): [Employer!]!
   employer(where: EmployerWhereUniqueInput): Employer!
-  jobs(
-    distinct: [JobScalarFieldEnum!]
-    where: JobWhereInput
-    orderBy: [JobOrderByWithRelationInput!]
-    cursor: JobWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Job!]!
+  jobs(distinct: [JobScalarFieldEnum!], where: JobWhereInput, orderBy: [JobOrderByWithRelationInput!], cursor: JobWhereUniqueInput, take: Int, skip: Int): [Job!]!
   job(where: JobWhereUniqueInput): Job!
-  addresses(
-    distinct: [AddressScalarFieldEnum!]
-    where: AddressWhereInput
-    orderBy: [AddressOrderByWithRelationInput!]
-    cursor: AddressWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Address!]!
+  addresses(distinct: [AddressScalarFieldEnum!], where: AddressWhereInput, orderBy: [AddressOrderByWithRelationInput!], cursor: AddressWhereUniqueInput, take: Int, skip: Int): [Address!]!
   address(where: AddressWhereUniqueInput): Address!
-  categories(
-    distinct: [CategoryScalarFieldEnum!]
-    where: CategoryWhereInput
-    orderBy: [CategoryOrderByWithRelationInput!]
-    cursor: CategoryWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Category!]!
+  categories(distinct: [CategoryScalarFieldEnum!], where: CategoryWhereInput, orderBy: [CategoryOrderByWithRelationInput!], cursor: CategoryWhereUniqueInput, take: Int, skip: Int): [Category!]!
   category(where: CategoryWhereUniqueInput): Category!
-  subCategories(
-    distinct: [SubCategoryScalarFieldEnum!]
-    where: SubCategoryWhereInput
-    orderBy: [SubCategoryOrderByWithRelationInput!]
-    cursor: SubCategoryWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [SubCategory!]!
+  subCategories(distinct: [SubCategoryScalarFieldEnum!], where: SubCategoryWhereInput, orderBy: [SubCategoryOrderByWithRelationInput!], cursor: SubCategoryWhereUniqueInput, take: Int, skip: Int): [SubCategory!]!
   subCategory(where: SubCategoryWhereUniqueInput): SubCategory!
 }
 
@@ -285,17 +228,17 @@ input JobListRelationFilter {
 input JobWhereInput {
   status: JobStatus
   type: JobType
+  companyId: IntFilter
+  Company: CompanyRelationFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   id: IntFilter
   title: StringFilter
   description: StringFilter
-  employerId: StringFilter
   addressId: IntFilter
   start: DateTimeFilter
   end: DateTimeFilter
   salary: IntFilter
-  employer: EmployerRelationFilter
   skills: SubCategoryListRelationFilter
   address: AddressRelationFilter
   AND: [JobWhereInput!]
@@ -311,17 +254,34 @@ input IntFilter {
   gte: Int
 }
 
-input EmployerRelationFilter {
-  is: EmployerWhereInput
-  isNot: EmployerWhereInput
+input CompanyRelationFilter {
+  is: CompanyWhereInput
+  isNot: CompanyWhereInput
+}
+
+input CompanyWhereInput {
+  id: IntFilter
+  name: StringFilter
+  Employer: EmployerListRelationFilter
+  Job: JobListRelationFilter
+  AND: [CompanyWhereInput!]
+  OR: [CompanyWhereInput!]
+  NOT: [CompanyWhereInput!]
+}
+
+input EmployerListRelationFilter {
+  every: EmployerWhereInput
+  some: EmployerWhereInput
+  none: EmployerWhereInput
 }
 
 input EmployerWhereInput {
+  companyId: IntFilter
+  company: CompanyRelationFilter
   uid: StringFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   user: UserRelationFilter
-  jobs: JobListRelationFilter
   AND: [EmployerWhereInput!]
   OR: [EmployerWhereInput!]
   NOT: [EmployerWhereInput!]
@@ -352,6 +312,11 @@ input FloatFilter {
   gt: Int
   gte: Int
   not: Int
+}
+
+input EmployerRelationFilter {
+  is: EmployerWhereInput
+  isNot: EmployerWhereInput
 }
 
 input AdminRelationFilter {
@@ -398,11 +363,23 @@ input SubCategoryOrderByRelationAggregateInput {
 }
 
 input EmployerOrderByWithRelationInput {
+  companyId: SortOrder
   uid: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
+  company: CompanyOrderByWithRelationInput
   user: UserOrderByWithRelationInput
-  jobs: JobOrderByRelationAggregateInput
+}
+
+input CompanyOrderByWithRelationInput {
+  id: SortOrder
+  name: SortOrder
+  Employer: EmployerOrderByRelationAggregateInput
+  Job: JobOrderByRelationAggregateInput
+}
+
+input EmployerOrderByRelationAggregateInput {
+  _count: SortOrder
 }
 
 input JobOrderByRelationAggregateInput {
@@ -444,6 +421,7 @@ enum EmployerScalarFieldEnum {
   uid
   createdAt
   updatedAt
+  companyId
 }
 
 input EmployerWhereUniqueInput {
@@ -456,29 +434,29 @@ enum JobScalarFieldEnum {
   updatedAt
   title
   description
-  employerId
   addressId
   status
   type
   start
   end
   salary
+  companyId
 }
 
 input JobOrderByWithRelationInput {
+  companyId: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   id: SortOrder
   title: SortOrder
   description: SortOrder
-  employerId: SortOrder
   addressId: SortOrder
   status: SortOrder
   type: SortOrder
   start: SortOrder
   end: SortOrder
   salary: SortOrder
-  employer: EmployerOrderByWithRelationInput
+  Company: CompanyOrderByWithRelationInput
   skills: SubCategoryOrderByRelationAggregateInput
   address: AddressOrderByWithRelationInput
 }
@@ -566,12 +544,8 @@ type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
   removeCategory(where: CategoryWhereUniqueInput): Category!
-  createSubCategory(
-    createSubCategoryInput: CreateSubCategoryInput!
-  ): SubCategory!
-  updateSubCategory(
-    updateSubCategoryInput: UpdateSubCategoryInput!
-  ): SubCategory!
+  createSubCategory(createSubCategoryInput: CreateSubCategoryInput!): SubCategory!
+  updateSubCategory(updateSubCategoryInput: UpdateSubCategoryInput!): SubCategory!
   removeSubCategory(where: SubCategoryWhereUniqueInput): SubCategory!
 }
 
@@ -618,9 +592,9 @@ input CreateJobInput {
   start: DateTime
   end: DateTime
   salary: Int
+  companyId: Int!
   title: String!
   description: String!
-  employerId: String!
 }
 
 input UpdateJobInput {
@@ -630,9 +604,9 @@ input UpdateJobInput {
   start: DateTime
   end: DateTime
   salary: Int
+  companyId: Int
   title: String
   description: String
-  employerId: String
   id: Int!
 }
 

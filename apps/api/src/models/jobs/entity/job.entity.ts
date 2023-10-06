@@ -4,12 +4,12 @@ import { RestrictProperties } from 'src/common/dtos/common.input';
 
 @ObjectType()
 export class Job implements RestrictProperties<Job, JobType> {
+  companyId: number;
   createdAt: Date;
   updatedAt: Date;
   id: number;
   title: string;
   description: string;
-  employerId: string;
   @Field({ nullable: true })
   addressId: number;
   @Field(() => $Enums.JobStatus)

@@ -51,11 +51,4 @@ export class EmployersResolver {
   user(@Parent() parent: User) {
     return this.prisma.user.findUnique({ where: { uid: parent.uid } });
   }
-
-  @ResolveField(() => [Job])
-  jobs(@Parent() parent: User) {
-    return this.prisma.job.findMany({
-      where: { employerId: { equals: parent.uid } },
-    });
-  }
 }

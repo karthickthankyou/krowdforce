@@ -48,13 +48,6 @@ export class JobsResolver {
     return this.jobsService.remove(args);
   }
 
-  @ResolveField(() => Employer)
-  employer(@Parent() parent: Job) {
-    return this.prisma.employer.findUnique({
-      where: { uid: parent.employerId },
-    });
-  }
-
   @ResolveField(() => Address, { nullable: true })
   address(@Parent() parent: Job) {
     return this.prisma.address.findUnique({
@@ -65,7 +58,7 @@ export class JobsResolver {
   @ResolveField(() => [SubCategory])
   skills(@Parent() parent: Job) {
     return this.prisma.subCategory.findMany({
-      where: { jobs: { some: { employerId: parent.employerId } } },
+      where: { jobs: { some: { id: parent.id } } },
     });
   }
 }

@@ -2,7 +2,7 @@ import { Field, InputType, PartialType } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
 import { RestrictProperties } from 'src/common/dtos/common.input';
 import { AddressOrderByWithRelationInput } from 'src/models/addresses/dtos/order-by.args';
-import { EmployerOrderByWithRelationInput } from 'src/models/employers/dtos/order-by.args';
+import { CompanyOrderByWithRelationInput } from 'src/models/companies/dtos/order-by.args';
 import { SubCategoryOrderByRelationAggregateInput } from 'src/models/sub-categories/dtos/order-by.args';
 
 @InputType()
@@ -14,6 +14,9 @@ export class JobOrderByWithRelationInputStrict
     >
 {
   @Field(() => Prisma.SortOrder)
+  companyId: Prisma.SortOrder;
+  Company: CompanyOrderByWithRelationInput;
+  @Field(() => Prisma.SortOrder)
   createdAt: Prisma.SortOrder;
   @Field(() => Prisma.SortOrder)
   updatedAt: Prisma.SortOrder;
@@ -23,8 +26,6 @@ export class JobOrderByWithRelationInputStrict
   title: Prisma.SortOrder;
   @Field(() => Prisma.SortOrder)
   description: Prisma.SortOrder;
-  @Field(() => Prisma.SortOrder)
-  employerId: Prisma.SortOrder;
   @Field(() => Prisma.SortOrder)
   addressId: Prisma.SortOrder;
   @Field(() => Prisma.SortOrder)
@@ -37,7 +38,7 @@ export class JobOrderByWithRelationInputStrict
   end: Prisma.SortOrder;
   @Field(() => Prisma.SortOrder)
   salary: Prisma.SortOrder;
-  employer: EmployerOrderByWithRelationInput;
+
   skills: SubCategoryOrderByRelationAggregateInput;
   address: AddressOrderByWithRelationInput;
 }
