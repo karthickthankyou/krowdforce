@@ -1,4 +1,5 @@
 npx nestjs-prisma-codegen --entity User
+npx nestjs-prisma-codegen --entity Admin
 npx nestjs-prisma-codegen --entity Employee
 npx nestjs-prisma-codegen --entity Employer
 npx nestjs-prisma-codegen --entity Job

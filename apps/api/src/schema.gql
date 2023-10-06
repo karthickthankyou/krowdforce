@@ -86,20 +86,84 @@ type Category {
   subCategories: [SubCategory!]!
 }
 
+type Admin {
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Query {
-  users(distinct: [UserScalarFieldEnum!], where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int): [User!]!
+  users(
+    distinct: [UserScalarFieldEnum!]
+    where: UserWhereInput
+    orderBy: [UserOrderByWithRelationInput!]
+    cursor: UserWhereUniqueInput
+    take: Int
+    skip: Int
+  ): [User!]!
   user(where: UserWhereUniqueInput): User!
-  employees(distinct: [EmployeeScalarFieldEnum!], where: EmployeeWhereInput, orderBy: [EmployeeOrderByWithRelationInput!], cursor: EmployeeWhereUniqueInput, take: Int, skip: Int): [Employee!]!
+  admins(
+    distinct: [AdminScalarFieldEnum!]
+    where: AdminWhereInput
+    orderBy: [AdminOrderByWithRelationInput!]
+    cursor: AdminWhereUniqueInput
+    take: Int
+    skip: Int
+  ): [Admin!]!
+  admin(where: AdminWhereUniqueInput): Admin!
+  employees(
+    distinct: [EmployeeScalarFieldEnum!]
+    where: EmployeeWhereInput
+    orderBy: [EmployeeOrderByWithRelationInput!]
+    cursor: EmployeeWhereUniqueInput
+    take: Int
+    skip: Int
+  ): [Employee!]!
   employee(where: EmployeeWhereUniqueInput): Employee!
-  employers(distinct: [EmployerScalarFieldEnum!], where: EmployerWhereInput, orderBy: [EmployerOrderByWithRelationInput!], cursor: EmployerWhereUniqueInput, take: Int, skip: Int): [Employer!]!
+  employers(
+    distinct: [EmployerScalarFieldEnum!]
+    where: EmployerWhereInput
+    orderBy: [EmployerOrderByWithRelationInput!]
+    cursor: EmployerWhereUniqueInput
+    take: Int
+    skip: Int
+  ): [Employer!]!
   employer(where: EmployerWhereUniqueInput): Employer!
-  jobs(distinct: [JobScalarFieldEnum!], where: JobWhereInput, orderBy: [JobOrderByWithRelationInput!], cursor: JobWhereUniqueInput, take: Int, skip: Int): [Job!]!
+  jobs(
+    distinct: [JobScalarFieldEnum!]
+    where: JobWhereInput
+    orderBy: [JobOrderByWithRelationInput!]
+    cursor: JobWhereUniqueInput
+    take: Int
+    skip: Int
+  ): [Job!]!
   job(where: JobWhereUniqueInput): Job!
-  addresses(distinct: [AddressScalarFieldEnum!], where: AddressWhereInput, orderBy: [AddressOrderByWithRelationInput!], cursor: AddressWhereUniqueInput, take: Int, skip: Int): [Address!]!
+  addresses(
+    distinct: [AddressScalarFieldEnum!]
+    where: AddressWhereInput
+    orderBy: [AddressOrderByWithRelationInput!]
+    cursor: AddressWhereUniqueInput
+    take: Int
+    skip: Int
+  ): [Address!]!
   address(where: AddressWhereUniqueInput): Address!
-  categories(distinct: [CategoryScalarFieldEnum!], where: CategoryWhereInput, orderBy: [CategoryOrderByWithRelationInput!], cursor: CategoryWhereUniqueInput, take: Int, skip: Int): [Category!]!
+  categories(
+    distinct: [CategoryScalarFieldEnum!]
+    where: CategoryWhereInput
+    orderBy: [CategoryOrderByWithRelationInput!]
+    cursor: CategoryWhereUniqueInput
+    take: Int
+    skip: Int
+  ): [Category!]!
   category(where: CategoryWhereUniqueInput): Category!
-  subCategories(distinct: [SubCategoryScalarFieldEnum!], where: SubCategoryWhereInput, orderBy: [SubCategoryOrderByWithRelationInput!], cursor: SubCategoryWhereUniqueInput, take: Int, skip: Int): [SubCategory!]!
+  subCategories(
+    distinct: [SubCategoryScalarFieldEnum!]
+    where: SubCategoryWhereInput
+    orderBy: [SubCategoryOrderByWithRelationInput!]
+    cursor: SubCategoryWhereUniqueInput
+    take: Int
+    skip: Int
+  ): [SubCategory!]!
   subCategory(where: SubCategoryWhereUniqueInput): SubCategory!
 }
 
@@ -119,6 +183,7 @@ input UserWhereInput {
   image: StringFilter
   employee: EmployeeRelationFilter
   employer: EmployerRelationFilter
+  Admin: AdminRelationFilter
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -289,6 +354,21 @@ input FloatFilter {
   not: Int
 }
 
+input AdminRelationFilter {
+  is: AdminWhereInput
+  isNot: AdminWhereInput
+}
+
+input AdminWhereInput {
+  uid: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  AND: [AdminWhereInput!]
+  OR: [AdminWhereInput!]
+  NOT: [AdminWhereInput!]
+}
+
 input UserOrderByWithRelationInput {
   uid: SortOrder
   createdAt: SortOrder
@@ -297,6 +377,7 @@ input UserOrderByWithRelationInput {
   image: SortOrder
   employee: EmployeeOrderByWithRelationInput
   employer: EmployerOrderByWithRelationInput
+  Admin: AdminOrderByWithRelationInput
 }
 
 enum SortOrder {
@@ -328,7 +409,24 @@ input JobOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
+input AdminOrderByWithRelationInput {
+  uid: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+}
+
 input UserWhereUniqueInput {
+  uid: String!
+}
+
+enum AdminScalarFieldEnum {
+  uid
+  createdAt
+  updatedAt
+}
+
+input AdminWhereUniqueInput {
   uid: String!
 }
 
@@ -450,6 +548,9 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(where: UserWhereUniqueInput): User!
+  createAdmin(createAdminInput: CreateAdminInput!): Admin!
+  updateAdmin(updateAdminInput: UpdateAdminInput!): Admin!
+  removeAdmin(where: AdminWhereUniqueInput): Admin!
   createEmployee(createEmployeeInput: CreateEmployeeInput!): Employee!
   updateEmployee(updateEmployeeInput: UpdateEmployeeInput!): Employee!
   removeEmployee(where: EmployeeWhereUniqueInput): Employee!
@@ -465,8 +566,12 @@ type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
   removeCategory(where: CategoryWhereUniqueInput): Category!
-  createSubCategory(createSubCategoryInput: CreateSubCategoryInput!): SubCategory!
-  updateSubCategory(updateSubCategoryInput: UpdateSubCategoryInput!): SubCategory!
+  createSubCategory(
+    createSubCategoryInput: CreateSubCategoryInput!
+  ): SubCategory!
+  updateSubCategory(
+    updateSubCategoryInput: UpdateSubCategoryInput!
+  ): SubCategory!
   removeSubCategory(where: SubCategoryWhereUniqueInput): SubCategory!
 }
 
@@ -479,6 +584,14 @@ input CreateUserInput {
 input UpdateUserInput {
   name: String
   image: String
+  uid: String!
+}
+
+input CreateAdminInput {
+  uid: String!
+}
+
+input UpdateAdminInput {
   uid: String!
 }
 

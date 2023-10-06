@@ -14,8 +14,11 @@ import { UpdateUserInput } from './dtos/update-user.input';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { Employee } from '../employees/entity/employee.entity';
 import { Employer } from '../employers/entity/employer.entity';
-import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/common/guards/auth.guard';
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator';
+import { GetUserType } from 'src/common/types';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -29,15 +32,21 @@ export class UsersResolver {
     return this.usersService.create(args);
   }
 
-  @UseGuards(AuthGuard)
+  @AllowAuthenticated()
   @Query(() => [User], { name: 'users' })
-  findAll(@Args() args: FindManyUserArgs) {
-    return this.usersService.findAll(args);
+  async findAll(@Args() args: FindManyUserArgs, @GetUser() user: GetUserType) {
+    console.log('@GetUser', user);
+    const users = await this.usersService.findAll(args);
+
+    return users;
+    // throw new BadRequestException('No');
   }
 
   @Query(() => User, { name: 'user' })
-  findOne(@Args() args: FindUniqueUserArgs) {
-    return this.usersService.findOne(args);
+  async findOne(@Args() args: FindUniqueUserArgs) {
+    const user = await this.usersService.findOne(args);
+
+    return user;
   }
 
   @Mutation(() => User)

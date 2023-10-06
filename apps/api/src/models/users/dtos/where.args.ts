@@ -5,6 +5,7 @@ import {
   RestrictProperties,
   StringFilter,
 } from 'src/common/dtos/common.input';
+import { AdminRelationFilter } from 'src/models/admins/dtos/where.args';
 import { EmployeeRelationFilter } from 'src/models/employees/dtos/where.args';
 import { EmployerRelationFilter } from 'src/models/employers/dtos/where.args';
 
@@ -24,6 +25,7 @@ export class UserWhereInputStrict
   image: StringFilter;
   employee: EmployeeRelationFilter;
   employer: EmployerRelationFilter;
+  Admin: AdminRelationFilter;
   // Todo: Add the below field decorator only to the $Enums types.
   // @Field(() => $Enums.x)
 

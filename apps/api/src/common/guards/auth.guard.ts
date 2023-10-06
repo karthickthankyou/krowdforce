@@ -7,13 +7,41 @@ import {
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
+import { PrismaService } from '../prisma/prisma.service';
+import { Role } from '../types';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private jwtService: JwtService,
+    private prisma: PrismaService,
   ) {}
+
+  async userHasRequiredRole(uid: string, requiredRole: Role): Promise<boolean> {
+    let userExists;
+    console.log('uid ,requiredRole ', uid, requiredRole);
+
+    switch (requiredRole) {
+      case 'admin':
+        userExists = await this.prisma.admin.findUnique({
+          where: { uid },
+        });
+        break;
+      case 'employee':
+        userExists = await this.prisma.employee.findUnique({
+          where: { uid },
+        });
+        break;
+      case 'employer':
+        userExists = await this.prisma.employer.findUnique({
+          where: { uid },
+        });
+        break;
+    }
+
+    return Boolean(userExists);
+  }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ctx = GqlExecutionContext.create(context);
@@ -30,16 +58,14 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    if (!chosenToken) {
-      throw new UnauthorizedException();
-    }
-
     try {
       // Decode and verify JWT.
       const user = await this.jwtService.verify(chosenToken, {
         secret: process.env.JWT_SECRET,
       });
-      console.log('------user ', user);
+
+      console.log('user ', user);
+
       // Attach user to request.
       req.user = user;
     } catch (err) {
@@ -56,7 +82,7 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    const requiredRoles = this.reflector.getAllAndOverride<string[]>('roles', [
+    const requiredRoles = this.reflector.getAllAndOverride<Role[]>('roles', [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -64,7 +90,11 @@ export class AuthGuard implements CanActivate {
     if (!requiredRoles || requiredRoles?.length === 0) {
       return true;
     }
+    const roleCheckPromises = requiredRoles.map((role) =>
+      this.userHasRequiredRole(req.user.uid, role),
+    );
 
-    return requiredRoles?.some((role) => req.user?.roles?.includes(role));
+    const roleCheckResults = await Promise.all(roleCheckPromises);
+    return roleCheckResults.some((result) => result);
   }
 }

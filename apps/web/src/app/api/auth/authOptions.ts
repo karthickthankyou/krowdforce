@@ -3,6 +3,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import jwt from 'jsonwebtoken'
 import { JWT } from 'next-auth/jwt'
 
+const MAX_AGE = 1 * 24 * 60 * 60
 // import { prisma } from '@/prisma/client'
 export const authOptions: NextAuthOptions = {
   // ...other options,
@@ -13,17 +14,32 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-
+  debug: true,
+  session: {
+    strategy: 'jwt',
+    maxAge: MAX_AGE,
+  },
   jwt: {
+    maxAge: MAX_AGE,
     async encode({ token, secret, maxAge }): Promise<string> {
       // Create a JWT using the jsonwebtoken library
       if (!token) {
         throw new Error('Token is undefined')
       }
 
-      const jwtToken = jwt.sign(token, secret, {
-        algorithm: 'HS256',
-      })
+      const { sub, ...tokenProps } = token
+      // Get the current date in seconds since the epoch
+      const nowInSeconds = Math.floor(Date.now() / 1000)
+
+      // Calculate the expiration timestamp
+      const expirationTimestamp = nowInSeconds + MAX_AGE
+      const jwtToken = jwt.sign(
+        { uid: sub, ...tokenProps, exp: expirationTimestamp },
+        secret,
+        {
+          algorithm: 'HS256',
+        },
+      )
       return jwtToken
     },
     async decode({ token, secret }): Promise<JWT | null> {
@@ -41,12 +57,13 @@ export const authOptions: NextAuthOptions = {
       }
     },
   },
+
   callbacks: {
     async session({ token, session }) {
       if (token) {
         session.user = {
           image: token.picture,
-          uid: (token.sub as string) || '',
+          uid: (token.uid as string) || '',
           email: token.email,
           name: token.name,
         }

@@ -8,10 +8,6 @@ import { useUsersQuery } from '@krowdforce/network/src/generated'
 export const DisplayUser = () => {
   const { data, status } = useSession()
 
-  console.log('DisplayUser ', data, status)
-  const { data: usersData, error, loading } = useUsersQuery()
-  console.log('usersData,error, loading', usersData, error, loading)
-
   if (status === 'loading' || status === 'unauthenticated') {
     return null
   }

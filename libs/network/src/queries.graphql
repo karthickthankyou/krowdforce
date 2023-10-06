@@ -1,6 +1,38 @@
-query Users {
-  users {
+query Users(
+  $skip: Int
+  $take: Int
+  $cursor: UserWhereUniqueInput
+  $orderBy: [UserOrderByWithRelationInput!]
+  $where: UserWhereInput
+  $distinct: [UserScalarFieldEnum!]
+) {
+  users(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+    distinct: $distinct
+  ) {
+    image
+    uid
+    createdAt
     name
+  }
+}
+
+query User($where: UserWhereUniqueInput) {
+  user(where: $where) {
+    name
+    image
+    updatedAt
+    createdAt
+    uid
+  }
+}
+
+mutation CreateUser($createUserInput: CreateUserInput!) {
+  createUser(createUserInput: $createUserInput) {
     image
   }
 }

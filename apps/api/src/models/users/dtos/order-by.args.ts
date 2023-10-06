@@ -1,6 +1,7 @@
 import { Field, InputType, PartialType } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
 import { RestrictProperties } from 'src/common/dtos/common.input';
+import { AdminOrderByWithRelationInput } from 'src/models/admins/dtos/order-by.args';
 import { EmployeeOrderByWithRelationInput } from 'src/models/employees/dtos/order-by.args';
 import { EmployerOrderByWithRelationInput } from 'src/models/employers/dtos/order-by.args';
 
@@ -24,6 +25,7 @@ export class UserOrderByWithRelationInputStrict
   image: Prisma.SortOrder;
   employee: EmployeeOrderByWithRelationInput;
   employer: EmployerOrderByWithRelationInput;
+  Admin: AdminOrderByWithRelationInput;
   // Todo: Add below field decorator to the SortOrder properties.
   // @Field(() => Prisma.SortOrder)
 }

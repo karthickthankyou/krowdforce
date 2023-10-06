@@ -14,6 +14,7 @@ import { SubCategoriesModule } from './models/sub-categories/sub-categories.modu
 import { AddressesModule } from './models/addresses/addresses.module';
 import { PrismaModule } from './common/prisma/prisma.module';
 import { AuthModule } from './common/auth/auth.module';
+import { AdminsModule } from './models/admins/admins.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { AuthModule } from './common/auth/auth.module';
     PrismaModule,
 
     UsersModule,
+    AdminsModule,
     EmployeesModule,
     EmployersModule,
     JobsModule,

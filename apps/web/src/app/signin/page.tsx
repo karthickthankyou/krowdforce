@@ -5,7 +5,6 @@ import { Button } from '@krowdforce/ui/src/components/ui/button'
 
 export default function SignIn() {
   const { data, status, update } = useSession()
-  console.log('data, status, ', data, status)
 
   //   if (data?.user) {
   //     return (

@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "main": "index.ts",
   "license": "MIT",
-  "dependencies": {
-    "@apollo/client": "^3.8.4"
-  },
   "devDependencies": {
     "@graphql-codegen/cli": "3.2.2",
     "@graphql-codegen/client-preset": "2.1.1",
