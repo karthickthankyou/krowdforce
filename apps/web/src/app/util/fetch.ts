@@ -11,12 +11,13 @@ interface GraphqlRequestOptions<V> {
   query: TypedDocumentNode<any, V>
   variables?: V
   config?: RequestInit
+  apiSecret?: string
 }
 
 export async function fetchGraphQL<V, R>(
   options: GraphqlRequestOptions<V>,
 ): Promise<FetchResult<R>> {
-  const { query, variables, config = { cache: 'default' } } = options
+  const { query, variables, config = { cache: 'default' }, apiSecret } = options
   const getCookies = cookies()
   const token = getCookies.get('next-auth.session-token')
 
@@ -24,7 +25,8 @@ export async function fetchGraphQL<V, R>(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token?.value,
+      ...(token?.value ? { Authorization: 'Bearer ' + token?.value } : null),
+      ...(apiSecret ? { 'X-API-Secret': apiSecret } : null),
     },
     body: JSON.stringify({ query: query.loc?.source.body!, variables }),
 
@@ -52,6 +54,7 @@ export async function fetchGraphQLInfer<TData, V>(
   document: TypedDocumentNode<TData, V>,
   variables?: V,
   config?: RequestInit,
+  apiSecret?: string,
 ): Promise<FetchResult<TData>> {
   const query = print(document)
   const getCookies = cookies()
@@ -62,6 +65,7 @@ export async function fetchGraphQLInfer<TData, V>(
     headers: {
       'Content-Type': 'application/json',
       ...(token ? { Authorization: `Bearer ${token}` } : null),
+      ...(apiSecret ? { 'X-API-Secret': apiSecret } : null),
     },
     body: JSON.stringify({ query, variables }),
     ...config,

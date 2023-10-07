@@ -15,6 +15,8 @@ import { AddressesModule } from './models/addresses/addresses.module';
 import { PrismaModule } from './common/prisma/prisma.module';
 import { AuthModule } from './common/auth/auth.module';
 import { AdminsModule } from './models/admins/admins.module';
+import { CompaniesModule } from './models/companies/companies.module';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -35,6 +37,7 @@ import { AdminsModule } from './models/admins/admins.module';
     AdminsModule,
     EmployeesModule,
     EmployersModule,
+    CompaniesModule,
     JobsModule,
     AddressesModule,
     CategoriesModule,
@@ -42,6 +45,6 @@ import { AdminsModule } from './models/admins/admins.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JwtService],
 })
 export class AppModule {}

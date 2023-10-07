@@ -7,13 +7,14 @@ import {
   SheetDescription,
   SheetFooter,
   SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from '../../ui/sheet'
 import { MenuItem } from '@krowdforce/util/types'
 import { IconMenu2 } from '@tabler/icons-react'
 import Link from 'next/link'
 import { ModeToggle } from '../../ui/mode-toggle'
+import { DisplayUser } from '../DisplayUser'
+import { Employer } from '../../organisms/Employer'
 
 export interface INavSidebarProps {
   menuItems: MenuItem[]
@@ -30,24 +31,25 @@ export function NavSidebar({ menuItems }: INavSidebarProps) {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Edit profile</SheetTitle>
+          <DisplayUser />
+          <Employer />
+
           <SheetDescription>
-            Make changes to your profile here. Click save when you're done.
+            <div className='flex flex-col items-start space-y-1'>
+              {menuItems
+                .filter(({ loggedIn }) => !loggedIn || uid)
+                .map(({ label, href }) => (
+                  <Link key={label} href={href}>
+                    {label}
+                  </Link>
+                ))}
+              <div className='py-2' />
+            </div>
           </SheetDescription>
         </SheetHeader>
-        <div className='flex flex-col items-start space-y-1'>
-          {menuItems
-            .filter(({ loggedIn }) => !loggedIn || uid)
-            .map(({ label, href }) => (
-              <Link key={label} href={href}>
-                {label}
-              </Link>
-            ))}
-          <div className='py-2' />
-        </div>
         <SheetFooter>
           <SheetClose asChild>
-            <Button type='submit'>Save changes</Button>
+            <Link href='/api/auth/signout'>Signout</Link>
           </SheetClose>
         </SheetFooter>
       </SheetContent>

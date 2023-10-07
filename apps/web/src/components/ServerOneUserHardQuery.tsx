@@ -4,7 +4,7 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 
-export const ServerOneUserHardQuery = async () => {
+export const TestFetchUsers = async () => {
   const { data, error } = await fetchGraphQLInfer(
     UsersDocument,
     {},

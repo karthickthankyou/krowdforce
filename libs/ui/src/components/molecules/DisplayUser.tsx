@@ -1,7 +1,6 @@
 'use client'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import Link from 'next/link'
 
 export const DisplayUser = () => {
   const { data, status } = useSession()
@@ -11,17 +10,16 @@ export const DisplayUser = () => {
   }
 
   return (
-    <div className='flex items-center gap-2'>
+    <div className='flex flex-col gap-2'>
       <Image
-        className='w-8 h-8 rounded'
-        width={100}
-        height={100}
+        className='w-full rounded aspect-square'
+        width={300}
+        height={300}
         src={data?.user?.image || ''}
         alt={''}
       />
-      <div>{data?.user?.name}</div>
-      <div>{data?.user?.uid}</div>
-      <Link href='/api/auth/signout'>Signout</Link>
+      <div className='text-2xl font-light '>{data?.user?.name}</div>
+      <div className='text-gray'>{data?.user?.uid}</div>
     </div>
   )
 }

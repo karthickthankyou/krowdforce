@@ -7,7 +7,10 @@ import {
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { fetchGraphQLInfer } from '../app/util/fetch'
-import { FormTypeCreateUser, formSchemaCreateUser } from '../forms/CreateUser'
+import {
+  FormTypeCreateUser,
+  formSchemaCreateUser,
+} from '../../../../libs/forms/createUser'
 
 export async function createUser(formData: FormTypeCreateUser) {
   const result = formSchemaCreateUser.safeParse(formData)

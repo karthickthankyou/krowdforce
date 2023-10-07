@@ -1,6 +1,7 @@
 import {
   CanActivate,
   ExecutionContext,
+  ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -43,9 +44,25 @@ export class AuthGuard implements CanActivate {
     return Boolean(userExists);
   }
 
+  bypassWithApiSecret(req: any) {
+    const apiSecret = req.headers['X-API-Secret'];
+    if (!apiSecret) {
+      return false;
+    }
+    if (apiSecret === process.env.INTERNAL_API_SECRET) {
+      return true;
+    } else {
+      throw new ForbiddenException('Nope.');
+    }
+  }
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ctx = GqlExecutionContext.create(context);
     const req = ctx.getContext().req;
+
+    if (this.bypassWithApiSecret(req)) {
+      return true;
+    }
 
     const bearerHeader = req.headers.authorization;
     const token = bearerHeader && bearerHeader.split(' ')[1];

@@ -7,6 +7,7 @@ import {
   RestrictProperties,
   StringFilter,
 } from 'src/common/dtos/common.input';
+import { CompanyListRelationFilter } from 'src/models/companies/dtos/where.args';
 import { JobListRelationFilter } from 'src/models/jobs/dtos/where.args';
 
 @InputType()
@@ -20,6 +21,7 @@ export class AddressWhereInputStrict
   implements
     RestrictProperties<AddressWhereInputStrict, Prisma.AddressWhereInput>
 {
+  Company: CompanyListRelationFilter;
   id: IntFilter;
   createdAt: DateTimeFilter;
   updatedAt: DateTimeFilter;

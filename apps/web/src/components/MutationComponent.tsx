@@ -1,9 +1,9 @@
-import { ServerOneUserHardQuery } from './ServerOneUserHardQuery'
+import { TestFetchUsers } from './ServerOneUserHardQuery'
 
 export const CreateUser = () => {
   return (
     <div>
-      <ServerOneUserHardQuery />
+      <TestFetchUsers />
     </div>
   )
 }

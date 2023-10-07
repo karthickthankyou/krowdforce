@@ -24,7 +24,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "../../libs/types"
+    "../../libs/types",
+    "../../libs/ui/src/components/molecules/DisplayUser.tsx",
+    "../../libs/forms/createUser.tsx"
   ],
   "exclude": ["node_modules"]
 }

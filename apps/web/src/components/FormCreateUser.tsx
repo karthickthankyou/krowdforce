@@ -1,6 +1,9 @@
 'use client'
 
-import { FormTypeCreateUser, formSchemaCreateUser } from '../forms/CreateUser'
+import {
+  FormTypeCreateUser,
+  formSchemaCreateUser,
+} from '../../../../libs/forms/createUser'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { createUser } from '../actions/createUser'

@@ -36,3 +36,19 @@ mutation CreateUser($createUserInput: CreateUserInput!) {
     image
   }
 }
+
+query EmployerMe {
+  employerMe {
+    uid
+    company {
+      name
+      id
+    }
+  }
+}
+
+mutation createEmployer($createEmployerInput: CreateEmployerInput!) {
+  createEmployer(createEmployerInput: $createEmployerInput) {
+    uid
+  }
+}

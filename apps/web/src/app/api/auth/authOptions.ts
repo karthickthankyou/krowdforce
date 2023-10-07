@@ -2,6 +2,11 @@ import { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import jwt from 'jsonwebtoken'
 import { JWT } from 'next-auth/jwt'
+import { fetchGraphQLInfer } from '../../util/fetch'
+import {
+  CreateUserDocument,
+  UserDocument,
+} from '@krowdforce/network/src/generated'
 
 const MAX_AGE = 1 * 24 * 60 * 60
 // import { prisma } from '@/prisma/client'
@@ -59,6 +64,29 @@ export const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
+    async signIn({ user }) {
+      const { id: uid, name, email, image } = user
+
+      const existingUser = await fetchGraphQLInfer(
+        UserDocument,
+        {
+          where: { uid },
+        },
+        {},
+      )
+
+      if (!existingUser.data?.user.uid) {
+        const newUser = await fetchGraphQLInfer(
+          CreateUserDocument,
+          {
+            createUserInput: { uid, image, name },
+          },
+          {},
+          process.env.INTERNAL_API_SECRET,
+        )
+      }
+      return true
+    },
     async session({ token, session }) {
       if (token) {
         session.user = {
