@@ -173,3 +173,35 @@ query SearchJobs($locationFilter: LocationFilterInput!, $jobFilter: JobFilter) {
     type
   }
 }
+
+query Job($where: JobWhereUniqueInput) {
+  job(where: $where) {
+    id
+    salary
+    contactInfo
+    skills {
+      name
+      categoryName
+    }
+    start
+    status
+    title
+    type
+    end
+    description
+    createdAt
+    company {
+      name
+      address {
+        address
+        lat
+        lng
+      }
+    }
+    address {
+      address
+      lat
+      lng
+    }
+  }
+}

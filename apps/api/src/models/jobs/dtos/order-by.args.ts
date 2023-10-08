@@ -14,6 +14,8 @@ export class JobOrderByWithRelationInputStrict
     >
 {
   @Field(() => Prisma.SortOrder)
+  contactInfo: Prisma.SortOrder;
+  @Field(() => Prisma.SortOrder)
   companyId: Prisma.SortOrder;
   Company: CompanyOrderByWithRelationInput;
   @Field(() => Prisma.SortOrder)

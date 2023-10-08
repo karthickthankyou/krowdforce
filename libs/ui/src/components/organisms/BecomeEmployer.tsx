@@ -101,7 +101,7 @@ export const MapMarker = ({
         setValue('address.lng', lng || 0)
       }}
     >
-      <Icon className='w-8 h-8 p-1.5 text-black' />
+      <Icon className='w-8 h-8 p-1.5' />
     </Marker>
   )
 }

@@ -4,6 +4,8 @@ import { RestrictProperties } from 'src/common/dtos/common.input';
 
 @ObjectType()
 export class Job implements RestrictProperties<Job, JobType> {
+  @Field({ nullable: true })
+  contactInfo: string;
   companyId: number;
   createdAt: Date;
   updatedAt: Date;

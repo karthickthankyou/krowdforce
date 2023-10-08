@@ -60,6 +60,7 @@ type Address {
 }
 
 type Job {
+  contactInfo: String
   addressId: Int
   status: JobStatus!
   type: JobType!
@@ -243,6 +244,7 @@ input JobListRelationFilter {
 input JobWhereInput {
   status: JobStatus
   type: JobType
+  contactInfo: StringFilter
   companyId: IntFilter
   Company: CompanyRelationFilter
   createdAt: DateTimeFilter
@@ -491,10 +493,12 @@ enum JobScalarFieldEnum {
   start
   end
   salary
+  contactInfo
   companyId
 }
 
 input JobOrderByWithRelationInput {
+  contactInfo: SortOrder
   companyId: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder

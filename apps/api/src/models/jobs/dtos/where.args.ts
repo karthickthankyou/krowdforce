@@ -29,6 +29,7 @@ registerEnumType($Enums.JobType, { name: 'JobType' });
 export class JobWhereInputStrict
   implements RestrictProperties<JobWhereInputStrict, Prisma.JobWhereInput>
 {
+  contactInfo: StringFilter;
   companyId: IntFilter;
   Company: CompanyRelationFilter;
   createdAt: DateTimeFilter;

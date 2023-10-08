@@ -60,7 +60,10 @@ export class JobsResolver {
           ...where,
           address: {
             lat: { lte: ne_lat, gte: sw_lat },
-            lng: { gte: ne_lng, lte: sw_lng },
+            lng: { lte: ne_lng, gte: sw_lng },
+          },
+          status: {
+            equals: 'OPEN',
           },
         },
       });

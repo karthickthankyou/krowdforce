@@ -27,7 +27,7 @@ import { Marker } from '../organisms/Map/MapMarker'
 import AsyncSelect from 'react-select/async'
 import Select from 'react-select'
 
-import { IconBuilding, IconUser } from '@tabler/icons-react'
+import { IconBuilding, IconPick } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 
 import { Separator } from '../ui/separator'
@@ -45,6 +45,38 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
   return (
     <div>
       <div className='grid grid-cols-2 gap-2'>
+        <Map initialViewState={initialViewState}>
+          {sameAddress ? (
+            <MapMarker initialLocation={initialViewState} Icon={IconPick} />
+          ) : null}
+          <Marker
+            longitude={employerCompany.address.lng}
+            latitude={employerCompany.address.lat}
+          >
+            <IconBuilding />
+          </Marker>
+          <Panel position='left-top'>
+            <SearchPlace
+              onLocationChange={(location: ViewState) => {
+                setValue('address.lat', location.latitude)
+                setValue('address.lng', location.longitude)
+              }}
+            />
+            <DefaultZoomControls>
+              {sameAddress ? (
+                <CenterOfMap
+                  Icon={IconPick}
+                  onClick={(latLng) => {
+                    const lat = parseFloat(latLng.lat.toFixed(6))
+                    const lng = parseFloat(latLng.lng.toFixed(6))
+                    setValue('address.lat', lat, { shouldValidate: true })
+                    setValue('address.lng', lng, { shouldValidate: true })
+                  }}
+                />
+              ) : null}
+            </DefaultZoomControls>
+          </Panel>
+        </Map>{' '}
         <form
           onSubmit={handleSubmit(async (formData) => {
             await createJob(formData)
@@ -62,7 +94,14 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
               setValue('end', dates?.to?.toISOString())
             }}
           />
-          <SelectMultiSkills />
+          <SelectMultiSkills
+            setValue={(skills: string[]) => {
+              setValue(
+                'skills',
+                skills.map((name) => ({ name })),
+              )
+            }}
+          />
           <Select
             placeholder='Select job type'
             onChange={(option) => {
@@ -108,45 +147,16 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
 
           <Button type='submit'>Submit</Button>
         </form>
-        <Map initialViewState={initialViewState}>
-          {sameAddress ? (
-            <MapMarker initialLocation={initialViewState} Icon={IconUser} />
-          ) : null}
-          <Marker
-            longitude={employerCompany.address.lng}
-            latitude={employerCompany.address.lat}
-          >
-            <IconBuilding />
-          </Marker>
-          <Panel position='left-top'>
-            <SearchPlace
-              onLocationChange={(location: ViewState) => {
-                setValue('address.lat', location.latitude)
-                setValue('address.lng', location.longitude)
-              }}
-            />
-            <DefaultZoomControls>
-              {sameAddress ? (
-                <CenterOfMap
-                  Icon={IconUser}
-                  onClick={(latLng) => {
-                    const lat = parseFloat(latLng.lat.toFixed(6))
-                    const lng = parseFloat(latLng.lng.toFixed(6))
-                    setValue('address.lat', lat, { shouldValidate: true })
-                    setValue('address.lng', lng, { shouldValidate: true })
-                  }}
-                />
-              ) : null}
-            </DefaultZoomControls>
-          </Panel>
-        </Map>
       </div>
     </div>
   )
 }
 
-export const SelectMultiSkills = () => {
-  const { setValue } = useFormContext<FormTypeCreateJob>()
+export const SelectMultiSkills = ({
+  setValue,
+}: {
+  setValue: (skills: string[]) => void
+}) => {
   const loadOptions = async (inputValue: string) => {
     const skills = await fetchGraphQLNoAuth(
       SubCategoriesDocument,
@@ -166,8 +176,8 @@ export const SelectMultiSkills = () => {
     )
 
     return (skills.data?.subCategories || []).map((skill) => ({
-      value: skill.name, // or some unique id if you have one
-      label: `${skill.name} (${skill.categoryName})`, // you can adjust the label format as needed
+      value: skill.name,
+      label: `${skill.name} (${skill.categoryName})`,
     }))
   }
 
@@ -179,10 +189,7 @@ export const SelectMultiSkills = () => {
       loadOptions={loadOptions}
       placeholder='Select required skills'
       onChange={(v) => {
-        setValue(
-          'skills',
-          v.map((skill) => ({ name: skill.value })),
-        )
+        setValue(v.map((skill) => skill.value))
       }}
     />
   )
