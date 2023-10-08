@@ -81,8 +81,6 @@ export class AuthGuard implements CanActivate {
         secret: process.env.JWT_SECRET,
       });
 
-      console.log('user ', user);
-
       // Attach user to request.
       req.user = user;
     } catch (err) {

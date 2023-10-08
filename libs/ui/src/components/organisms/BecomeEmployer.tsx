@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Map } from './Map'
 
 import { ViewState } from './Map/Map'
-import { IconBuilding } from '@tabler/icons-react'
+import { IconBuilding, TablerIconsProps } from '@tabler/icons-react'
 import { useEffect } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import {
@@ -19,12 +19,7 @@ import { Marker } from './Map/MapMarker'
 import { SearchPlace } from '../molecules/ComboBox'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
-
-const initialViewState = {
-  longitude: 80.2,
-  latitude: 12.4,
-  zoom: 10,
-}
+import { initialViewState } from '@krowdforce/util/constants'
 
 export const BecomeEmployer = () => {
   const {
@@ -40,27 +35,22 @@ export const BecomeEmployer = () => {
   if (!userData?.user?.uid) {
     return <Link href='/api/auth/signin'>Sign in</Link>
   }
+
   const userUID = userData.user.uid
 
   return (
     <div className='grid grid-cols-2 gap-2'>
       <form
         onSubmit={handleSubmit(async ({ companyName, address }) => {
-          console.log(
-            'companyName, address, userUID',
-            companyName,
-            address,
-            userUID,
-          )
           await createEmployer({ companyName, uid: userUID, address })
           reset()
         })}
+        className='space-y-2'
       >
         <h1 className='mb-2 text-lg font-semibold'>Create company</h1>
         <Input {...register('companyName')} placeholder='Company name' />
-        <Button variant={'secondary'} type='submit'>
-          Submit
-        </Button>
+        <Input {...register('address.address')} placeholder='Full address' />
+        <Button type='submit'>Submit</Button>
       </form>
       <Map initialViewState={initialViewState}>
         <MapMarker initialLocation={initialViewState} />
@@ -90,8 +80,10 @@ export const BecomeEmployer = () => {
 
 export const MapMarker = ({
   initialLocation,
+  Icon = IconBuilding,
 }: {
   initialLocation?: ViewState
+  Icon?: (props: TablerIconsProps) => JSX.Element
 }) => {
   const { setValue, watch } = useFormContext<FormTypeCreateEmployer>()
   const { address } = useWatch<FormTypeCreateEmployer>()
@@ -103,8 +95,6 @@ export const MapMarker = ({
       setValue('address', { lat: latitude, lng: longitude, address: '' })
     }
   }, [initialLocation, setValue])
-
-  console.log('address', address)
 
   return (
     <Marker
@@ -119,7 +109,7 @@ export const MapMarker = ({
         setValue('address.lng', lng || 0)
       }}
     >
-      <IconBuilding />
+      <Icon className='w-8 h-8 p-1.5 text-black' />
     </Marker>
   )
 }

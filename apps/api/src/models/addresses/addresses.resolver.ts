@@ -47,7 +47,7 @@ export class AddressesResolver {
   }
 
   @ResolveField(() => [Job])
-  skills(@Parent() parent: Address) {
+  jobs(@Parent() parent: Address) {
     return this.prisma.job.findMany({
       where: { addressId: parent.id },
     });

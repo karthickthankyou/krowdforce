@@ -3,14 +3,29 @@ import { FindManyJobArgs, FindUniqueJobArgs } from './dtos/find.args';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { CreateJobInput } from './dtos/create-job.input';
 import { UpdateJobInput } from './dtos/update-job.input';
+import { SubCategoryWhereUniqueInput } from '../sub-categories/dtos/where.args';
 
 @Injectable()
 export class JobsService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createJobInput: CreateJobInput) {
-    return this.prisma.job.create({
-      data: createJobInput,
-    });
+  create({ skills, address, companyId, ...createJobInput }: CreateJobInput) {
+    const skillsConnect: SubCategoryWhereUniqueInput[] = skills.map(
+      (skill) => ({
+        name: skill.name,
+      }),
+    );
+    try {
+      return this.prisma.job.create({
+        data: {
+          ...createJobInput,
+          skills: { connect: skillsConnect },
+          ...(address ? { address: { create: address } } : null),
+          Company: { connect: { id: companyId } },
+        },
+      });
+    } catch (error) {
+      console.error('job create error ', error);
+    }
   }
 
   findAll(args: FindManyJobArgs) {

@@ -20,9 +20,9 @@ export type Address = {
   address: Scalars['String'];
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
-  lat: Scalars['Int'];
-  lng: Scalars['Int'];
-  skills: Array<Job>;
+  jobs: Array<Job>;
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
   updatedAt: Scalars['DateTime'];
 };
 
@@ -142,6 +142,7 @@ export type CategoryWhereUniqueInput = {
 
 export type Company = {
   __typename?: 'Company';
+  address: Address;
   addressId: Scalars['Int'];
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -193,10 +194,14 @@ export type CompanyWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>;
 };
 
+export type ConnectSubCategoryInput = {
+  name: Scalars['String'];
+};
+
 export type CreateAddressInput = {
   address: Scalars['String'];
-  lat: Scalars['Int'];
-  lng: Scalars['Int'];
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
 };
 
 export type CreateAdminInput = {
@@ -222,11 +227,12 @@ export type CreateEmployerInput = {
 };
 
 export type CreateJobInput = {
-  addressId?: InputMaybe<Scalars['Int']>;
+  address?: InputMaybe<CreateAddressInput>;
   companyId: Scalars['Int'];
   description: Scalars['String'];
   end?: InputMaybe<Scalars['DateTime']>;
   salary?: InputMaybe<Scalars['Int']>;
+  skills: Array<ConnectSubCategoryInput>;
   start?: InputMaybe<Scalars['DateTime']>;
   status: JobStatus;
   title: Scalars['String'];
@@ -385,6 +391,7 @@ export type Job = {
   __typename?: 'Job';
   address?: Maybe<Address>;
   addressId?: Maybe<Scalars['Int']>;
+  company: Company;
   companyId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
   description: Scalars['String'];
@@ -658,6 +665,8 @@ export type Query = {
   employee: Employee;
   employees: Array<Employee>;
   employer: Employer;
+  employerCompany: Company;
+  employerJobs: Array<Job>;
   employerMe: Employer;
   employers: Array<Employer>;
   job: Job;
@@ -746,6 +755,16 @@ export type QueryEmployeesArgs = {
 
 export type QueryEmployerArgs = {
   where?: InputMaybe<EmployerWhereUniqueInput>;
+};
+
+
+export type QueryEmployerJobsArgs = {
+  cursor?: InputMaybe<JobWhereUniqueInput>;
+  distinct?: InputMaybe<Array<JobScalarFieldEnum>>;
+  orderBy?: InputMaybe<Array<JobOrderByWithRelationInput>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<JobWhereInput>;
 };
 
 
@@ -878,8 +897,8 @@ export type SubCategoryWhereUniqueInput = {
 export type UpdateAddressInput = {
   address?: InputMaybe<Scalars['String']>;
   id: Scalars['Int'];
-  lat?: InputMaybe<Scalars['Int']>;
-  lng?: InputMaybe<Scalars['Int']>;
+  lat?: InputMaybe<Scalars['Float']>;
+  lng?: InputMaybe<Scalars['Float']>;
 };
 
 export type UpdateAdminInput = {
@@ -904,7 +923,6 @@ export type UpdateEmployerInput = {
 };
 
 export type UpdateJobInput = {
-  addressId?: InputMaybe<Scalars['Int']>;
   companyId?: InputMaybe<Scalars['Int']>;
   description?: InputMaybe<Scalars['String']>;
   end?: InputMaybe<Scalars['DateTime']>;
@@ -1009,7 +1027,7 @@ export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __type
 export type EmployerMeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type EmployerMeQuery = { __typename?: 'Query', employerMe: { __typename?: 'Employer', uid: string, company: { __typename?: 'Company', name: string, id: number } } };
+export type EmployerMeQuery = { __typename?: 'Query', employerMe: { __typename?: 'Employer', uid: string, createdAt: any, user: { __typename?: 'User', image?: string | null, name?: string | null }, company: { __typename?: 'Company', name: string, address: { __typename?: 'Address', address: string, lat: number, lng: number } } } };
 
 export type CreateEmployerMutationVariables = Exact<{
   createEmployerInput: CreateEmployerInput;
@@ -1018,20 +1036,64 @@ export type CreateEmployerMutationVariables = Exact<{
 
 export type CreateEmployerMutation = { __typename?: 'Mutation', createEmployer: { __typename?: 'Employer', uid: string } };
 
+export type EmployerJobsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  cursor?: InputMaybe<JobWhereUniqueInput>;
+  orderBy?: InputMaybe<Array<JobOrderByWithRelationInput> | JobOrderByWithRelationInput>;
+  where?: InputMaybe<JobWhereInput>;
+  distinct?: InputMaybe<Array<JobScalarFieldEnum> | JobScalarFieldEnum>;
+}>;
+
+
+export type EmployerJobsQuery = { __typename?: 'Query', employerJobs: Array<{ __typename?: 'Job', id: number, salary?: number | null, description: string, end?: any | null, start?: any | null, status: JobStatus, title: string, type: JobType, skills: Array<{ __typename?: 'SubCategory', name: string, category: { __typename?: 'Category', name: string } }>, address?: { __typename?: 'Address', address: string, lat: number, lng: number } | null, company: { __typename?: 'Company', name: string, address: { __typename?: 'Address', address: string, lat: number, lng: number } } }> };
+
+export type CreateJobMutationVariables = Exact<{
+  createJobInput: CreateJobInput;
+}>;
+
+
+export type CreateJobMutation = { __typename?: 'Mutation', createJob: { __typename?: 'Job', id: number } };
+
+export type EmployerCompanyQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type EmployerCompanyQuery = { __typename?: 'Query', employerCompany: { __typename?: 'Company', id: number, name: string, address: { __typename?: 'Address', address: string, lat: number, lng: number } } };
+
+export type SubCategoriesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  cursor?: InputMaybe<SubCategoryWhereUniqueInput>;
+  orderBy?: InputMaybe<Array<SubCategoryOrderByWithRelationInput> | SubCategoryOrderByWithRelationInput>;
+  where?: InputMaybe<SubCategoryWhereInput>;
+  distinct?: InputMaybe<Array<SubCategoryScalarFieldEnum> | SubCategoryScalarFieldEnum>;
+}>;
+
+
+export type SubCategoriesQuery = { __typename?: 'Query', subCategories: Array<{ __typename?: 'SubCategory', name: string, categoryName: string }> };
+
 export const namedOperations = {
   Query: {
     Users: 'Users',
     User: 'User',
-    EmployerMe: 'EmployerMe'
+    EmployerMe: 'EmployerMe',
+    EmployerJobs: 'EmployerJobs',
+    EmployerCompany: 'EmployerCompany',
+    SubCategories: 'SubCategories'
   },
   Mutation: {
     CreateUser: 'CreateUser',
-    createEmployer: 'createEmployer'
+    createEmployer: 'createEmployer',
+    createJob: 'createJob'
   }
 }
 
 export const UsersDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Users"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"take"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"UserWhereUniqueInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserOrderByWithRelationInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"UserWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"distinct"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserScalarFieldEnum"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}},{"kind":"Argument","name":{"kind":"Name","value":"take"},"value":{"kind":"Variable","name":{"kind":"Name","value":"take"}}},{"kind":"Argument","name":{"kind":"Name","value":"cursor"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"distinct"},"value":{"kind":"Variable","name":{"kind":"Name","value":"distinct"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<UsersQuery, UsersQueryVariables>;
 export const UserDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"User"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"UserWhereUniqueInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}}]}}]}}]} as unknown as DocumentNode<UserQuery, UserQueryVariables>;
 export const CreateUserDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createUserInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createUserInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createUserInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"image"}}]}}]}}]} as unknown as DocumentNode<CreateUserMutation, CreateUserMutationVariables>;
-export const EmployerMeDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EmployerMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employerMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"company"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<EmployerMeQuery, EmployerMeQueryVariables>;
+export const EmployerMeDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EmployerMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employerMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"company"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"lat"}},{"kind":"Field","name":{"kind":"Name","value":"lng"}}]}}]}}]}}]}}]} as unknown as DocumentNode<EmployerMeQuery, EmployerMeQueryVariables>;
 export const CreateEmployerDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createEmployer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createEmployerInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateEmployerInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createEmployer"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createEmployerInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createEmployerInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}}]}}]}}]} as unknown as DocumentNode<CreateEmployerMutation, CreateEmployerMutationVariables>;
+export const EmployerJobsDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EmployerJobs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"take"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"JobWhereUniqueInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"JobOrderByWithRelationInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"JobWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"distinct"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"JobScalarFieldEnum"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employerJobs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}},{"kind":"Argument","name":{"kind":"Name","value":"take"},"value":{"kind":"Variable","name":{"kind":"Name","value":"take"}}},{"kind":"Argument","name":{"kind":"Name","value":"cursor"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"distinct"},"value":{"kind":"Variable","name":{"kind":"Name","value":"distinct"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"salary"}},{"kind":"Field","name":{"kind":"Name","value":"skills"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"lat"}},{"kind":"Field","name":{"kind":"Name","value":"lng"}}]}},{"kind":"Field","name":{"kind":"Name","value":"company"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"lat"}},{"kind":"Field","name":{"kind":"Name","value":"lng"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]} as unknown as DocumentNode<EmployerJobsQuery, EmployerJobsQueryVariables>;
+export const CreateJobDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createJob"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createJobInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateJobInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createJob"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createJobInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createJobInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateJobMutation, CreateJobMutationVariables>;
+export const EmployerCompanyDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EmployerCompany"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employerCompany"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"lat"}},{"kind":"Field","name":{"kind":"Name","value":"lng"}}]}}]}}]}}]} as unknown as DocumentNode<EmployerCompanyQuery, EmployerCompanyQueryVariables>;
+export const SubCategoriesDocument = /*#__PURE__*/ {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SubCategories"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"take"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"SubCategoryWhereUniqueInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SubCategoryOrderByWithRelationInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"SubCategoryWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"distinct"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SubCategoryScalarFieldEnum"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"subCategories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}},{"kind":"Argument","name":{"kind":"Name","value":"take"},"value":{"kind":"Variable","name":{"kind":"Name","value":"take"}}},{"kind":"Argument","name":{"kind":"Name","value":"cursor"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"distinct"},"value":{"kind":"Variable","name":{"kind":"Name","value":"distinct"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"categoryName"}}]}}]}}]} as unknown as DocumentNode<SubCategoriesQuery, SubCategoriesQueryVariables>;

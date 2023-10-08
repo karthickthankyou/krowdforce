@@ -7,3 +7,9 @@ export class CreateSubCategoryInput extends PickType(
   ['categoryName', 'name'],
   InputType,
 ) {}
+@InputType()
+export class ConnectSubCategoryInput extends PickType(
+  SubCategory,
+  ['name'],
+  InputType,
+) {}

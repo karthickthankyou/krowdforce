@@ -76,8 +76,8 @@ model Job {
     end    DateTime?
     salary Int?
 
-    Company   Company? @relation(fields: [companyId], references: [id])
-    companyId Int?
+    Company   Company @relation(fields: [companyId], references: [id])
+    companyId Int
 }
 
 model Address {

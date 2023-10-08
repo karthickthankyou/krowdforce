@@ -3,10 +3,10 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { fetchGraphQLInfer } from '../util/fetch'
-import { BecomeEmployer } from '@krowdforce/ui/src/components/organisms/BecomeEmployer'
-import { FormProviderCreateEmployer } from '@krowdforce/forms/createEmployer'
+import { Employer } from '@krowdforce/ui/src/components/templates/Employer'
 
-export default async function Employer() {
+export default async function EmployerPage() {
+  // Passing data between a parent layout and its children is not possible. However, you can fetch the same data in a route more than once, and React will automatically dedupe the requests without affecting performance.
   const { data, error } = await fetchGraphQLInfer(
     EmployerMeDocument,
     {},
@@ -18,17 +18,8 @@ export default async function Employer() {
   )
 
   if (!data?.employerMe?.uid) {
-    return (
-      <FormProviderCreateEmployer>
-        <BecomeEmployer />
-      </FormProviderCreateEmployer>
-    )
+    return null
   }
-  return (
-    <div>
-      <div>{data?.employerMe.uid}</div>
-      <div>{data?.employerMe.company.id}</div>
-      <div>{data?.employerMe.company.name}</div>
-    </div>
-  )
+
+  return <Employer employerMe={data.employerMe} />
 }

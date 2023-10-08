@@ -14,7 +14,6 @@ import { IconMenu2 } from '@tabler/icons-react'
 import Link from 'next/link'
 import { ModeToggle } from '../../ui/mode-toggle'
 import { DisplayUser } from '../DisplayUser'
-import { Employer } from '../../organisms/Employer'
 
 export interface INavSidebarProps {
   menuItems: MenuItem[]
@@ -32,7 +31,7 @@ export function NavSidebar({ menuItems }: INavSidebarProps) {
       <SheetContent>
         <SheetHeader>
           <DisplayUser />
-          <Employer />
+          <Link href='/employer'>Employer</Link>
 
           <SheetDescription>
             <div className='flex flex-col items-start space-y-1'>

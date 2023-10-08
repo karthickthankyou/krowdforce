@@ -40,9 +40,18 @@ mutation CreateUser($createUserInput: CreateUserInput!) {
 query EmployerMe {
   employerMe {
     uid
+    createdAt
+    user {
+      image
+      name
+    }
     company {
       name
-      id
+      address {
+        address
+        lat
+        lng
+      }
     }
   }
 }
@@ -50,5 +59,90 @@ query EmployerMe {
 mutation createEmployer($createEmployerInput: CreateEmployerInput!) {
   createEmployer(createEmployerInput: $createEmployerInput) {
     uid
+  }
+}
+
+query EmployerJobs(
+  $skip: Int
+  $take: Int
+  $cursor: JobWhereUniqueInput
+  $orderBy: [JobOrderByWithRelationInput!]
+  $where: JobWhereInput
+  $distinct: [JobScalarFieldEnum!]
+) {
+  employerJobs(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+    distinct: $distinct
+  ) {
+    id
+    salary
+    skills {
+      name
+      category {
+        name
+      }
+    }
+    address {
+      address
+      lat
+      lng
+    }
+    company {
+      name
+      address {
+        address
+        lat
+        lng
+      }
+    }
+    description
+    end
+    start
+    status
+    title
+    type
+  }
+}
+
+mutation createJob($createJobInput: CreateJobInput!) {
+  createJob(createJobInput: $createJobInput) {
+    id
+  }
+}
+
+query EmployerCompany {
+  employerCompany {
+    id
+    name
+    address {
+      address
+      lat
+      lng
+    }
+  }
+}
+
+query SubCategories(
+  $skip: Int
+  $take: Int
+  $cursor: SubCategoryWhereUniqueInput
+  $orderBy: [SubCategoryOrderByWithRelationInput!]
+  $where: SubCategoryWhereInput
+  $distinct: [SubCategoryScalarFieldEnum!]
+) {
+  subCategories(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+    distinct: $distinct
+  ) {
+    name
+    categoryName
   }
 }
