@@ -60,7 +60,6 @@ export function DatePickerWithRange({
             defaultMonth={date?.from}
             selected={date}
             onSelect={(v) => {
-              console.log('v', v?.from?.toISOString(), v?.to?.toISOString())
               setDate(v)
               setDates(v)
             }}

@@ -22,14 +22,9 @@ import { Button } from '../ui/button'
 import { initialViewState } from '@krowdforce/util/constants'
 
 export const BecomeEmployer = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-    setValue,
-  } = useFormContext<FormTypeCreateEmployer>()
-  console.log('errors', errors)
+  const { register, handleSubmit, reset, setValue } =
+    useFormContext<FormTypeCreateEmployer>()
+
   const { data: userData } = useSession()
 
   if (!userData?.user?.uid) {
@@ -85,10 +80,8 @@ export const MapMarker = ({
   initialLocation?: ViewState
   Icon?: (props: TablerIconsProps) => JSX.Element
 }) => {
-  const { setValue, watch } = useFormContext<FormTypeCreateEmployer>()
+  const { setValue } = useFormContext<FormTypeCreateEmployer>()
   const { address } = useWatch<FormTypeCreateEmployer>()
-  const add = watch('address')
-  console.log('add', add)
   useEffect(() => {
     if (initialLocation) {
       const { latitude, longitude } = initialLocation
@@ -104,7 +97,6 @@ export const MapMarker = ({
       draggable
       onDragEnd={({ lngLat }) => {
         const { lat, lng } = lngLat
-        console.log({ lat, lng })
         setValue('address.lat', lat || 0)
         setValue('address.lng', lng || 0)
       }}

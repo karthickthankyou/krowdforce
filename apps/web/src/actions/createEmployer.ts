@@ -15,11 +15,9 @@ type FormTypeCreateEmployer = z.infer<typeof formSchemaCreateEmployer>
 export async function createEmployer(
   formData: FormTypeCreateEmployer & { uid: string },
 ) {
-  console.log('formData ', formData)
   const result = formSchemaCreateEmployer.safeParse(formData)
 
   if (result.success) {
-    console.log('result. data', result.data)
     const { companyName, address } = result.data
 
     try {
@@ -30,7 +28,7 @@ export async function createEmployer(
           uid: formData.uid,
         },
       })
-      console.log('data,error ', data, error)
+
       revalidateTag(namedOperations.Query.EmployerMe)
     } catch (error) {
       throw new Error('Something went wrong')

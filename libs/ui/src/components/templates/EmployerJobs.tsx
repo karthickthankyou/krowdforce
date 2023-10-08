@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { format } from 'date-fns'
 
 export const EmployerJobs = ({ employerJobs }: EmployerJobsQuery) => {
-  console.log(employerJobs)
   return (
     <div>
       <Link href='/employer/jobs/new' className='block py-6'>

@@ -35,16 +35,8 @@ import { fetchGraphQLNoAuth } from '@krowdforce/web/src/app/util/fetchNoAuth'
 import { DatePickerWithRange } from '../ui/date-picker'
 
 export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-    setValue,
-    watch,
-  } = useFormContext<FormTypeCreateJob>()
-  console.log('data ', watch())
-  console.log('errors', errors)
+  const { register, handleSubmit, reset, setValue } =
+    useFormContext<FormTypeCreateJob>()
 
   useEffect(() => {
     setValue('companyId', employerCompany.id)
@@ -74,7 +66,6 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
           <Select
             placeholder='Select job type'
             onChange={(option) => {
-              console.log('option ', option)
               if (option) {
                 setValue('type', option.value)
               }
@@ -87,7 +78,6 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
           <Select
             placeholder='Select job status'
             onChange={(option) => {
-              console.log('option ', option)
               if (option) {
                 setValue('status', option.value)
               }
@@ -155,7 +145,6 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
 export const SelectMultiSkills = () => {
   const { setValue } = useFormContext<FormTypeCreateJob>()
   const loadOptions = async (inputValue: string) => {
-    console.log('inputValue', inputValue)
     const skills = await fetchGraphQLNoAuth(
       SubCategoriesDocument,
       {
@@ -172,7 +161,6 @@ export const SelectMultiSkills = () => {
       },
       { next: { tags: [namedOperations.Query.SubCategories] } },
     )
-    console.log('skills', skills)
 
     return (skills.data?.subCategories || []).map((skill) => ({
       value: skill.name, // or some unique id if you have one
@@ -188,7 +176,6 @@ export const SelectMultiSkills = () => {
       loadOptions={loadOptions}
       placeholder='Select required skills'
       onChange={(v) => {
-        console.log('v', v)
         setValue(
           'skills',
           v.map((skill) => ({ name: skill.value })),

@@ -21,8 +21,6 @@ export default async function EmployerJobsPage() {
     },
   )
 
-  console.log('error ', error, data)
-
   if (!data?.employerJobs) {
     return <div>No jobs found.</div>
   }

@@ -31,7 +31,6 @@ export class JobsResolver {
 
   @Mutation(() => Job)
   createJob(@Args('createJobInput') args: CreateJobInput) {
-    console.log('args ', args);
     return this.jobsService.create(args);
   }
 
@@ -49,7 +48,7 @@ export class JobsResolver {
     const employer = await this.prisma.employer.findUnique({
       where: { uid: user.uid },
     });
-    console.log('employer', employer);
+
     return this.jobsService.findAll({
       ...args,
       where: { ...args.where, companyId: { equals: employer.companyId } },

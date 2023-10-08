@@ -24,7 +24,6 @@ export function SearchPlace({
 
   const { current: map } = useMap()
 
-  console.log('locationInfo', locationInfo)
   return (
     <div className='relative'>
       <Input
@@ -44,8 +43,6 @@ export function SearchPlace({
                 className='block w-full p-2 text-left underline underline-offset-4 hover:font-bold'
                 key={place.placeName}
                 onClick={() => {
-                  console.log('currentValue ', place)
-
                   const {
                     latLng: [latitude, longitude],
                   } = place

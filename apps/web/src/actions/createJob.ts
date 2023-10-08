@@ -13,11 +13,9 @@ import { redirect } from 'next/navigation'
 type FormTypeCreateJob = z.infer<typeof formSchemaCreateJob>
 
 export async function createJob(formData: FormTypeCreateJob) {
-  console.log('formData ', formData)
   const result = formSchemaCreateJob.safeParse(formData)
 
   if (result.success) {
-    console.log('result. data', result.data)
     const {
       description,
       skills,
@@ -45,7 +43,7 @@ export async function createJob(formData: FormTypeCreateJob) {
         skills,
       },
     })
-    console.log('createJob: data ,error ', data, error)
+
     if (error) {
       console.log('error', error)
       throw new Error('Something went wrong')

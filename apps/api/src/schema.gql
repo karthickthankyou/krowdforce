@@ -101,96 +101,26 @@ type Admin {
 }
 
 type Query {
-  users(
-    distinct: [UserScalarFieldEnum!]
-    where: UserWhereInput
-    orderBy: [UserOrderByWithRelationInput!]
-    cursor: UserWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [User!]!
+  users(distinct: [UserScalarFieldEnum!], where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int): [User!]!
   user(where: UserWhereUniqueInput): User!
-  admins(
-    distinct: [AdminScalarFieldEnum!]
-    where: AdminWhereInput
-    orderBy: [AdminOrderByWithRelationInput!]
-    cursor: AdminWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Admin!]!
+  admins(distinct: [AdminScalarFieldEnum!], where: AdminWhereInput, orderBy: [AdminOrderByWithRelationInput!], cursor: AdminWhereUniqueInput, take: Int, skip: Int): [Admin!]!
   admin(where: AdminWhereUniqueInput): Admin!
-  employees(
-    distinct: [EmployeeScalarFieldEnum!]
-    where: EmployeeWhereInput
-    orderBy: [EmployeeOrderByWithRelationInput!]
-    cursor: EmployeeWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Employee!]!
+  employees(distinct: [EmployeeScalarFieldEnum!], where: EmployeeWhereInput, orderBy: [EmployeeOrderByWithRelationInput!], cursor: EmployeeWhereUniqueInput, take: Int, skip: Int): [Employee!]!
   employee(where: EmployeeWhereUniqueInput): Employee!
-  employers(
-    distinct: [EmployerScalarFieldEnum!]
-    where: EmployerWhereInput
-    orderBy: [EmployerOrderByWithRelationInput!]
-    cursor: EmployerWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Employer!]!
+  employers(distinct: [EmployerScalarFieldEnum!], where: EmployerWhereInput, orderBy: [EmployerOrderByWithRelationInput!], cursor: EmployerWhereUniqueInput, take: Int, skip: Int): [Employer!]!
   employer(where: EmployerWhereUniqueInput): Employer!
   employerMe: Employer!
-  companies(
-    distinct: [CompanyScalarFieldEnum!]
-    where: CompanyWhereInput
-    orderBy: [CompanyOrderByWithRelationInput!]
-    cursor: CompanyWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Company!]!
+  companies(distinct: [CompanyScalarFieldEnum!], where: CompanyWhereInput, orderBy: [CompanyOrderByWithRelationInput!], cursor: CompanyWhereUniqueInput, take: Int, skip: Int): [Company!]!
   company(where: CompanyWhereUniqueInput): Company!
   employerCompany: Company!
-  jobs(
-    distinct: [JobScalarFieldEnum!]
-    where: JobWhereInput
-    orderBy: [JobOrderByWithRelationInput!]
-    cursor: JobWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Job!]!
-  employerJobs(
-    distinct: [JobScalarFieldEnum!]
-    where: JobWhereInput
-    orderBy: [JobOrderByWithRelationInput!]
-    cursor: JobWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Job!]!
+  jobs(distinct: [JobScalarFieldEnum!], where: JobWhereInput, orderBy: [JobOrderByWithRelationInput!], cursor: JobWhereUniqueInput, take: Int, skip: Int): [Job!]!
+  employerJobs(distinct: [JobScalarFieldEnum!], where: JobWhereInput, orderBy: [JobOrderByWithRelationInput!], cursor: JobWhereUniqueInput, take: Int, skip: Int): [Job!]!
   job(where: JobWhereUniqueInput): Job!
-  addresses(
-    distinct: [AddressScalarFieldEnum!]
-    where: AddressWhereInput
-    orderBy: [AddressOrderByWithRelationInput!]
-    cursor: AddressWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Address!]!
+  addresses(distinct: [AddressScalarFieldEnum!], where: AddressWhereInput, orderBy: [AddressOrderByWithRelationInput!], cursor: AddressWhereUniqueInput, take: Int, skip: Int): [Address!]!
   address(where: AddressWhereUniqueInput): Address!
-  categories(
-    distinct: [CategoryScalarFieldEnum!]
-    where: CategoryWhereInput
-    orderBy: [CategoryOrderByWithRelationInput!]
-    cursor: CategoryWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [Category!]!
+  categories(distinct: [CategoryScalarFieldEnum!], where: CategoryWhereInput, orderBy: [CategoryOrderByWithRelationInput!], cursor: CategoryWhereUniqueInput, take: Int, skip: Int): [Category!]!
   category(where: CategoryWhereUniqueInput): Category!
-  subCategories(
-    distinct: [SubCategoryScalarFieldEnum!]
-    where: SubCategoryWhereInput
-    orderBy: [SubCategoryOrderByWithRelationInput!]
-    cursor: SubCategoryWhereUniqueInput
-    take: Int
-    skip: Int
-  ): [SubCategory!]!
+  subCategories(distinct: [SubCategoryScalarFieldEnum!], where: SubCategoryWhereInput, orderBy: [SubCategoryOrderByWithRelationInput!], cursor: SubCategoryWhereUniqueInput, take: Int, skip: Int): [SubCategory!]!
   subCategory(where: SubCategoryWhereUniqueInput): SubCategory!
 }
 
@@ -657,12 +587,8 @@ type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
   removeCategory(where: CategoryWhereUniqueInput): Category!
-  createSubCategory(
-    createSubCategoryInput: CreateSubCategoryInput!
-  ): SubCategory!
-  updateSubCategory(
-    updateSubCategoryInput: UpdateSubCategoryInput!
-  ): SubCategory!
+  createSubCategory(createSubCategoryInput: CreateSubCategoryInput!): SubCategory!
+  updateSubCategory(updateSubCategoryInput: UpdateSubCategoryInput!): SubCategory!
   removeSubCategory(where: SubCategoryWhereUniqueInput): SubCategory!
 }
 

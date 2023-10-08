@@ -15,7 +15,6 @@ type IMapProps = MapProps & { height?: string }
 
 export const Map = ({ height = 'calc(100vh - 4rem)', ...props }: IMapProps) => {
   const { theme } = useTheme()
-  console.log('theme ', theme)
 
   return (
     <MapGl

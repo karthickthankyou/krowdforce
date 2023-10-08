@@ -17,8 +17,6 @@ export default async function JobsByEmployerPage() {
     },
   )
 
-  console.log('JobsByEmployerPage ', data, error)
-
   if (!data?.employerCompany?.id) {
     return null
   }
