@@ -49,7 +49,13 @@ export const cities: CityType[] = [
 ]
 
 export const initialViewState = {
-  longitude: 80.2,
-  latitude: 12.4,
+  longitude: 80.2707,
+  latitude: 13.0827,
   zoom: 10,
+}
+export const initialBounds = {
+  ne_lat: 15.363624935782738,
+  ne_lng: 77.79553938075622,
+  sw_lat: 10.801454608662539,
+  sw_lng: 82.74586061924367,
 }

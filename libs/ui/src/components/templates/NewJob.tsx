@@ -91,7 +91,10 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
           <Input
             type='checkbox'
             checked={sameAddress}
-            onChange={(e) => setSameAddress(Boolean(e.target.value))}
+            onChange={(e) => {
+              setSameAddress(Boolean(e.target.value))
+              setValue('companyAddressId', employerCompany.address.id)
+            }}
           />
 
           {sameAddress ? (

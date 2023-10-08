@@ -8,7 +8,11 @@ import {
 } from '@nestjs/graphql';
 import { JobsService } from './jobs.service';
 import { Job } from './entity/job.entity';
-import { FindManyJobArgs, FindUniqueJobArgs } from './dtos/find.args';
+import {
+  FindManyJobArgs,
+  FindUniqueJobArgs,
+  JobFilter,
+} from './dtos/find.args';
 import { CreateJobInput } from './dtos/create-job.input';
 import { UpdateJobInput } from './dtos/update-job.input';
 import { PrismaService } from 'src/common/prisma/prisma.service';
@@ -21,6 +25,7 @@ import {
 } from 'src/common/decorators/auth/auth.decorator';
 import { GetUserType } from 'src/common/types';
 import { Company } from '../companies/entity/company.entity';
+import { LocationFilterInput } from 'src/common/dtos/common.input';
 
 @Resolver(() => Job)
 export class JobsResolver {
@@ -37,6 +42,32 @@ export class JobsResolver {
   @Query(() => [Job], { name: 'jobs' })
   findAll(@Args() args: FindManyJobArgs) {
     return this.jobsService.findAll(args);
+  }
+
+  @Query(() => [Job], { name: 'searchJobs' })
+  async searchJobs(
+    @Args('locationFilter') locationFilter: LocationFilterInput,
+    @Args('jobFilter', { nullable: true }) args: JobFilter,
+  ) {
+    try {
+      const { ne_lat, ne_lng, sw_lat, sw_lng } = locationFilter;
+      console.log('locationFilter', locationFilter);
+      const { where = {}, ...jobFilter } = args || {};
+
+      return this.prisma.job.findMany({
+        ...jobFilter,
+        where: {
+          ...where,
+          address: {
+            lat: { lte: ne_lat, gte: sw_lat },
+            lng: { gte: ne_lng, lte: sw_lng },
+          },
+        },
+      });
+    } catch (error) {
+      console.error('Error in searchJobs:', error);
+      throw new Error('Error in searchJobs: ' + error.message);
+    }
   }
 
   @AllowAuthenticated()

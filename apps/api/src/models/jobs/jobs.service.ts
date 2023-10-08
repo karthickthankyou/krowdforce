@@ -8,7 +8,13 @@ import { SubCategoryWhereUniqueInput } from '../sub-categories/dtos/where.args';
 @Injectable()
 export class JobsService {
   constructor(private readonly prisma: PrismaService) {}
-  create({ skills, address, companyId, ...createJobInput }: CreateJobInput) {
+  create({
+    skills,
+    address,
+    companyId,
+    companyAddressId,
+    ...createJobInput
+  }: CreateJobInput) {
     const skillsConnect: SubCategoryWhereUniqueInput[] = skills.map(
       (skill) => ({
         name: skill.name,
@@ -19,7 +25,9 @@ export class JobsService {
         data: {
           ...createJobInput,
           skills: { connect: skillsConnect },
-          ...(address ? { address: { create: address } } : null),
+          ...(address
+            ? { address: { create: address } }
+            : { address: { connect: { id: companyAddressId } } }),
           Company: { connect: { id: companyId } },
         },
       });

@@ -24,6 +24,7 @@ export const formSchemaCreateJob = z.object({
   title: z.string(),
   description: z.string(),
   address: addressSchema.optional(),
+  companyAddressId: z.number().optional(),
   status: z.nativeEnum(JobStatus),
   type: z.nativeEnum(JobType),
   start: z.string().optional(),

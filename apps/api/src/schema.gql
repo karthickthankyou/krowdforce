@@ -114,6 +114,7 @@ type Query {
   company(where: CompanyWhereUniqueInput): Company!
   employerCompany: Company!
   jobs(distinct: [JobScalarFieldEnum!], where: JobWhereInput, orderBy: [JobOrderByWithRelationInput!], cursor: JobWhereUniqueInput, take: Int, skip: Int): [Job!]!
+  searchJobs(locationFilter: LocationFilterInput!, jobFilter: JobFilter): [Job!]!
   employerJobs(distinct: [JobScalarFieldEnum!], where: JobWhereInput, orderBy: [JobOrderByWithRelationInput!], cursor: JobWhereUniqueInput, take: Int, skip: Int): [Job!]!
   job(where: JobWhereUniqueInput): Job!
   addresses(distinct: [AddressScalarFieldEnum!], where: AddressWhereInput, orderBy: [AddressOrderByWithRelationInput!], cursor: AddressWhereUniqueInput, take: Int, skip: Int): [Address!]!
@@ -515,6 +516,20 @@ input JobWhereUniqueInput {
   id: Int
 }
 
+input LocationFilterInput {
+  ne_lat: Float!
+  ne_lng: Float!
+  sw_lat: Float!
+  sw_lng: Float!
+}
+
+input JobFilter {
+  where: JobWhereInput
+  orderBy: [JobOrderByWithRelationInput!]
+  take: Int
+  skip: Int
+}
+
 enum AddressScalarFieldEnum {
   id
   createdAt
@@ -655,6 +670,7 @@ input CreateJobInput {
   title: String!
   description: String!
   address: CreateAddressInput
+  companyAddressId: Int
   skills: [ConnectSubCategoryInput!]!
 }
 
@@ -671,6 +687,7 @@ input UpdateJobInput {
   companyId: Int
   title: String
   description: String
+  companyAddressId: Int
   id: Int!
 }
 

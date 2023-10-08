@@ -21,4 +21,6 @@ export class CreateJobInput extends PickType(
   skills: ConnectSubCategoryInput[];
   @Field({ nullable: true })
   address: CreateAddressInput;
+  @Field({ nullable: true })
+  companyAddressId: number;
 }

@@ -119,6 +119,7 @@ query EmployerCompany {
     id
     name
     address {
+      id
       address
       lat
       lng
@@ -144,5 +145,31 @@ query SubCategories(
   ) {
     name
     categoryName
+  }
+}
+
+query SearchJobs($locationFilter: LocationFilterInput!, $jobFilter: JobFilter) {
+  searchJobs(locationFilter: $locationFilter, jobFilter: $jobFilter) {
+    id
+    company {
+      name
+    }
+    skills {
+      name
+      categoryName
+    }
+    address {
+      id
+      lat
+      lng
+      address
+    }
+    description
+    end
+    salary
+    start
+    status
+    title
+    type
   }
 }

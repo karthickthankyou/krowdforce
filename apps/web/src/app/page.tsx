@@ -1,17 +1,18 @@
 import { ToastButton } from '../components/ToastButton'
 import { Map } from '@krowdforce/ui/src/components/organisms/Map'
 import { Panel } from '@krowdforce/ui/src/components/organisms/Map/Panel'
-import { SetCity } from '@krowdforce/ui/src/components/organisms/SetCity'
+import { initialBounds, initialViewState } from '@krowdforce/util/constants'
+import { fetchGraphQLInfer } from './util/fetch'
+import { SearchJobsDocument } from '@krowdforce/network/src/generated'
+import { SearchJobs } from '@krowdforce/ui/src/components/templates/SearchJobs'
 
 export default async function Home() {
+  const jobs = await fetchGraphQLInfer(SearchJobsDocument, {
+    locationFilter: initialBounds,
+  })
   return (
     <main>
-      <Map>
-        <Panel position='left-top'>
-          <SetCity />
-        </Panel>
-      </Map>
-      <ToastButton />
+      <SearchJobs searchJobs={jobs.data?.searchJobs || []} />
     </main>
   )
 }
