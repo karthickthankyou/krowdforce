@@ -4,6 +4,7 @@ import {
 } from '@krowdforce/network/src/generated'
 import { fetchGraphQLInfer } from '../util/fetch'
 import { BecomeEmployer } from '@krowdforce/ui/src/components/organisms/BecomeEmployer'
+import { FormProviderCreateEmployer } from '@krowdforce/forms/createEmployer'
 
 export default async function Employer() {
   const { data, error } = await fetchGraphQLInfer(
@@ -17,7 +18,11 @@ export default async function Employer() {
   )
 
   if (!data?.employerMe?.uid) {
-    return <BecomeEmployer />
+    return (
+      <FormProviderCreateEmployer>
+        <BecomeEmployer />
+      </FormProviderCreateEmployer>
+    )
   }
   return (
     <div>

@@ -7,6 +7,7 @@ import { Header } from '@krowdforce/ui/src/components/molecules/Header'
 const inter = Inter({ subsets: ['latin'] })
 import { ThemeProvider } from '@krowdforce/ui/src/components/theme-provider'
 import AuthProvider from '../components/AuthProvider'
+import { Container } from '@krowdforce/ui/src/components/atoms/Container'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -22,14 +23,9 @@ export default function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         <AuthProvider>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
-          >
+          <ThemeProvider attribute='class' defaultTheme='light'>
             <Header />
-            {children}
+            <Container>{children}</Container>
             <Toaster />
           </ThemeProvider>
         </AuthProvider>

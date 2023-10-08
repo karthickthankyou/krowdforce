@@ -48,6 +48,16 @@ type Company {
   name: String!
 }
 
+type Address {
+  lat: Float!
+  lng: Float!
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  address: String!
+  skills: [Job!]!
+}
+
 type Job {
   addressId: Int
   status: JobStatus!
@@ -75,16 +85,6 @@ enum JobType {
   FULL_TIME
   PART_TIME
   CONTRACT
-}
-
-type Address {
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  address: String!
-  lat: Int!
-  lng: Int!
-  skills: [Job!]!
 }
 
 type Category {
@@ -619,15 +619,21 @@ input UpdateEmployeeInput {
 input CreateEmployerInput {
   uid: String!
   company: CreateCompanyInput!
+  address: CreateAddressInput!
 }
 
 input CreateCompanyInput {
   name: String!
 }
 
+input CreateAddressInput {
+  lat: Float!
+  lng: Float!
+  address: String!
+}
+
 input UpdateEmployerInput {
   uid: String!
-  company: CreateCompanyInput
 }
 
 input UpdateCompanyInput {
@@ -660,16 +666,10 @@ input UpdateJobInput {
   id: Int!
 }
 
-input CreateAddressInput {
-  address: String!
-  lat: Int!
-  lng: Int!
-}
-
 input UpdateAddressInput {
+  lat: Float
+  lng: Float
   address: String
-  lat: Int
-  lng: Int
   id: Int!
 }
 

@@ -15,7 +15,6 @@ export class UsersService {
 
   async findAll(args: FindManyUserArgs) {
     const users = await this.prisma.user.findMany(args);
-    console.log('users', users);
     return users;
   }
 

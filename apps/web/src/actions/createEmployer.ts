@@ -5,26 +5,27 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { fetchGraphQLInfer } from '../app/util/fetch'
+import dynamic from 'next/dynamic'
+import { formSchemaCreateEmployer } from '@krowdforce/forms'
+import { z } from 'zod'
 
-import {
-  FormTypeCreateEmployer,
-  formSchemaCreateEmployer,
-} from '@krowdforce/forms/createEmployer'
+type FormTypeCreateEmployer = z.infer<typeof formSchemaCreateEmployer>
 
 export async function createEmployer(
   formData: FormTypeCreateEmployer & { uid: string },
 ) {
+  console.log('formData ', formData)
   const result = formSchemaCreateEmployer.safeParse(formData)
 
   if (result.success) {
     console.log('result. data', result.data)
-    const { companyName } = result.data
+    const { companyName, address } = result.data
 
     try {
       const { data, error } = await fetchGraphQLInfer(CreateEmployerDocument, {
         createEmployerInput: {
+          address,
           company: { name: companyName },
           uid: formData.uid,
         },

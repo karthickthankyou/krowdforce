@@ -8,9 +8,13 @@ import { UpdateEmployeeInput } from './dtos/update-employee.input';
 export class EmployeesService {
   constructor(private readonly prisma: PrismaService) {}
   create(createEmployeeInput: CreateEmployeeInput) {
-    return this.prisma.employee.create({
-      data: createEmployeeInput,
-    });
+    try {
+      return this.prisma.employee.create({
+        data: createEmployeeInput,
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   findAll(args: FindManyEmployeeArgs) {

@@ -7,11 +7,13 @@ import { UpdateEmployerInput } from './dtos/update-employer.input';
 @Injectable()
 export class EmployersService {
   constructor(private readonly prisma: PrismaService) {}
-  create({ company, uid }: CreateEmployerInput) {
+  create({ company, uid, address }: CreateEmployerInput) {
     return this.prisma.employer.create({
       data: {
         user: { connectOrCreate: { create: { uid }, where: { uid } } },
-        company: { create: { name: company.name } },
+        company: {
+          create: { name: company.name, address: { create: address } },
+        },
       },
     });
   }
@@ -25,7 +27,7 @@ export class EmployersService {
   }
 
   update(updateEmployerInput: UpdateEmployerInput) {
-    const { uid, company, ...data } = updateEmployerInput;
+    const { uid, ...data } = updateEmployerInput;
     return this.prisma.employer.update({
       where: { uid },
       data: data,

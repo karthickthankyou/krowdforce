@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
 
   async userHasRequiredRole(uid: string, requiredRole: Role): Promise<boolean> {
     let userExists;
-    console.log('uid ,requiredRole ', uid, requiredRole);
+    // console.log('uid ,requiredRole ', uid, requiredRole);
 
     switch (requiredRole) {
       case 'admin':

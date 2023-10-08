@@ -27,6 +27,7 @@ export type Address = {
 };
 
 export type AddressOrderByWithRelationInput = {
+  Company?: InputMaybe<CompanyOrderByRelationAggregateInput>;
   address?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
@@ -52,6 +53,7 @@ export enum AddressScalarFieldEnum {
 
 export type AddressWhereInput = {
   AND?: InputMaybe<Array<AddressWhereInput>>;
+  Company?: InputMaybe<CompanyListRelationFilter>;
   NOT?: InputMaybe<Array<AddressWhereInput>>;
   OR?: InputMaybe<Array<AddressWhereInput>>;
   address?: InputMaybe<StringFilter>;
@@ -140,13 +142,26 @@ export type CategoryWhereUniqueInput = {
 
 export type Company = {
   __typename?: 'Company';
+  addressId: Scalars['Int'];
   id: Scalars['Int'];
   name: Scalars['String'];
+};
+
+export type CompanyListRelationFilter = {
+  every?: InputMaybe<CompanyWhereInput>;
+  none?: InputMaybe<CompanyWhereInput>;
+  some?: InputMaybe<CompanyWhereInput>;
+};
+
+export type CompanyOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
 };
 
 export type CompanyOrderByWithRelationInput = {
   Employer?: InputMaybe<EmployerOrderByRelationAggregateInput>;
   Job?: InputMaybe<JobOrderByRelationAggregateInput>;
+  address?: InputMaybe<AddressOrderByWithRelationInput>;
+  addressId?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   name?: InputMaybe<SortOrder>;
 };
@@ -157,6 +172,7 @@ export type CompanyRelationFilter = {
 };
 
 export enum CompanyScalarFieldEnum {
+  AddressId = 'addressId',
   Id = 'id',
   Name = 'name'
 }
@@ -167,6 +183,8 @@ export type CompanyWhereInput = {
   Job?: InputMaybe<JobListRelationFilter>;
   NOT?: InputMaybe<Array<CompanyWhereInput>>;
   OR?: InputMaybe<Array<CompanyWhereInput>>;
+  address?: InputMaybe<AddressRelationFilter>;
+  addressId?: InputMaybe<IntFilter>;
   id?: InputMaybe<IntFilter>;
   name?: InputMaybe<StringFilter>;
 };
@@ -198,6 +216,7 @@ export type CreateEmployeeInput = {
 };
 
 export type CreateEmployerInput = {
+  address: CreateAddressInput;
   company: CreateCompanyInput;
   uid: Scalars['String'];
 };
@@ -881,7 +900,6 @@ export type UpdateEmployeeInput = {
 };
 
 export type UpdateEmployerInput = {
-  company?: InputMaybe<CreateCompanyInput>;
   uid: Scalars['String'];
 };
 

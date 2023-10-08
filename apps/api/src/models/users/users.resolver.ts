@@ -35,7 +35,6 @@ export class UsersResolver {
   @AllowAuthenticated()
   @Query(() => [User], { name: 'users' })
   async findAll(@Args() args: FindManyUserArgs, @GetUser() user: GetUserType) {
-    console.log('@GetUser', user);
     const users = await this.usersService.findAll(args);
 
     return users;
