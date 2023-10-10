@@ -1,7 +1,7 @@
 import { EmployerJobsQuery } from '@krowdforce/network/src/generated'
-import { Badge } from '../atoms/badge'
-import Link from 'next/link'
 import { format } from 'date-fns'
+import Link from 'next/link'
+import { Badge } from '../atoms/badge'
 
 export const EmployerJobs = ({ employerJobs }: EmployerJobsQuery) => {
   return (

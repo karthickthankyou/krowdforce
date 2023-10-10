@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-import { black, white, transparent } from 'tailwindcss/colors'
+import { transparent } from 'tailwindcss/colors'
 
 const config: Config = {
   content: ['./src/**/*.{ts,tsx}'],

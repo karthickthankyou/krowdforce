@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
-import { CompaniesService } from './companies.service'
-import { CompaniesResolver } from './companies.resolver'
 import { JwtService } from '@nestjs/jwt'
+import { CompaniesResolver } from './companies.resolver'
+import { CompaniesService } from './companies.service'
 
 @Module({
   providers: [CompaniesResolver, CompaniesService, JwtService],

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { FindManyEmployerArgs, FindUniqueEmployerArgs } from './dtos/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { CreateEmployerInput } from './dtos/create-employer.input'
+import { FindManyEmployerArgs, FindUniqueEmployerArgs } from './dtos/find.args'
 import { UpdateEmployerInput } from './dtos/update-employer.input'
 
 @Injectable()

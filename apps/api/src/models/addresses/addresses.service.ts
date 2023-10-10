@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { FindManyAddressArgs, FindUniqueAddressArgs } from './dtos/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { CreateAddressInput } from './dtos/create-address.input'
+import { FindManyAddressArgs, FindUniqueAddressArgs } from './dtos/find.args'
 import { UpdateAddressInput } from './dtos/update-address.input'
 
 @Injectable()

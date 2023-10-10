@@ -1,23 +1,23 @@
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  ResolveField,
+  Mutation,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql'
-import { SubCategoriesService } from './sub-categories.service'
-import { SubCategory } from './entity/sub-category.entity'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { Category } from '../categories/entity/category.entity'
+import { Employee } from '../employees/entity/employee.entity'
+import { Job } from '../jobs/entity/job.entity'
+import { CreateSubCategoryInput } from './dtos/create-sub-category.input'
 import {
   FindManySubCategoryArgs,
   FindUniqueSubCategoryArgs,
 } from './dtos/find.args'
-import { CreateSubCategoryInput } from './dtos/create-sub-category.input'
 import { UpdateSubCategoryInput } from './dtos/update-sub-category.input'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { Job } from '../jobs/entity/job.entity'
-import { Employee } from '../employees/entity/employee.entity'
-import { Category } from '../categories/entity/category.entity'
+import { SubCategory } from './entity/sub-category.entity'
+import { SubCategoriesService } from './sub-categories.service'
 
 @Resolver(() => SubCategory)
 export class SubCategoriesResolver {

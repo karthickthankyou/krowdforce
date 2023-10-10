@@ -1,10 +1,10 @@
+import { FormProviderCreateEmployer } from '@krowdforce/forms/createEmployer'
 import {
   EmployerMeDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { fetchGraphQLInfer } from '../util/fetch'
-import { FormProviderCreateEmployer } from '@krowdforce/forms/createEmployer'
 import { BecomeEmployer } from '../../components/organisms/BecomeEmployer'
+import { fetchGraphQLInfer } from '../util/fetch'
 
 export default async function EmployerLayout({
   children,

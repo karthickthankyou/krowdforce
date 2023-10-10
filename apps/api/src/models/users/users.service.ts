@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { FindManyUserArgs, FindUniqueUserArgs } from './dtos/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { CreateUserInput } from './dtos/create-user.input'
+import { FindManyUserArgs, FindUniqueUserArgs } from './dtos/find.args'
 import { UpdateUserInput } from './dtos/update-user.input'
 
 @Injectable()

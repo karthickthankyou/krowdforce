@@ -1,9 +1,9 @@
 'use client'
 import { useKeypressCmd } from '@krowdforce/util'
+import { cities } from '@krowdforce/util/constants'
+import { IconMapPinFilled } from '@tabler/icons-react'
 import { useState } from 'react'
 import { useMap } from 'react-map-gl'
-import { IconMapPinFilled } from '@tabler/icons-react'
-import { cities } from '@krowdforce/util/constants'
 
 import {
   Dialog,

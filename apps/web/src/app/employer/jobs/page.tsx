@@ -1,11 +1,11 @@
 import {
   EmployerJobsDocument,
-  SortOrder,
   namedOperations,
+  SortOrder,
 } from '@krowdforce/network/src/generated'
 
-import { fetchGraphQLInfer } from '../../util/fetch'
 import { EmployerJobs } from '../../../components/templates/EmployerJobs'
+import { fetchGraphQLInfer } from '../../util/fetch'
 
 export default async function EmployerJobsPage() {
   const { data, error } = await fetchGraphQLInfer(

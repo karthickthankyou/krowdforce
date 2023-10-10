@@ -1,27 +1,27 @@
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  ResolveField,
+  Mutation,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql'
-import { JobsService } from './jobs.service'
-import { Job } from './entity/job.entity'
-import { FindManyJobArgs, FindUniqueJobArgs, JobFilter } from './dtos/find.args'
-import { CreateJobInput } from './dtos/create-job.input'
-import { UpdateJobInput } from './dtos/update-job.input'
 import { PrismaService } from 'src/common/prisma/prisma.service'
+import { CreateJobInput } from './dtos/create-job.input'
+import { FindManyJobArgs, FindUniqueJobArgs, JobFilter } from './dtos/find.args'
+import { UpdateJobInput } from './dtos/update-job.input'
+import { Job } from './entity/job.entity'
+import { JobsService } from './jobs.service'
 
-import { Address } from '../addresses/entity/address.entity'
-import { SubCategory } from '../sub-categories/entity/sub-category.entity'
 import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { GetUserType } from 'src/common/types'
-import { Company } from '../companies/entity/company.entity'
 import { LocationFilterInput } from 'src/common/dtos/common.input'
+import { GetUserType } from 'src/common/types'
+import { Address } from '../addresses/entity/address.entity'
+import { Company } from '../companies/entity/company.entity'
+import { SubCategory } from '../sub-categories/entity/sub-category.entity'
 
 @Resolver(() => Job)
 export class JobsResolver {

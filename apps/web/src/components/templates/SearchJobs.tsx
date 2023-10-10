@@ -7,17 +7,19 @@ import {
   SearchJobsDocument,
   SearchJobsQuery,
 } from '@krowdforce/network/src/generated'
-import { Marker } from '../organisms/Map/MapMarker'
-import { IconPick, IconX } from '@tabler/icons-react'
-import { DefaultZoomControls } from '../organisms/Map/ZoomControls/ZoomControls'
-import { SelectMultiSkills } from './NewJob'
+import { useKeypress } from '@krowdforce/util'
 import { fetchGraphQLNoAuth } from '@krowdforce/web/src/app/util/fetchNoAuth'
+import { IconPick, IconX } from '@tabler/icons-react'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { Popup, ViewStateChangeEvent } from 'react-map-gl'
-import { useKeypress } from '@krowdforce/util'
-import { SetCity } from '../organisms/SetCity'
+import { buttonVariants } from '../atoms/button'
+import { Description, Title } from '../atoms/typography'
 import { Map } from '../organisms/Map'
+import { Marker } from '../organisms/Map/MapMarker'
 import { Panel } from '../organisms/Map/Panel'
+import { DefaultZoomControls } from '../organisms/Map/ZoomControls/ZoomControls'
+import { SetCity } from '../organisms/SetCity'
+import { SelectMultiSkills } from './NewJob'
 export const SearchJobs = ({
   searchJobs,
 }: {
@@ -112,8 +114,8 @@ export const MarkerWithPopup = ({
         >
           <PopupContent onClose={() => setShowPopup(false)}>
             <div className="p-1 space-y-2">
-              <TitleValue title="Title">{marker.title}</TitleValue>
-              <TitleValue title="Description">{marker.description}</TitleValue>
+              <Title>{marker.title}</Title>
+              <Description>{marker.description}</Description>
               <TitleValue title="Company">{marker.company.name}</TitleValue>
               <div className="grid grid-cols-2 gap-1">
                 <TitleValue title="Status">{marker.status}</TitleValue>
@@ -122,7 +124,10 @@ export const MarkerWithPopup = ({
               <TitleValue title="Type">{marker.type}</TitleValue>
               <Link
                 href={`/jobs/${marker.id}`}
-                className="block mt-4 underline underline-offset-4"
+                className={buttonVariants({
+                  variant: 'outline',
+                  className: 'w-full',
+                })}
               >
                 View job
               </Link>
@@ -155,17 +160,16 @@ export const PopupContent = ({
   children: ReactNode
 }) => {
   return (
-    <div>
+    <div className="w-48 relative">
       <div className="col-start-1 row-start-1 ">{children}</div>
-      <div className="flex justify-end w-48 col-start-1 row-start-1 p-2 items-top">
-        <button
-          type="button"
-          className="absolute top-0 right-0 p-0.5 rounded-bl bg-black/30 hover:bg-black/40"
-          onClick={onClose}
-        >
-          <IconX className="w-5 h-5 text-white" />
-        </button>
-      </div>
+
+      <button
+        type="button"
+        className="absolute top-0 right-0 p-0.5 rounded-bl bg-black/30 hover:bg-black/40"
+        onClick={onClose}
+      >
+        <IconX className="w-5 h-5 text-white" />
+      </button>
     </div>
   )
 }

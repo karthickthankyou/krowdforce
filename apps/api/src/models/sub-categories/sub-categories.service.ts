@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { CreateSubCategoryInput } from './dtos/create-sub-category.input'
 import {
   FindManySubCategoryArgs,
   FindUniqueSubCategoryArgs,
 } from './dtos/find.args'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { CreateSubCategoryInput } from './dtos/create-sub-category.input'
 import { UpdateSubCategoryInput } from './dtos/update-sub-category.input'
 
 @Injectable()

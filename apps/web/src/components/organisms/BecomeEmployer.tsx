@@ -1,25 +1,25 @@
 'use client'
-import { useSession } from 'next-auth/react'
 import { FormTypeCreateEmployer } from '@krowdforce/forms/createEmployer'
 import { createEmployer } from '@krowdforce/web/src/actions/createEmployer'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { Map } from './Map'
 
-import { ViewState } from './Map/Map'
 import { IconBuilding, TablerIconsProps } from '@tabler/icons-react'
 import { useEffect } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
+import { ViewState } from './Map/Map'
 import {
   CenterOfMap,
   DefaultZoomControls,
 } from './Map/ZoomControls/ZoomControls'
 
-import { Panel } from './Map/Panel'
-import { Marker } from './Map/MapMarker'
-import { SearchPlace } from '../molecules/ComboBox'
-import { Input } from '../atoms/input'
-import { Button } from '../atoms/button'
 import { initialViewState } from '@krowdforce/util/constants'
+import { Button } from '../atoms/button'
+import { Input } from '../atoms/input'
+import { SearchPlace } from '../molecules/ComboBox'
+import { Marker } from './Map/MapMarker'
+import { Panel } from './Map/Panel'
 
 export const BecomeEmployer = () => {
   const { register, handleSubmit, reset, setValue } =

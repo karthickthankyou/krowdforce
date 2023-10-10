@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { getServerSession } from 'next-auth'
+import Link from 'next/link'
 import { authOptions } from '../../app/api/auth/authOptions'
 
 export const ShowAuth = async () => {

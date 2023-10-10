@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import { FindManyJobArgs, FindUniqueJobArgs } from './dtos/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
-import { CreateJobInput } from './dtos/create-job.input'
-import { UpdateJobInput } from './dtos/update-job.input'
 import { SubCategoryWhereUniqueInput } from '../sub-categories/dtos/where.args'
+import { CreateJobInput } from './dtos/create-job.input'
+import { FindManyJobArgs, FindUniqueJobArgs } from './dtos/find.args'
+import { UpdateJobInput } from './dtos/update-job.input'
 
 @Injectable()
 export class JobsService {

@@ -1,19 +1,19 @@
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  ResolveField,
+  Mutation,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { SubCategory } from '../sub-categories/entity/sub-category.entity'
+import { User } from '../users/entity/user.entity'
+import { CreateEmployeeInput } from './dtos/create-employee.input'
+import { FindManyEmployeeArgs, FindUniqueEmployeeArgs } from './dtos/find.args'
+import { UpdateEmployeeInput } from './dtos/update-employee.input'
 import { EmployeesService } from './employees.service'
 import { Employee } from './entity/employee.entity'
-import { FindManyEmployeeArgs, FindUniqueEmployeeArgs } from './dtos/find.args'
-import { CreateEmployeeInput } from './dtos/create-employee.input'
-import { UpdateEmployeeInput } from './dtos/update-employee.input'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { User } from '../users/entity/user.entity'
-import { SubCategory } from '../sub-categories/entity/sub-category.entity'
 
 @Resolver(() => Employee)
 export class EmployeesResolver {

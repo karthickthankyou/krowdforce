@@ -1,3 +1,6 @@
+import { MenuItem } from '@krowdforce/util/types'
+import { IconMenu2 } from '@tabler/icons-react'
+import Link from 'next/link'
 import {
   Sheet,
   SheetClose,
@@ -7,13 +10,10 @@ import {
   SheetHeader,
   SheetTrigger,
 } from '../atoms/sheet'
-import { MenuItem } from '@krowdforce/util/types'
-import { IconMenu2 } from '@tabler/icons-react'
-import Link from 'next/link'
 
-import { DisplayUser } from './DisplayUser'
 import { Button } from '../atoms/button'
 import { ModeToggle } from '../atoms/mode-toggle'
+import { DisplayUser } from './DisplayUser'
 
 export interface INavSidebarProps {
   menuItems: MenuItem[]

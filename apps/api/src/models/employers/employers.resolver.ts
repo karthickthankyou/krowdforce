@@ -1,24 +1,24 @@
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  ResolveField,
+  Mutation,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql'
-import { EmployersService } from './employers.service'
-import { Employer } from './entity/employer.entity'
-import { FindManyEmployerArgs, FindUniqueEmployerArgs } from './dtos/find.args'
-import { CreateEmployerInput } from './dtos/create-employer.input'
-import { UpdateEmployerInput } from './dtos/update-employer.input'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { User } from '../users/entity/user.entity'
-import { Company } from '../companies/entity/company.entity'
 import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
+import { PrismaService } from 'src/common/prisma/prisma.service'
 import { GetUserType } from 'src/common/types'
+import { Company } from '../companies/entity/company.entity'
+import { User } from '../users/entity/user.entity'
+import { CreateEmployerInput } from './dtos/create-employer.input'
+import { FindManyEmployerArgs, FindUniqueEmployerArgs } from './dtos/find.args'
+import { UpdateEmployerInput } from './dtos/update-employer.input'
+import { EmployersService } from './employers.service'
+import { Employer } from './entity/employer.entity'
 
 @Resolver(() => Employer)
 export class EmployersResolver {

@@ -2,8 +2,8 @@ import Link from 'next/link'
 
 import { MenuItem, Role } from '@krowdforce/util/types'
 
-import { Container } from '../atoms/container'
 import { Brand } from '../atoms/brand'
+import { Container } from '../atoms/container'
 import { NavSidebar, ShowMenuItems } from './NavSidebar'
 import { ShowAuth } from './ShowAuth'
 

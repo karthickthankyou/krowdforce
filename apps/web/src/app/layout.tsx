@@ -1,13 +1,13 @@
-import './globals.css'
 import '../styles/map.css'
+import './globals.css'
 
 import type { Metadata } from 'next'
 
+import { Container } from '../components/atoms/container'
+import { Toaster } from '../components/atoms/toaster'
+import { Header } from '../components/molecules/Header'
 import AuthProvider from '../components/organisms/AuthProvider'
 import { ThemeProvider } from '../components/organisms/theme-provider'
-import { Container } from '../components/atoms/container'
-import { Header } from '../components/molecules/Header'
-import { Toaster } from '../components/atoms/toaster'
 import { cn } from '../util'
 import { fontSans } from '../util/fonts'
 

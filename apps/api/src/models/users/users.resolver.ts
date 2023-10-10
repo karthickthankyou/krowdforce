@@ -1,24 +1,24 @@
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  ResolveField,
+  Mutation,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql'
-import { UsersService } from './users.service'
-import { User } from './entity/user.entity'
-import { FindManyUserArgs, FindUniqueUserArgs } from './dtos/find.args'
-import { CreateUserInput } from './dtos/create-user.input'
-import { UpdateUserInput } from './dtos/update-user.input'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { Employee } from '../employees/entity/employee.entity'
-import { Employer } from '../employers/entity/employer.entity'
 import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
+import { PrismaService } from 'src/common/prisma/prisma.service'
 import { GetUserType } from 'src/common/types'
+import { Employee } from '../employees/entity/employee.entity'
+import { Employer } from '../employers/entity/employer.entity'
+import { CreateUserInput } from './dtos/create-user.input'
+import { FindManyUserArgs, FindUniqueUserArgs } from './dtos/find.args'
+import { UpdateUserInput } from './dtos/update-user.input'
+import { User } from './entity/user.entity'
+import { UsersService } from './users.service'
 
 @Resolver(() => User)
 export class UsersResolver {

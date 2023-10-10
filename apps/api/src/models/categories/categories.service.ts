@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { FindManyCategoryArgs, FindUniqueCategoryArgs } from './dtos/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { CreateCategoryInput } from './dtos/create-category.input'
+import { FindManyCategoryArgs, FindUniqueCategoryArgs } from './dtos/find.args'
 import { UpdateCategoryInput } from './dtos/update-category.input'
 
 @Injectable()

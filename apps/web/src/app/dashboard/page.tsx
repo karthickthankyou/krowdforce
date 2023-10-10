@@ -1,6 +1,3 @@
-import { authOptions } from '../api/auth/authOptions'
-import Link from 'next/link'
-
 export default async function User() {
   //   const session = await getServerSession(authOptions)
   //   if (!session?.user?.email) {

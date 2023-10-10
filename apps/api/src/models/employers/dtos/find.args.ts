@@ -1,8 +1,8 @@
-import { ArgsType, Field, registerEnumType, PartialType } from '@nestjs/graphql'
+import { ArgsType, Field, PartialType, registerEnumType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
+import { RestrictProperties } from 'src/common/dtos/common.input'
 import { EmployerOrderByWithRelationInput } from './order-by.args'
 import { EmployerWhereInput, EmployerWhereUniqueInput } from './where.args'
-import { RestrictProperties } from 'src/common/dtos/common.input'
 
 registerEnumType(Prisma.EmployerScalarFieldEnum, {
   name: 'EmployerScalarFieldEnum',

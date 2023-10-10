@@ -1,9 +1,9 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { AdminsService } from './admins.service'
-import { Admin } from './entity/admin.entity'
-import { FindManyAdminArgs, FindUniqueAdminArgs } from './dtos/find.args'
 import { CreateAdminInput } from './dtos/create-admin.input'
+import { FindManyAdminArgs, FindUniqueAdminArgs } from './dtos/find.args'
 import { UpdateAdminInput } from './dtos/update-admin.input'
+import { Admin } from './entity/admin.entity'
 
 @Resolver(() => Admin)
 export class AdminsResolver {

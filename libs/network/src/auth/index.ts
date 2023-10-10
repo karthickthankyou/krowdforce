@@ -1,7 +1,7 @@
-import { NextAuthOptions } from 'next-auth'
-import GoogleProvider from 'next-auth/providers/google'
 import jwt from 'jsonwebtoken'
+import { NextAuthOptions } from 'next-auth'
 import { JWT } from 'next-auth/jwt'
+import GoogleProvider from 'next-auth/providers/google'
 
 const MAX_AGE = 1 * 24 * 60 * 60
 // import { prisma } from '@/prisma/client'

@@ -1,12 +1,12 @@
 'use client'
 
-import * as React from 'react'
 import { Loader } from 'lucide-react'
+import * as React from 'react'
 
 import { useSearchLocation } from '@krowdforce/util/hooks'
-import { ViewState } from '../organisms/Map/Map'
-import { Input } from '../atoms/input'
 import { useMap } from 'react-map-gl'
+import { Input } from '../atoms/input'
+import { ViewState } from '../organisms/Map/Map'
 
 export function SearchPlace({
   onLocationChange,

@@ -1,38 +1,38 @@
 'use client'
-import { useFormContext } from 'react-hook-form'
 import { FormTypeCreateJob } from '@krowdforce/forms/createJob'
-import { Input } from '../atoms/input'
-import { Button } from '../atoms/button'
-import { Map } from '../organisms/Map'
-import {
-  CenterOfMap,
-  DefaultZoomControls,
-} from '../organisms/Map/ZoomControls/ZoomControls'
-import { MapMarker } from '../organisms/BecomeEmployer'
-import { Panel } from '../organisms/Map/Panel'
-import { SearchPlace } from '../molecules/ComboBox'
-import { ViewState } from '../organisms/Map/Map'
-import { initialViewState } from '@krowdforce/util/constants'
-import { createJob } from '@krowdforce/web/src/actions/createJob'
 import {
   EmployerCompanyQuery,
   JobStatus,
   JobType,
+  namedOperations,
   QueryMode,
   SortOrder,
   SubCategoriesDocument,
-  namedOperations,
 } from '@krowdforce/network/src/generated'
-import { Marker } from '../organisms/Map/MapMarker'
-import AsyncSelect from 'react-select/async'
+import { initialViewState } from '@krowdforce/util/constants'
+import { createJob } from '@krowdforce/web/src/actions/createJob'
+import { useFormContext } from 'react-hook-form'
 import Select from 'react-select'
+import AsyncSelect from 'react-select/async'
+import { Button } from '../atoms/button'
+import { Input } from '../atoms/input'
+import { SearchPlace } from '../molecules/ComboBox'
+import { MapMarker } from '../organisms/BecomeEmployer'
+import { Map } from '../organisms/Map'
+import { ViewState } from '../organisms/Map/Map'
+import { Marker } from '../organisms/Map/MapMarker'
+import { Panel } from '../organisms/Map/Panel'
+import {
+  CenterOfMap,
+  DefaultZoomControls,
+} from '../organisms/Map/ZoomControls/ZoomControls'
 
 import { IconBuilding, IconPick } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 
-import { Separator } from '../atoms/separator'
 import { fetchGraphQLNoAuth } from '@krowdforce/web/src/app/util/fetchNoAuth'
 import { DatePickerWithRange } from '../atoms/date-picker'
+import { Separator } from '../atoms/separator'
 
 export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
   const { register, handleSubmit, reset, setValue } =

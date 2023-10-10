@@ -1,14 +1,13 @@
 'use server'
 
+import { formSchemaCreateEmployer } from '@krowdforce/forms'
 import {
   CreateEmployerDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
-import { fetchGraphQLInfer } from '../app/util/fetch'
-import dynamic from 'next/dynamic'
-import { formSchemaCreateEmployer } from '@krowdforce/forms'
 import { z } from 'zod'
+import { fetchGraphQLInfer } from '../app/util/fetch'
 
 type FormTypeCreateEmployer = z.infer<typeof formSchemaCreateEmployer>
 

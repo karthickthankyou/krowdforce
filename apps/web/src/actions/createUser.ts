@@ -1,5 +1,7 @@
 'use server'
 
+import { formSchemaCreateUser } from '@krowdforce/forms'
+import { FormTypeCreateUser } from '@krowdforce/forms/createUser'
 import {
   CreateUserDocument,
   namedOperations,
@@ -7,8 +9,6 @@ import {
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { fetchGraphQLInfer } from '../app/util/fetch'
-import { FormTypeCreateUser } from '@krowdforce/forms/createUser'
-import { formSchemaCreateUser } from '@krowdforce/forms'
 
 export async function createUser(formData: FormTypeCreateUser) {
   const result = formSchemaCreateUser.safeParse(formData)

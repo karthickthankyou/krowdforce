@@ -1,6 +1,6 @@
-import { fetchGraphQLInfer } from '../../util/fetch'
 import { JobDocument } from '@krowdforce/network/src/generated'
 import Link from 'next/link'
+import { fetchGraphQLInfer } from '../../util/fetch'
 
 export default async function JobPage({
   params,

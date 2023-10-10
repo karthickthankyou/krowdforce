@@ -1,5 +1,5 @@
 'use client'
-import { signIn, useSession, signOut } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { Button } from '../../components/atoms/button'
 
 export default function SignIn() {

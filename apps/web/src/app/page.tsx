@@ -1,7 +1,7 @@
-import { initialBounds } from '@krowdforce/util/constants'
-import { fetchGraphQLInfer } from './util/fetch'
 import { SearchJobsDocument } from '@krowdforce/network/src/generated'
+import { initialBounds } from '@krowdforce/util/constants'
 import { SearchJobs } from '../components/templates/SearchJobs'
+import { fetchGraphQLInfer } from './util/fetch'
 
 export default async function Home() {
   const jobs = await fetchGraphQLInfer(SearchJobsDocument, {

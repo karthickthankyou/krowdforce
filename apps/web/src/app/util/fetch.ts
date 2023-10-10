@@ -1,7 +1,6 @@
-import { cookies } from 'next/headers'
-import { DocumentNode } from 'graphql' // Import DocumentNode from graphql
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import { print } from 'graphql'
+import { cookies } from 'next/headers'
 interface FetchResult<T> {
   data?: T
   error?: string

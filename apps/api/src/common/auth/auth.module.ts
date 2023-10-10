@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common'
 
+import { JwtService } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { AuthGuard } from '../guards/auth.guard'
-import { JwtService } from '@nestjs/jwt'
 
 @Module({
   imports: [PassportModule],
