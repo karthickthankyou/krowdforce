@@ -56,9 +56,24 @@ query EmployerMe {
     }
   }
 }
-
+query EmployeeMe {
+  employeeMe {
+    uid
+    createdAt
+    user {
+      image
+      name
+    }
+  }
+}
 mutation createEmployer($createEmployerInput: CreateEmployerInput!) {
   createEmployer(createEmployerInput: $createEmployerInput) {
+    uid
+  }
+}
+
+mutation createEmployee($createEmployeeInput: CreateEmployeeInput!) {
+  createEmployee(createEmployeeInput: $createEmployeeInput) {
     uid
   }
 }
@@ -291,5 +306,64 @@ mutation addEmployer($addEmployerInput: AddEmployerInput!) {
 mutation createCompany($createCompanyInput: CreateCompanyInput!) {
   createCompany(createCompanyInput: $createCompanyInput) {
     id
+  }
+}
+
+query Bookmark($where: BookmarkWhereUniqueInput) {
+  bookmark(where: $where) {
+    jobId
+    employeeId
+  }
+}
+
+mutation createBookmark($createBookmarkInput: CreateBookmarkInput!) {
+  createBookmark(createBookmarkInput: $createBookmarkInput) {
+    jobId
+    employeeId
+  }
+}
+
+mutation removeBookmark($where: BookmarkWhereUniqueInput) {
+  removeBookmark(where: $where) {
+    employeeId
+    jobId
+  }
+}
+
+query myBookmarks(
+  $skip: Int
+  $take: Int
+  $cursor: BookmarkWhereUniqueInput
+  $orderBy: [BookmarkOrderByWithRelationInput!]
+  $where: BookmarkWhereInput
+  $distinct: [BookmarkScalarFieldEnum!]
+) {
+  myBookmarks(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+    distinct: $distinct
+  ) {
+    job {
+      id
+      type
+      title
+      status
+      skills {
+        name
+      }
+      start
+      salary
+      end
+      description
+      createdAt
+      address {
+        lat
+        lng
+        address
+      }
+    }
   }
 }

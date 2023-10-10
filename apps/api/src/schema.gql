@@ -151,6 +151,7 @@ type Query {
   admin(where: AdminWhereUniqueInput): Admin!
   employees(distinct: [EmployeeScalarFieldEnum!], where: EmployeeWhereInput, orderBy: [EmployeeOrderByWithRelationInput!], cursor: EmployeeWhereUniqueInput, take: Int, skip: Int): [Employee!]!
   employee(where: EmployeeWhereUniqueInput): Employee!
+  employeeMe: Employee!
   employers(distinct: [EmployerScalarFieldEnum!], where: EmployerWhereInput, orderBy: [EmployerOrderByWithRelationInput!], cursor: EmployerWhereUniqueInput, take: Int, skip: Int): [Employer!]!
   companyEmployers(distinct: [EmployerScalarFieldEnum!], where: EmployerWhereInput, orderBy: [EmployerOrderByWithRelationInput!], cursor: EmployerWhereUniqueInput, take: Int, skip: Int): [Employer!]!
   employer(where: EmployerWhereUniqueInput): Employer!
@@ -173,6 +174,7 @@ type Query {
   applications(distinct: [ApplicationScalarFieldEnum!], where: ApplicationWhereInput, orderBy: [ApplicationOrderByWithRelationInput!], cursor: ApplicationWhereUniqueInput, take: Int, skip: Int): [Application!]!
   application(where: ApplicationWhereUniqueInput): Application!
   bookmarks(distinct: [BookmarkScalarFieldEnum!], where: BookmarkWhereInput, orderBy: [BookmarkOrderByWithRelationInput!], cursor: BookmarkWhereUniqueInput, take: Int, skip: Int): [Bookmark!]!
+  myBookmarks(distinct: [BookmarkScalarFieldEnum!], where: BookmarkWhereInput, orderBy: [BookmarkOrderByWithRelationInput!], cursor: BookmarkWhereUniqueInput, take: Int, skip: Int): [Bookmark!]!
   bookmark(where: BookmarkWhereUniqueInput): Bookmark!
 }
 

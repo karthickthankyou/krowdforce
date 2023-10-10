@@ -43,6 +43,18 @@ export class BookmarksResolver {
     return this.bookmarksService.findAll(args)
   }
 
+  @AllowAuthenticated()
+  @Query(() => [Bookmark], { name: 'myBookmarks' })
+  myBookmarks(
+    @Args() args: FindManyBookmarkArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    return this.bookmarksService.findAll({
+      ...args,
+      where: { ...args.where, employeeId: { equals: user.uid } },
+    })
+  }
+
   @Query(() => Bookmark, { name: 'bookmark' })
   findOne(@Args() args: FindUniqueBookmarkArgs) {
     return this.bookmarksService.findOne(args)

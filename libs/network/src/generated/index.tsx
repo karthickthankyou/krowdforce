@@ -123,6 +123,124 @@ export type AggregateCountOutput = {
   count: Scalars['Int']
 }
 
+export type Application = {
+  __typename?: 'Application'
+  createdAt: Scalars['DateTime']
+  employee: Employee
+  employeeId: Scalars['String']
+  job: Job
+  jobId: Scalars['Int']
+  status: ApplicationStatus
+  updatedAt: Scalars['DateTime']
+}
+
+export type ApplicationListRelationFilter = {
+  every?: InputMaybe<ApplicationWhereInput>
+  none?: InputMaybe<ApplicationWhereInput>
+  some?: InputMaybe<ApplicationWhereInput>
+}
+
+export type ApplicationOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type ApplicationOrderByWithRelationInput = {
+  createdAt?: InputMaybe<SortOrder>
+  employee?: InputMaybe<EmployeeOrderByWithRelationInput>
+  employeeId?: InputMaybe<SortOrder>
+  job?: InputMaybe<JobOrderByWithRelationInput>
+  jobId?: InputMaybe<SortOrder>
+  status?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export enum ApplicationScalarFieldEnum {
+  CreatedAt = 'createdAt',
+  EmployeeId = 'employeeId',
+  JobId = 'jobId',
+  Status = 'status',
+  UpdatedAt = 'updatedAt',
+}
+
+export enum ApplicationStatus {
+  Accepted = 'ACCEPTED',
+  Interviewed = 'INTERVIEWED',
+  Offered = 'OFFERED',
+  Rejected = 'REJECTED',
+  Submitted = 'SUBMITTED',
+  UnderReview = 'UNDER_REVIEW',
+  Withdraw = 'WITHDRAW',
+}
+
+export type ApplicationWhereInput = {
+  AND?: InputMaybe<Array<ApplicationWhereInput>>
+  NOT?: InputMaybe<Array<ApplicationWhereInput>>
+  OR?: InputMaybe<Array<ApplicationWhereInput>>
+  createdAt?: InputMaybe<DateTimeFilter>
+  employee?: InputMaybe<EmployeeRelationFilter>
+  employeeId?: InputMaybe<StringFilter>
+  job?: InputMaybe<JobRelationFilter>
+  jobId?: InputMaybe<IntFilter>
+  status?: InputMaybe<ApplicationStatus>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type ApplicationWhereUniqueInput = {
+  employeeId_jobId: EmployeeIdJobIdCompoundUniqueInput
+}
+
+export type Bookmark = {
+  __typename?: 'Bookmark'
+  createdAt: Scalars['DateTime']
+  employee: Employee
+  employeeId: Scalars['String']
+  job: Job
+  jobId: Scalars['Int']
+  updatedAt: Scalars['DateTime']
+}
+
+export type BookmarkListRelationFilter = {
+  every?: InputMaybe<BookmarkWhereInput>
+  none?: InputMaybe<BookmarkWhereInput>
+  some?: InputMaybe<BookmarkWhereInput>
+}
+
+export type BookmarkOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type BookmarkOrderByWithRelationInput = {
+  createdAt?: InputMaybe<SortOrder>
+  employee?: InputMaybe<EmployeeOrderByWithRelationInput>
+  employeeId?: InputMaybe<SortOrder>
+  job?: InputMaybe<JobOrderByWithRelationInput>
+  jobId?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export enum BookmarkScalarFieldEnum {
+  CreatedAt = 'createdAt',
+  EmployeeId = 'employeeId',
+  JobId = 'jobId',
+  UpdatedAt = 'updatedAt',
+}
+
+export type BookmarkWhereInput = {
+  AND?: InputMaybe<Array<BookmarkWhereInput>>
+  NOT?: InputMaybe<Array<BookmarkWhereInput>>
+  OR?: InputMaybe<Array<BookmarkWhereInput>>
+  createdAt?: InputMaybe<DateTimeFilter>
+  employee?: InputMaybe<EmployeeRelationFilter>
+  employeeId?: InputMaybe<StringFilter>
+  job?: InputMaybe<JobRelationFilter>
+  jobId?: InputMaybe<IntFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type BookmarkWhereUniqueInput = {
+  employeeId_jobId: EmployeeIdJobIdCompoundUniqueInput
+}
+
 export type Category = {
   __typename?: 'Category'
   name: Scalars['String']
@@ -229,6 +347,16 @@ export type CreateAdminInput = {
   uid: Scalars['String']
 }
 
+export type CreateApplicationInput = {
+  employeeId: Scalars['String']
+  jobId: Scalars['Int']
+}
+
+export type CreateBookmarkInput = {
+  employeeId: Scalars['String']
+  jobId: Scalars['Int']
+}
+
 export type CreateCategoryInput = {
   name: Scalars['String']
 }
@@ -237,6 +365,7 @@ export type CreateCompanyInput = {
   address: CreateAddressInput
   description?: InputMaybe<Scalars['String']>
   name: Scalars['String']
+  uid: Scalars['String']
 }
 
 export type CreateEmployeeInput = {
@@ -285,11 +414,18 @@ export type DateTimeFilter = {
 
 export type Employee = {
   __typename?: 'Employee'
+  applications: Array<Application>
+  bookmarks: Array<Bookmark>
   createdAt: Scalars['DateTime']
   skills: Array<SubCategory>
   uid: Scalars['String']
   updatedAt: Scalars['DateTime']
   user: User
+}
+
+export type EmployeeIdJobIdCompoundUniqueInput = {
+  employeeId: Scalars['String']
+  jobId: Scalars['Int']
 }
 
 export type EmployeeListRelationFilter = {
@@ -303,6 +439,8 @@ export type EmployeeOrderByRelationAggregateInput = {
 }
 
 export type EmployeeOrderByWithRelationInput = {
+  Application?: InputMaybe<ApplicationOrderByRelationAggregateInput>
+  Bookmark?: InputMaybe<BookmarkOrderByRelationAggregateInput>
   createdAt?: InputMaybe<SortOrder>
   skills?: InputMaybe<SubCategoryOrderByRelationAggregateInput>
   uid?: InputMaybe<SortOrder>
@@ -323,6 +461,8 @@ export enum EmployeeScalarFieldEnum {
 
 export type EmployeeWhereInput = {
   AND?: InputMaybe<Array<EmployeeWhereInput>>
+  Application?: InputMaybe<ApplicationListRelationFilter>
+  Bookmark?: InputMaybe<BookmarkListRelationFilter>
   NOT?: InputMaybe<Array<EmployeeWhereInput>>
   OR?: InputMaybe<Array<EmployeeWhereInput>>
   createdAt?: InputMaybe<DateTimeFilter>
@@ -338,7 +478,7 @@ export type EmployeeWhereUniqueInput = {
 
 export type Employer = {
   __typename?: 'Employer'
-  company: Company
+  company?: Maybe<Company>
   companyId?: Maybe<Scalars['Int']>
   createdAt: Scalars['DateTime']
   jobs: Array<Job>
@@ -417,6 +557,8 @@ export type Job = {
   __typename?: 'Job'
   address?: Maybe<Address>
   addressId?: Maybe<Scalars['Int']>
+  applications: Array<Application>
+  bookmarks: Array<Bookmark>
   company: Company
   companyId: Scalars['Int']
   contactInfo?: Maybe<Scalars['String']>
@@ -453,6 +595,8 @@ export type JobOrderByRelationAggregateInput = {
 }
 
 export type JobOrderByWithRelationInput = {
+  Application?: InputMaybe<ApplicationOrderByRelationAggregateInput>
+  Bookmark?: InputMaybe<BookmarkOrderByRelationAggregateInput>
   Company?: InputMaybe<CompanyOrderByWithRelationInput>
   Employer?: InputMaybe<EmployerOrderByWithRelationInput>
   address?: InputMaybe<AddressOrderByWithRelationInput>
@@ -471,6 +615,11 @@ export type JobOrderByWithRelationInput = {
   title?: InputMaybe<SortOrder>
   type?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
+}
+
+export type JobRelationFilter = {
+  is?: InputMaybe<JobWhereInput>
+  isNot?: InputMaybe<JobWhereInput>
 }
 
 export enum JobScalarFieldEnum {
@@ -504,6 +653,8 @@ export enum JobType {
 
 export type JobWhereInput = {
   AND?: InputMaybe<Array<JobWhereInput>>
+  Application?: InputMaybe<ApplicationListRelationFilter>
+  Bookmark?: InputMaybe<BookmarkListRelationFilter>
   Company?: InputMaybe<CompanyRelationFilter>
   Employer?: InputMaybe<EmployerRelationFilter>
   NOT?: InputMaybe<Array<JobWhereInput>>
@@ -542,15 +693,19 @@ export type Mutation = {
   addEmployer: Company
   createAddress: Address
   createAdmin: Admin
+  createApplication: Application
+  createBookmark: Bookmark
   createCategory: Category
   createCompany: Company
   createEmployee: Employee
-  createEmployer: Employer
+  createEmployer?: Maybe<Employer>
   createJob: Job
   createSubCategory: SubCategory
   createUser: User
   removeAddress: Address
   removeAdmin: Admin
+  removeApplication: Application
+  removeBookmark: Bookmark
   removeCategory: Category
   removeCompany: Company
   removeEmployee: Employee
@@ -560,6 +715,8 @@ export type Mutation = {
   removeUser: User
   updateAddress: Address
   updateAdmin: Admin
+  updateApplication: Application
+  updateBookmark: Bookmark
   updateCategory: Category
   updateCompany: Company
   updateEmployee: Employee
@@ -579,6 +736,14 @@ export type MutationCreateAddressArgs = {
 
 export type MutationCreateAdminArgs = {
   createAdminInput: CreateAdminInput
+}
+
+export type MutationCreateApplicationArgs = {
+  createApplicationInput: CreateApplicationInput
+}
+
+export type MutationCreateBookmarkArgs = {
+  createBookmarkInput: CreateBookmarkInput
 }
 
 export type MutationCreateCategoryArgs = {
@@ -617,6 +782,14 @@ export type MutationRemoveAdminArgs = {
   where?: InputMaybe<AdminWhereUniqueInput>
 }
 
+export type MutationRemoveApplicationArgs = {
+  where?: InputMaybe<ApplicationWhereUniqueInput>
+}
+
+export type MutationRemoveBookmarkArgs = {
+  where?: InputMaybe<BookmarkWhereUniqueInput>
+}
+
 export type MutationRemoveCategoryArgs = {
   where?: InputMaybe<CategoryWhereUniqueInput>
 }
@@ -653,6 +826,14 @@ export type MutationUpdateAdminArgs = {
   updateAdminInput: UpdateAdminInput
 }
 
+export type MutationUpdateApplicationArgs = {
+  updateApplicationInput: UpdateApplicationInput
+}
+
+export type MutationUpdateBookmarkArgs = {
+  updateBookmarkInput: UpdateBookmarkInput
+}
+
 export type MutationUpdateCategoryArgs = {
   updateCategoryInput: UpdateCategoryInput
 }
@@ -687,6 +868,10 @@ export type Query = {
   addresses: Array<Address>
   admin: Admin
   admins: Array<Admin>
+  application: Application
+  applications: Array<Application>
+  bookmark: Bookmark
+  bookmarks: Array<Bookmark>
   categories: Array<Category>
   category: Category
   companies: Array<Company>
@@ -694,6 +879,7 @@ export type Query = {
   companyEmployers: Array<Employer>
   companyJobs: Array<Job>
   employee: Employee
+  employeeMe: Employee
   employees: Array<Employee>
   employer: Employer
   employerCompany: Company
@@ -703,6 +889,7 @@ export type Query = {
   job: Job
   jobAggregate: AggregateCountOutput
   jobs: Array<Job>
+  myBookmarks: Array<Bookmark>
   searchJobs: Array<Job>
   subCategories: Array<SubCategory>
   subCategory: SubCategory
@@ -734,6 +921,32 @@ export type QueryAdminsArgs = {
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
   where?: InputMaybe<AdminWhereInput>
+}
+
+export type QueryApplicationArgs = {
+  where?: InputMaybe<ApplicationWhereUniqueInput>
+}
+
+export type QueryApplicationsArgs = {
+  cursor?: InputMaybe<ApplicationWhereUniqueInput>
+  distinct?: InputMaybe<Array<ApplicationScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ApplicationOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ApplicationWhereInput>
+}
+
+export type QueryBookmarkArgs = {
+  where?: InputMaybe<BookmarkWhereUniqueInput>
+}
+
+export type QueryBookmarksArgs = {
+  cursor?: InputMaybe<BookmarkWhereUniqueInput>
+  distinct?: InputMaybe<Array<BookmarkScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<BookmarkOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<BookmarkWhereInput>
 }
 
 export type QueryCategoriesArgs = {
@@ -831,6 +1044,15 @@ export type QueryJobsArgs = {
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
   where?: InputMaybe<JobWhereInput>
+}
+
+export type QueryMyBookmarksArgs = {
+  cursor?: InputMaybe<BookmarkWhereUniqueInput>
+  distinct?: InputMaybe<Array<BookmarkScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<BookmarkOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<BookmarkWhereInput>
 }
 
 export type QuerySearchJobsArgs = {
@@ -947,6 +1169,18 @@ export type UpdateAdminInput = {
   uid: Scalars['String']
 }
 
+export type UpdateApplicationInput = {
+  employeeId?: InputMaybe<Scalars['String']>
+  employeeId_jobId: EmployeeIdJobIdCompoundUniqueInput
+  jobId?: InputMaybe<Scalars['Int']>
+}
+
+export type UpdateBookmarkInput = {
+  employeeId?: InputMaybe<Scalars['String']>
+  employeeId_jobId: EmployeeIdJobIdCompoundUniqueInput
+  jobId?: InputMaybe<Scalars['Int']>
+}
+
 export type UpdateCategoryInput = {
   name: Scalars['String']
 }
@@ -956,6 +1190,7 @@ export type UpdateCompanyInput = {
   description?: InputMaybe<Scalars['String']>
   id: Scalars['Int']
   name?: InputMaybe<Scalars['String']>
+  uid?: InputMaybe<Scalars['String']>
 }
 
 export type UpdateEmployeeInput = {
@@ -1100,7 +1335,7 @@ export type EmployerMeQuery = {
     uid: string
     createdAt: any
     user: { __typename?: 'User'; image?: string | null; name?: string | null }
-    company: {
+    company?: {
       __typename?: 'Company'
       name: string
       description?: string | null
@@ -1110,7 +1345,19 @@ export type EmployerMeQuery = {
         lat: number
         lng: number
       }
-    }
+    } | null
+  }
+}
+
+export type EmployeeMeQueryVariables = Exact<{ [key: string]: never }>
+
+export type EmployeeMeQuery = {
+  __typename?: 'Query'
+  employeeMe: {
+    __typename?: 'Employee'
+    uid: string
+    createdAt: any
+    user: { __typename?: 'User'; image?: string | null; name?: string | null }
   }
 }
 
@@ -1120,7 +1367,16 @@ export type CreateEmployerMutationVariables = Exact<{
 
 export type CreateEmployerMutation = {
   __typename?: 'Mutation'
-  createEmployer: { __typename?: 'Employer'; uid: string }
+  createEmployer?: { __typename?: 'Employer'; uid: string } | null
+}
+
+export type CreateEmployeeMutationVariables = Exact<{
+  createEmployeeInput: CreateEmployeeInput
+}>
+
+export type CreateEmployeeMutation = {
+  __typename?: 'Mutation'
+  createEmployee: { __typename?: 'Employee'; uid: string }
 }
 
 export type EmployerJobDetailsFragment = {
@@ -1448,11 +1704,78 @@ export type CreateCompanyMutation = {
   createCompany: { __typename?: 'Company'; id: number }
 }
 
+export type BookmarkQueryVariables = Exact<{
+  where?: InputMaybe<BookmarkWhereUniqueInput>
+}>
+
+export type BookmarkQuery = {
+  __typename?: 'Query'
+  bookmark: { __typename?: 'Bookmark'; jobId: number; employeeId: string }
+}
+
+export type CreateBookmarkMutationVariables = Exact<{
+  createBookmarkInput: CreateBookmarkInput
+}>
+
+export type CreateBookmarkMutation = {
+  __typename?: 'Mutation'
+  createBookmark: { __typename?: 'Bookmark'; jobId: number; employeeId: string }
+}
+
+export type RemoveBookmarkMutationVariables = Exact<{
+  where?: InputMaybe<BookmarkWhereUniqueInput>
+}>
+
+export type RemoveBookmarkMutation = {
+  __typename?: 'Mutation'
+  removeBookmark: { __typename?: 'Bookmark'; employeeId: string; jobId: number }
+}
+
+export type MyBookmarksQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<BookmarkWhereUniqueInput>
+  orderBy?: InputMaybe<
+    Array<BookmarkOrderByWithRelationInput> | BookmarkOrderByWithRelationInput
+  >
+  where?: InputMaybe<BookmarkWhereInput>
+  distinct?: InputMaybe<
+    Array<BookmarkScalarFieldEnum> | BookmarkScalarFieldEnum
+  >
+}>
+
+export type MyBookmarksQuery = {
+  __typename?: 'Query'
+  myBookmarks: Array<{
+    __typename?: 'Bookmark'
+    job: {
+      __typename?: 'Job'
+      id: number
+      type: JobType
+      title: string
+      status: JobStatus
+      start?: any | null
+      salary?: number | null
+      end?: any | null
+      description: string
+      createdAt: any
+      skills: Array<{ __typename?: 'SubCategory'; name: string }>
+      address?: {
+        __typename?: 'Address'
+        lat: number
+        lng: number
+        address: string
+      } | null
+    }
+  }>
+}
+
 export const namedOperations = {
   Query: {
     Users: 'Users',
     User: 'User',
     EmployerMe: 'EmployerMe',
+    EmployeeMe: 'EmployeeMe',
     CompanyJobs: 'CompanyJobs',
     EmployerJobs: 'EmployerJobs',
     EmployerCompany: 'EmployerCompany',
@@ -1461,13 +1784,18 @@ export const namedOperations = {
     Job: 'Job',
     Company: 'Company',
     CompanyEmployers: 'CompanyEmployers',
+    Bookmark: 'Bookmark',
+    myBookmarks: 'myBookmarks',
   },
   Mutation: {
     CreateUser: 'CreateUser',
     createEmployer: 'createEmployer',
+    createEmployee: 'createEmployee',
     createJob: 'createJob',
     addEmployer: 'addEmployer',
     createCompany: 'createCompany',
+    createBookmark: 'createBookmark',
+    removeBookmark: 'removeBookmark',
   },
   Fragment: {
     employerJobDetails: 'employerJobDetails',
@@ -1877,6 +2205,43 @@ export const EmployerMeDocument = /*#__PURE__*/ {
     },
   ],
 } as unknown as DocumentNode<EmployerMeQuery, EmployerMeQueryVariables>
+export const EmployeeMeDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'EmployeeMe' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'employeeMe' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<EmployeeMeQuery, EmployeeMeQueryVariables>
 export const CreateEmployerDocument = /*#__PURE__*/ {
   kind: 'Document',
   definitions: [
@@ -1930,6 +2295,60 @@ export const CreateEmployerDocument = /*#__PURE__*/ {
 } as unknown as DocumentNode<
   CreateEmployerMutation,
   CreateEmployerMutationVariables
+>
+export const CreateEmployeeDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createEmployee' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createEmployeeInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateEmployeeInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createEmployee' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createEmployeeInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createEmployeeInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateEmployeeMutation,
+  CreateEmployeeMutationVariables
 >
 export const CompanyJobsDocument = /*#__PURE__*/ {
   kind: 'Document',
@@ -3180,3 +3599,368 @@ export const CreateCompanyDocument = /*#__PURE__*/ {
   CreateCompanyMutation,
   CreateCompanyMutationVariables
 >
+export const BookmarkDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Bookmark' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'BookmarkWhereUniqueInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'bookmark' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'jobId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'employeeId' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<BookmarkQuery, BookmarkQueryVariables>
+export const CreateBookmarkDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createBookmark' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createBookmarkInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateBookmarkInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createBookmark' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createBookmarkInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createBookmarkInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'jobId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'employeeId' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateBookmarkMutation,
+  CreateBookmarkMutationVariables
+>
+export const RemoveBookmarkDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'removeBookmark' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'BookmarkWhereUniqueInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'removeBookmark' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'employeeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'jobId' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  RemoveBookmarkMutation,
+  RemoveBookmarkMutationVariables
+>
+export const MyBookmarksDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'myBookmarks' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'cursor' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'BookmarkWhereUniqueInput' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'orderBy' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: {
+                  kind: 'Name',
+                  value: 'BookmarkOrderByWithRelationInput',
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'BookmarkWhereInput' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'distinct' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'BookmarkScalarFieldEnum' },
+              },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'myBookmarks' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'cursor' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'cursor' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'orderBy' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'distinct' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'distinct' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'job' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'status' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'skills' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'name' },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'start' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'salary' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'end' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'description' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'createdAt' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'address' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'lat' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'lng' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'address' },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<MyBookmarksQuery, MyBookmarksQueryVariables>

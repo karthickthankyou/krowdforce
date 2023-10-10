@@ -7,9 +7,10 @@ import { UpdateBookmarkInput } from './dtos/update-bookmark.input'
 @Injectable()
 export class BookmarksService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createBookmarkInput: CreateBookmarkInput) {
+  create({ employeeId, jobId }: CreateBookmarkInput) {
+    console.log('createBookmarkInput', { employeeId, jobId })
     return this.prisma.bookmark.create({
-      data: createBookmarkInput,
+      data: { employeeId, jobId },
     })
   }
 

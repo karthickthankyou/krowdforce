@@ -16,6 +16,11 @@ import { EmployeesService } from './employees.service'
 import { Employee } from './entity/employee.entity'
 import { Application } from '../applications/entity/application.entity'
 import { Bookmark } from '../bookmarks/entity/bookmark.entity'
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator'
+import { GetUserType } from 'src/common/types'
 
 @Resolver(() => Employee)
 export class EmployeesResolver {
@@ -39,6 +44,13 @@ export class EmployeesResolver {
     return this.employeesService.findOne(args)
   }
 
+  @AllowAuthenticated()
+  @Query(() => Employee, { name: 'employeeMe' })
+  employeeMe(@GetUser() user: GetUserType) {
+    return this.employeesService.findOne({
+      where: { uid: user.uid },
+    })
+  }
   @Mutation(() => Employee)
   updateEmployee(@Args('updateEmployeeInput') args: UpdateEmployeeInput) {
     return this.employeesService.update(args)

@@ -26,6 +26,7 @@ import { Panel } from '../organisms/Map/Panel'
 import { DefaultZoomControls } from '../organisms/Map/ZoomControls/ZoomControls'
 import { SetCity } from '../organisms/SetCity'
 import { SelectMultiSkills } from './NewJob'
+import { BookmarkButton } from '../organisms/BookmarkButton'
 
 export const SearchJobs = ({ jobs }: { jobs: SearchJobsQuery }) => {
   const [jobResults, setJobResults] = useState<SearchJobsQuery>(() => jobs)
@@ -155,15 +156,18 @@ export const MarkerWithPopup = ({
                 <TitleValue title="Salary">{marker.salary || '-'}</TitleValue>
               </div>
               <TitleValue title="Type">{marker.type}</TitleValue>
-              <Link
-                href={`/jobs/${marker.id}`}
-                className={buttonVariants({
-                  variant: 'outline',
-                  className: 'w-full',
-                })}
-              >
-                View job
-              </Link>
+              <div className="flex">
+                <Link
+                  href={`/jobs/${marker.id}`}
+                  className={buttonVariants({
+                    variant: 'outline',
+                    className: 'w-full',
+                  })}
+                >
+                  View job
+                </Link>
+                <BookmarkButton jobId={marker.id} className="ml-2" />
+              </div>
             </div>
           </PopupContent>
         </Popup>

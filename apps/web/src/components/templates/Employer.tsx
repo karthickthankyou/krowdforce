@@ -16,9 +16,9 @@ import { CompanyJobs } from './CompanyJobs'
 export const Employer = ({ employerMe }: EmployerMeQuery) => {
   return (
     <div className="my-4">
-      <div className="text-xl font-semibold">{employerMe.company.name}</div>
-      <div>{employerMe.company.description}</div>
-      <div className="text-gray">{employerMe.company.address.address}</div>
+      <div className="text-xl font-semibold">{employerMe?.company?.name}</div>
+      <div>{employerMe?.company?.description}</div>
+      <div className="text-gray">{employerMe?.company?.address.address}</div>
 
       <Tabs defaultValue={CompanyTabChoices.Jobs} className="mt-8">
         <TabsList className="flex justify-start gap-2">

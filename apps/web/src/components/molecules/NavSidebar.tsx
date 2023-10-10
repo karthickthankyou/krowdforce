@@ -1,5 +1,5 @@
 import { MenuItem } from '@krowdforce/util/types'
-import { IconMenu2 } from '@tabler/icons-react'
+import { IconBookmark, IconMenu2 } from '@tabler/icons-react'
 import Link from 'next/link'
 import {
   Sheet,
@@ -63,6 +63,9 @@ export const ShowMenuItems = ({ menuItems }: INavSidebarProps) => {
   return (
     <div className="items-center hidden ml-auto lg:flex lg:gap-10">
       <ModeToggle />
+      <Link href={'/employee/bookmarks'}>
+        <IconBookmark />
+      </Link>
 
       {menuItems
         .filter(({ loggedIn }) => !loggedIn || uid)
