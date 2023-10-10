@@ -12,7 +12,7 @@ import { useMap } from 'react-map-gl'
 export interface IZoomControlsProps {}
 
 const MapControls = ({ children }: { children: ReactNode }) => (
-  <div className='flex flex-col overflow-hidden border border-white divide-y divide-white rounded shadow-lg bg-white/50 backdrop-blur backdrop-filter'>
+  <div className="flex flex-col overflow-hidden border border-white divide-y divide-white rounded shadow-lg bg-white/50 backdrop-blur backdrop-filter">
     {children}
   </div>
 )
@@ -22,11 +22,11 @@ const ZoomIn = () => {
 
   return (
     <button
-      className='rounded-none hover:bg-white '
-      type='button'
+      className="rounded-none hover:bg-white "
+      type="button"
       onClick={() => map?.zoomIn()}
     >
-      <IconPlus className='w-8 h-8 p-1.5 ' />
+      <IconPlus className="w-8 h-8 p-1.5 " />
     </button>
   )
 }
@@ -35,11 +35,11 @@ const ZoomOut = () => {
   const { current: map } = useMap()
   return (
     <button
-      className='rounded-none hover:bg-white '
-      type='button'
+      className="rounded-none hover:bg-white "
+      type="button"
       onClick={() => map?.zoomOut()}
     >
-      <IconMinus className='w-8 h-8 p-1.5 ' />
+      <IconMinus className="w-8 h-8 p-1.5 " />
     </button>
   )
 }
@@ -54,14 +54,14 @@ export const CenterOfMap = ({
   const { current: map } = useMap()
   return (
     <button
-      className=' hover:bg-white'
-      type='button'
+      className=" hover:bg-white"
+      type="button"
       onClick={() => {
         const { lat, lng } = map?.getCenter() as { lng: number; lat: number }
         onClick({ lat, lng })
       }}
     >
-      <Icon className='w-8 h-8 p-1.5 text-black' />
+      <Icon className="w-8 h-8 p-1.5 text-black" />
     </button>
   )
 }

@@ -24,17 +24,17 @@ export function NavSidebar({ menuItems }: INavSidebarProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant='ghost'>
-          <IconMenu2 className='w-5 h-5' />
+        <Button variant="ghost">
+          <IconMenu2 className="w-5 h-5" />
         </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
           <DisplayUser />
-          <Link href='/employer'>Employer</Link>
+          <Link href="/employer">Employer</Link>
 
           <SheetDescription>
-            <div className='flex flex-col items-start space-y-1'>
+            <div className="flex flex-col items-start space-y-1">
               {menuItems
                 .filter(({ loggedIn }) => !loggedIn || uid)
                 .map(({ label, href }) => (
@@ -42,13 +42,13 @@ export function NavSidebar({ menuItems }: INavSidebarProps) {
                     {label}
                   </Link>
                 ))}
-              <div className='py-2' />
+              <div className="py-2" />
             </div>
           </SheetDescription>
         </SheetHeader>
         <SheetFooter>
           <SheetClose asChild>
-            <Link href='/api/auth/signout'>Signout</Link>
+            <Link href="/api/auth/signout">Signout</Link>
           </SheetClose>
         </SheetFooter>
       </SheetContent>
@@ -61,7 +61,7 @@ export const ShowMenuItems = ({ menuItems }: INavSidebarProps) => {
 
   if (!uid) return null
   return (
-    <div className='items-center hidden ml-auto lg:flex lg:gap-10'>
+    <div className="items-center hidden ml-auto lg:flex lg:gap-10">
       <ModeToggle />
 
       {menuItems
@@ -76,7 +76,7 @@ export const NavLink = ({ label, href }: { label: string; href: string }) => (
   <Link
     key={label}
     href={href}
-    className='text-sm transition-all hover:text-black hover:font-semibold hover:underline underline-offset-4'
+    className="text-sm transition-all hover:text-black hover:font-semibold hover:underline underline-offset-4"
   >
     {label}
   </Link>

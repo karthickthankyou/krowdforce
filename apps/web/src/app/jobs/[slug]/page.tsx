@@ -17,7 +17,7 @@ export default async function JobPage({
       <div>#{job.data?.job.id}</div>
       <div>{job.data?.job.status}</div>
       <div>Contact: {job.data?.job.contactInfo}</div>
-      <Link href='/'>All jobs</Link>
+      <Link href="/">All jobs</Link>
     </div>
   )
 }

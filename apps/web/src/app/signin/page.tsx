@@ -14,7 +14,7 @@ export default function SignIn() {
   //     )
   //   }
   return (
-    <div className='flex items-center justify-center'>
+    <div className="flex items-center justify-center">
       <Button
         onClick={() =>
           signIn('google', {

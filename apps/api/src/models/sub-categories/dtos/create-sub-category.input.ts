@@ -1,5 +1,5 @@
-import { InputType, PickType } from '@nestjs/graphql';
-import { SubCategory } from '../entity/sub-category.entity';
+import { InputType, PickType } from '@nestjs/graphql'
+import { SubCategory } from '../entity/sub-category.entity'
 
 @InputType()
 export class CreateSubCategoryInput extends PickType(

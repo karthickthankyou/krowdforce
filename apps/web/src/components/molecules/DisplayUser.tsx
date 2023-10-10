@@ -10,16 +10,16 @@ export const DisplayUser = () => {
   }
 
   return (
-    <div className='flex flex-col gap-2'>
+    <div className="flex flex-col gap-2">
       <Image
-        className='w-full rounded aspect-square'
+        className="w-full rounded aspect-square"
         width={300}
         height={300}
         src={data?.user?.image || ''}
         alt={''}
       />
-      <div className='text-2xl font-light '>{data?.user?.name}</div>
-      <div className='text-gray'>{data?.user?.uid}</div>
+      <div className="text-2xl font-light ">{data?.user?.name}</div>
+      <div className="text-gray">{data?.user?.uid}</div>
     </div>
   )
 }

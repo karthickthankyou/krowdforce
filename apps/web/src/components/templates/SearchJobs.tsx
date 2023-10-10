@@ -73,13 +73,13 @@ export const SearchJobs = ({
         onZoomEnd={(e) => handleMapChange(e.target)}
         onDragEnd={(e) => handleMapChange(e.target)}
       >
-        <Panel position='left-top'>
+        <Panel position="left-top">
           <SetCity />
         </Panel>
-        <Panel position='right-top' className='min-w-lg'>
+        <Panel position="right-top" className="min-w-lg">
           <SelectMultiSkills setValue={setSkills} />
         </Panel>
-        <Panel position='right-center'>
+        <Panel position="right-center">
           <DefaultZoomControls />
         </Panel>
         {jobResults.map((job) => (
@@ -106,23 +106,23 @@ export const MarkerWithPopup = ({
           longitude={marker.address?.lng || 0}
           //   onOpen={() => console.log('Opened')}
           closeOnClick={false}
-          anchor='bottom'
+          anchor="bottom"
           offset={24}
           closeButton={false}
         >
           <PopupContent onClose={() => setShowPopup(false)}>
-            <div className='p-1 space-y-2'>
-              <TitleValue title='Title'>{marker.title}</TitleValue>
-              <TitleValue title='Description'>{marker.description}</TitleValue>
-              <TitleValue title='Company'>{marker.company.name}</TitleValue>
-              <div className='grid grid-cols-2 gap-1'>
-                <TitleValue title='Status'>{marker.status}</TitleValue>
-                <TitleValue title='Salary'>{marker.salary || '-'}</TitleValue>
+            <div className="p-1 space-y-2">
+              <TitleValue title="Title">{marker.title}</TitleValue>
+              <TitleValue title="Description">{marker.description}</TitleValue>
+              <TitleValue title="Company">{marker.company.name}</TitleValue>
+              <div className="grid grid-cols-2 gap-1">
+                <TitleValue title="Status">{marker.status}</TitleValue>
+                <TitleValue title="Salary">{marker.salary || '-'}</TitleValue>
               </div>
-              <TitleValue title='Type'>{marker.type}</TitleValue>
+              <TitleValue title="Type">{marker.type}</TitleValue>
               <Link
                 href={`/jobs/${marker.id}`}
-                className='block mt-4 underline underline-offset-4'
+                className="block mt-4 underline underline-offset-4"
               >
                 View job
               </Link>
@@ -132,14 +132,14 @@ export const MarkerWithPopup = ({
       ) : null}
 
       <Marker
-        anchor='bottom'
+        anchor="bottom"
         latitude={marker.address?.lat || 0}
         longitude={marker.address?.lng || 0}
         onClick={() => {
           setShowPopup((state) => !state)
         }}
       >
-        <div className='cursor-pointer'>
+        <div className="cursor-pointer">
           <IconPick />
         </div>
       </Marker>
@@ -156,14 +156,14 @@ export const PopupContent = ({
 }) => {
   return (
     <div>
-      <div className='col-start-1 row-start-1 '>{children}</div>
-      <div className='flex justify-end w-48 col-start-1 row-start-1 p-2 items-top'>
+      <div className="col-start-1 row-start-1 ">{children}</div>
+      <div className="flex justify-end w-48 col-start-1 row-start-1 p-2 items-top">
         <button
-          type='button'
-          className='absolute top-0 right-0 p-0.5 rounded-bl bg-black/30 hover:bg-black/40'
+          type="button"
+          className="absolute top-0 right-0 p-0.5 rounded-bl bg-black/30 hover:bg-black/40"
           onClick={onClose}
         >
-          <IconX className='w-5 h-5 text-white' />
+          <IconX className="w-5 h-5 text-white" />
         </button>
       </div>
     </div>
@@ -179,8 +179,8 @@ export const TitleValue = ({
 }) => {
   if (!children) return null
   return (
-    <div className='text-black'>
-      <div className='text-xs font-bold'>{title}</div>
+    <div className="text-black">
+      <div className="text-xs font-bold">{title}</div>
       <div>{children}</div>
     </div>
   )

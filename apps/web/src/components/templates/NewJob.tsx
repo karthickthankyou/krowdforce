@@ -44,7 +44,7 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
   const [sameAddress, setSameAddress] = useState(false)
   return (
     <div>
-      <div className='grid grid-cols-2 gap-2'>
+      <div className="grid grid-cols-2 gap-2">
         <Map initialViewState={initialViewState}>
           {sameAddress ? (
             <MapMarker initialLocation={initialViewState} Icon={IconPick} />
@@ -55,7 +55,7 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
           >
             <IconBuilding />
           </Marker>
-          <Panel position='left-top'>
+          <Panel position="left-top">
             <SearchPlace
               onLocationChange={(location: ViewState) => {
                 setValue('address.lat', location.latitude)
@@ -82,12 +82,12 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
             await createJob(formData)
             reset()
           })}
-          className='space-y-2'
+          className="space-y-2"
         >
-          <h1 className='mb-2 text-lg font-semibold'>Post new job</h1>
-          <Input {...register('title')} placeholder='Job title' />
-          <Input {...register('description')} placeholder='Job description' />
-          <Input {...register('salary')} placeholder='Salary' />
+          <h1 className="mb-2 text-lg font-semibold">Post new job</h1>
+          <Input {...register('title')} placeholder="Job title" />
+          <Input {...register('description')} placeholder="Job description" />
+          <Input {...register('salary')} placeholder="Salary" />
           <DatePickerWithRange
             setDates={(dates) => {
               setValue('start', dates?.from?.toISOString())
@@ -103,7 +103,7 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
             }}
           />
           <Select
-            placeholder='Select job type'
+            placeholder="Select job type"
             onChange={(option) => {
               if (option) {
                 setValue('type', option.value)
@@ -115,7 +115,7 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
             }))}
           />
           <Select
-            placeholder='Select job status'
+            placeholder="Select job status"
             onChange={(option) => {
               if (option) {
                 setValue('status', option.value)
@@ -128,7 +128,7 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
           />
           <Separator />
           <Input
-            type='checkbox'
+            type="checkbox"
             checked={sameAddress}
             onChange={(e) => {
               setSameAddress(Boolean(e.target.value))
@@ -138,14 +138,14 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
 
           {sameAddress ? (
             <Input
-              type='text'
+              type="text"
               {...register('address.address')}
-              placeholder='Full address'
+              placeholder="Full address"
             />
           ) : null}
           {/* Status and  */}
 
-          <Button type='submit'>Submit</Button>
+          <Button type="submit">Submit</Button>
         </form>
       </div>
     </div>
@@ -187,7 +187,7 @@ export const SelectMultiSkills = ({
       defaultOptions
       isMulti
       loadOptions={loadOptions}
-      placeholder='Select required skills'
+      placeholder="Select required skills"
       onChange={(v) => {
         setValue(v.map((skill) => skill.value))
       }}

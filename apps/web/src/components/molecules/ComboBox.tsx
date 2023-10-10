@@ -25,9 +25,9 @@ export function SearchPlace({
   const { current: map } = useMap()
 
   return (
-    <div className='relative'>
+    <div className="relative">
       <Input
-        placeholder='Search place...'
+        placeholder="Search place..."
         value={value}
         onChange={(e) => {
           setOpen(e.target.value.length > 0)
@@ -35,12 +35,12 @@ export function SearchPlace({
         }}
       />
       {open ? (
-        <div className='bg-background'>
+        <div className="bg-background">
           {loading && <Loader />}
-          <div className='absolute z-10 top-full'>
+          <div className="absolute z-10 top-full">
             {locationInfo.map((place) => (
               <button
-                className='block w-full p-2 text-left underline underline-offset-4 hover:font-bold'
+                className="block w-full p-2 text-left underline underline-offset-4 hover:font-bold"
                 key={place.placeName}
                 onClick={() => {
                   const {

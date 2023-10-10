@@ -10,7 +10,11 @@ registerEnumType(Prisma.EmployeeScalarFieldEnum, {
 
 @ArgsType()
 class FindManyEmployeeArgsStrict
-  implements RestrictProperties<FindManyEmployeeArgsStrict, Omit<Prisma.EmployeeFindManyArgs, 'include' | 'select'>>
+  implements
+    RestrictProperties<
+      FindManyEmployeeArgsStrict,
+      Omit<Prisma.EmployeeFindManyArgs, 'include' | 'select'>
+    >
 {
   where: EmployeeWhereInput
   orderBy: EmployeeOrderByWithRelationInput[]

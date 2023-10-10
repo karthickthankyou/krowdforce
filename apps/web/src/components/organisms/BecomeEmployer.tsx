@@ -28,29 +28,29 @@ export const BecomeEmployer = () => {
   const { data: userData } = useSession()
 
   if (!userData?.user?.uid) {
-    return <Link href='/api/auth/signin'>Sign in</Link>
+    return <Link href="/api/auth/signin">Sign in</Link>
   }
 
   const userUID = userData.user.uid
 
   return (
-    <div className='grid grid-cols-2 gap-2'>
+    <div className="grid grid-cols-2 gap-2">
       <form
         onSubmit={handleSubmit(async ({ companyName, address }) => {
           await createEmployer({ companyName, uid: userUID, address })
           reset()
         })}
-        className='space-y-2'
+        className="space-y-2"
       >
-        <h1 className='mb-2 text-lg font-semibold'>Create company</h1>
-        <Input {...register('companyName')} placeholder='Company name' />
-        <Input {...register('address.address')} placeholder='Full address' />
-        <Button type='submit'>Submit</Button>
+        <h1 className="mb-2 text-lg font-semibold">Create company</h1>
+        <Input {...register('companyName')} placeholder="Company name" />
+        <Input {...register('address.address')} placeholder="Full address" />
+        <Button type="submit">Submit</Button>
       </form>
       <Map initialViewState={initialViewState}>
         <MapMarker initialLocation={initialViewState} />
 
-        <Panel position='left-top'>
+        <Panel position="left-top">
           <SearchPlace
             onLocationChange={(location: ViewState) => {
               setValue('address.lat', location.latitude)
@@ -91,7 +91,7 @@ export const MapMarker = ({
 
   return (
     <Marker
-      pitchAlignment='auto'
+      pitchAlignment="auto"
       longitude={address?.lng || 0}
       latitude={address?.lat || 0}
       draggable
@@ -101,7 +101,7 @@ export const MapMarker = ({
         setValue('address.lng', lng || 0)
       }}
     >
-      <Icon className='w-8 h-8 p-1.5' />
+      <Icon className="w-8 h-8 p-1.5" />
     </Marker>
   )
 }

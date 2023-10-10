@@ -1,7 +1,7 @@
-import { Field, InputType, PickType } from '@nestjs/graphql';
-import { Job } from '../entity/job.entity';
-import { ConnectSubCategoryInput } from 'src/models/sub-categories/dtos/create-sub-category.input';
-import { CreateAddressInput } from 'src/models/addresses/dtos/create-address.input';
+import { Field, InputType, PickType } from '@nestjs/graphql'
+import { Job } from '../entity/job.entity'
+import { ConnectSubCategoryInput } from 'src/models/sub-categories/dtos/create-sub-category.input'
+import { CreateAddressInput } from 'src/models/addresses/dtos/create-address.input'
 
 @InputType()
 export class CreateJobInput extends PickType(
@@ -18,9 +18,9 @@ export class CreateJobInput extends PickType(
   ],
   InputType,
 ) {
-  skills: ConnectSubCategoryInput[];
+  skills: ConnectSubCategoryInput[]
   @Field({ nullable: true })
-  address: CreateAddressInput;
+  address: CreateAddressInput
   @Field({ nullable: true })
-  companyAddressId: number;
+  companyAddressId: number
 }

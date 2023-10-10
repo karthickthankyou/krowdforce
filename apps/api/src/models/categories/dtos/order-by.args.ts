@@ -1,7 +1,7 @@
-import { Field, InputType, PartialType } from '@nestjs/graphql';
-import { Prisma } from '@prisma/client';
-import { RestrictProperties } from 'src/common/dtos/common.input';
-import { SubCategoryOrderByRelationAggregateInput } from 'src/models/sub-categories/dtos/order-by.args';
+import { Field, InputType, PartialType } from '@nestjs/graphql'
+import { Prisma } from '@prisma/client'
+import { RestrictProperties } from 'src/common/dtos/common.input'
+import { SubCategoryOrderByRelationAggregateInput } from 'src/models/sub-categories/dtos/order-by.args'
 
 @InputType()
 export class CategoryOrderByWithRelationInputStrict
@@ -12,8 +12,8 @@ export class CategoryOrderByWithRelationInputStrict
     >
 {
   @Field(() => Prisma.SortOrder)
-  name: Prisma.SortOrder;
-  subCategories: SubCategoryOrderByRelationAggregateInput;
+  name: Prisma.SortOrder
+  subCategories: SubCategoryOrderByRelationAggregateInput
   // Todo: Add below field decorator to the SortOrder properties.
   // @Field(() => Prisma.SortOrder)
 }
@@ -26,5 +26,5 @@ export class CategoryOrderByWithRelationInput extends PartialType(
 @InputType()
 export class CategoryOrderByRelationAggregateInput {
   @Field(() => Prisma.SortOrder, { nullable: true })
-  _count: Prisma.SortOrder;
+  _count: Prisma.SortOrder
 }
