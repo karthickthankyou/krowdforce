@@ -13,6 +13,7 @@ import {
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { GetUserType } from 'src/common/types'
 import { Company } from '../companies/entity/company.entity'
+import { Job } from '../jobs/entity/job.entity'
 import { User } from '../users/entity/user.entity'
 import { CreateEmployerInput } from './dtos/create-employer.input'
 import { FindManyEmployerArgs, FindUniqueEmployerArgs } from './dtos/find.args'
@@ -27,7 +28,7 @@ export class EmployersResolver {
     private readonly prisma: PrismaService,
   ) {}
 
-  @Mutation(() => Employer)
+  @Mutation(() => Employer, { nullable: true })
   createEmployer(@Args('createEmployerInput') args: CreateEmployerInput) {
     return this.employersService.create(args)
   }
@@ -35,6 +36,21 @@ export class EmployersResolver {
   @Query(() => [Employer], { name: 'employers' })
   findAll(@Args() args: FindManyEmployerArgs) {
     return this.employersService.findAll(args)
+  }
+
+  @AllowAuthenticated()
+  @Query(() => [Employer], { name: 'companyEmployers' })
+  companyEmployers(
+    @Args() args: FindManyEmployerArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    return this.prisma.employer.findMany({
+      ...args,
+      where: {
+        ...args.where,
+        company: { Employer: { some: { uid: { equals: user.uid } } } },
+      },
+    })
   }
 
   @Query(() => Employer, { name: 'employer' })
@@ -65,8 +81,16 @@ export class EmployersResolver {
     return this.prisma.user.findUnique({ where: { uid: parent.uid } })
   }
 
-  @ResolveField(() => Company)
+  @ResolveField(() => Company, { nullable: true })
   company(@Parent() parent: Employer) {
+    if (!parent.companyId) {
+      return null
+    }
     return this.prisma.company.findUnique({ where: { id: parent.companyId } })
+  }
+
+  @ResolveField(() => [Job])
+  jobs(@Parent() parent: Employer) {
+    return this.prisma.job.findMany({ where: { employerId: parent.uid } })
   }
 }

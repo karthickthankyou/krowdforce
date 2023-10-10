@@ -68,5 +68,11 @@ export const initialBounds = {
   sw_lng: 77.79553938075622,
 }
 
-export const ITEMS_PER_PAGE = 2
+export const ITEMS_PER_PAGE = 6
 export const FIRST_PAGE = 1
+
+export const CompanyTabChoices = {
+  Jobs: 'Jobs',
+  PostedByMe: 'PostedByMe',
+  Employers: 'Employers',
+}

@@ -28,6 +28,7 @@ export async function createJob(formData: FormTypeCreateJob) {
       salary,
       start,
       companyAddressId,
+      employerId,
     } = result.data
 
     const { data, error } = await fetchGraphQLInfer(CreateJobDocument, {
@@ -43,6 +44,7 @@ export async function createJob(formData: FormTypeCreateJob) {
         address,
         skills,
         companyAddressId,
+        employerId,
       },
     })
 
@@ -51,7 +53,7 @@ export async function createJob(formData: FormTypeCreateJob) {
       throw new Error('Something went wrong')
     }
     revalidateTag(namedOperations.Query.EmployerJobs)
-    redirect('/employer/jobs')
+    redirect('/employer')
   } else {
     console.log(
       'result.error.flatten().fieldErrors',

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { CreateEmployerInput } from './dtos/create-employer.input'
 import { FindManyEmployerArgs, FindUniqueEmployerArgs } from './dtos/find.args'
@@ -7,13 +7,17 @@ import { UpdateEmployerInput } from './dtos/update-employer.input'
 @Injectable()
 export class EmployersService {
   constructor(private readonly prisma: PrismaService) {}
-  create({ company, uid, address }: CreateEmployerInput) {
+  async create({ uid }: CreateEmployerInput) {
+    const existingEmployer = await this.prisma.employer.findUnique({
+      where: { uid },
+    })
+    if (existingEmployer.uid) {
+      return null
+      //   throw new BadRequestException('User already employer')
+    }
     return this.prisma.employer.create({
       data: {
         user: { connectOrCreate: { create: { uid }, where: { uid } } },
-        company: {
-          create: { name: company.name, address: { create: address } },
-        },
       },
     })
   }

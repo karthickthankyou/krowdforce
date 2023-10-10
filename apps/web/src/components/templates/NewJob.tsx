@@ -12,12 +12,11 @@ import {
 import { initialViewState } from '@krowdforce/util/constants'
 import { createJob } from '@krowdforce/web/src/actions/createJob'
 import { useFormContext } from 'react-hook-form'
-import Select from 'react-select'
-import AsyncSelect from 'react-select/async'
+
 import { Button } from '../atoms/button'
 import { Input } from '../atoms/input'
 import { SearchPlace } from '../molecules/ComboBox'
-import { MapMarker } from '../organisms/BecomeEmployer'
+import { MapMarker } from '../organisms/CreateCompany'
 import { Map } from '../organisms/Map'
 import { ViewState } from '../organisms/Map/Map'
 import { Marker } from '../organisms/Map/MapMarker'
@@ -31,12 +30,23 @@ import { IconBuilding, IconPick } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 
 import { fetchGraphQLNoAuth } from '@krowdforce/web/src/app/util/fetchNoAuth'
+import { useSession } from 'next-auth/react'
 import { DatePickerWithRange } from '../atoms/date-picker'
+import { AsyncSelect, Select } from '../atoms/react-select'
 import { Separator } from '../atoms/separator'
+import { Textarea } from '../atoms/textArea'
 
 export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
   const { register, handleSubmit, reset, setValue } =
     useFormContext<FormTypeCreateJob>()
+
+  const { data } = useSession()
+
+  useEffect(() => {
+    if (data?.user?.uid) {
+      setValue('employerId', data?.user?.uid)
+    }
+  }, [data?.user?.uid, setValue])
 
   useEffect(() => {
     setValue('companyId', employerCompany.id)
@@ -62,6 +72,8 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
                 setValue('address.lng', location.longitude)
               }}
             />
+          </Panel>
+          <Panel position="right-center">
             <DefaultZoomControls>
               {sameAddress ? (
                 <CenterOfMap
@@ -86,22 +98,11 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
         >
           <h1 className="mb-2 text-lg font-semibold">Post new job</h1>
           <Input {...register('title')} placeholder="Job title" />
-          <Input {...register('description')} placeholder="Job description" />
+          <Textarea
+            {...register('description')}
+            placeholder="Job description"
+          />
           <Input {...register('salary')} placeholder="Salary" />
-          <DatePickerWithRange
-            setDates={(dates) => {
-              setValue('start', dates?.from?.toISOString())
-              setValue('end', dates?.to?.toISOString())
-            }}
-          />
-          <SelectMultiSkills
-            setValue={(skills: string[]) => {
-              setValue(
-                'skills',
-                skills.map((name) => ({ name })),
-              )
-            }}
-          />
           <Select
             placeholder="Select job type"
             onChange={(option) => {
@@ -114,6 +115,17 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
               value: value,
             }))}
           />
+          <SelectDates />
+
+          <SelectMultiSkills
+            setValue={(skills: string[]) => {
+              setValue(
+                'skills',
+                skills.map((name) => ({ name })),
+              )
+            }}
+          />
+
           <Select
             placeholder="Select job status"
             onChange={(option) => {
@@ -192,7 +204,7 @@ export const SelectMultiSkills = ({
         setValue(v.map((skill) => skill.value))
       }}
       classNames={{
-        control: () => 'bg-white/50 text-black border-0',
+        control: () => 'bg-white/50 text-black border border-gray-200',
         menu: () => 'bg-white/50 text-black',
         group: () => 'text-black',
         input: () => 'text-black',
@@ -202,6 +214,24 @@ export const SelectMultiSkills = ({
         option: () => 'bg-white text-black hover:text-primary text-left',
         multiValueRemove: () => 'bg-white text-black hover:text-red',
         clearIndicator: () => 'text-black hover:text-red',
+      }}
+    />
+  )
+}
+
+export const SelectDates = () => {
+  const { setValue, watch } = useFormContext<FormTypeCreateJob>()
+  const jobType = watch('type')
+
+  if (jobType === JobType.FullTime) {
+    return null
+  }
+
+  return (
+    <DatePickerWithRange
+      setDates={(dates) => {
+        setValue('start', dates?.from?.toISOString())
+        setValue('end', dates?.to?.toISOString())
       }}
     />
   )

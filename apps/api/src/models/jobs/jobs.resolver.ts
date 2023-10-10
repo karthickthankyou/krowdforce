@@ -24,6 +24,7 @@ import {
 import { GetUserType } from 'src/common/types'
 import { Address } from '../addresses/entity/address.entity'
 import { Company } from '../companies/entity/company.entity'
+import { Employer } from '../employers/entity/employer.entity'
 import { SubCategory } from '../sub-categories/entity/sub-category.entity'
 
 @Resolver(() => Job)
@@ -110,6 +111,22 @@ export class JobsResolver {
 
     return this.jobsService.findAll({
       ...args,
+      where: { ...args.where, employerId: { equals: employer.uid } },
+    })
+  }
+
+  @AllowAuthenticated()
+  @Query(() => [Job], { name: 'companyJobs' })
+  async companyJobs(
+    @Args() args: FindManyJobArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const employer = await this.prisma.employer.findUnique({
+      where: { uid: user.uid },
+    })
+
+    return this.jobsService.findAll({
+      ...args,
       where: { ...args.where, companyId: { equals: employer.companyId } },
     })
   }
@@ -147,6 +164,16 @@ export class JobsResolver {
   company(@Parent() parent: Job) {
     return this.prisma.company.findUnique({
       where: { id: parent.companyId },
+    })
+  }
+
+  @ResolveField(() => Employer, { nullable: true })
+  employer(@Parent() parent: Job) {
+    if (!parent.employerId) {
+      return null
+    }
+    return this.prisma.employer.findUnique({
+      where: { uid: parent.employerId },
     })
   }
 }

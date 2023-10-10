@@ -34,11 +34,10 @@ export class UsersResolver {
 
   @AllowAuthenticated()
   @Query(() => [User], { name: 'users' })
-  async findAll(@Args() args: FindManyUserArgs, @GetUser() user: GetUserType) {
+  async findAll(@Args() args: FindManyUserArgs) {
     const users = await this.usersService.findAll(args)
 
     return users
-    // throw new BadRequestException('No');
   }
 
   @Query(() => User, { name: 'user' })

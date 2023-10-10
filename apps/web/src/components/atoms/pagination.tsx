@@ -10,7 +10,7 @@ interface PaginationProps {
   onPageChange: (newPage: number) => void
 }
 
-const Pagination: React.FC<PaginationProps> = ({
+export const Pagination: React.FC<PaginationProps> = ({
   skip,
   totalResults,
   itemsPerPage = ITEMS_PER_PAGE,
@@ -43,5 +43,3 @@ const Pagination: React.FC<PaginationProps> = ({
     </div>
   )
 }
-
-export default Pagination

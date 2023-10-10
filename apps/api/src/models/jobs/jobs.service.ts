@@ -13,6 +13,7 @@ export class JobsService {
     address,
     companyId,
     companyAddressId,
+    employerId,
     ...createJobInput
   }: CreateJobInput) {
     const skillsConnect: SubCategoryWhereUniqueInput[] = skills.map(
@@ -25,6 +26,9 @@ export class JobsService {
         data: {
           ...createJobInput,
           skills: { connect: skillsConnect },
+          Employer: {
+            connect: { uid: employerId },
+          },
           ...(address
             ? { address: { create: address } }
             : { address: { connect: { id: companyAddressId } } }),
@@ -40,8 +44,10 @@ export class JobsService {
     return this.prisma.job.findMany(args)
   }
 
-  findOne(args: FindUniqueJobArgs) {
-    return this.prisma.job.findUnique(args)
+  async findOne(args: FindUniqueJobArgs) {
+    const job = await this.prisma.job.findUnique(args)
+    console.log('job ', job)
+    return job
   }
 
   update(updateJobInput: UpdateJobInput) {

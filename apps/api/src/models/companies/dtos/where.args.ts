@@ -20,6 +20,7 @@ export class CompanyWhereInputStrict
   implements
     RestrictProperties<CompanyWhereInputStrict, Prisma.CompanyWhereInput>
 {
+  description: StringFilter
   addressId: IntFilter
   address: AddressRelationFilter
   id: IntFilter

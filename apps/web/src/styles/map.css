@@ -3,3 +3,7 @@
 .mapboxgl-popup-content {
   @apply shadow-lg p-1 overflow-hidden w-full rounded bg-white/20 backdrop-blur-sm border-x border-t border-white !important;
 }
+
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+  @apply border-t-white;
+}

@@ -13,8 +13,8 @@ export const DisplayUser = () => {
     <div className="flex flex-col gap-2">
       <Image
         className="w-full rounded aspect-square"
-        width={300}
-        height={300}
+        width={600}
+        height={600}
         src={data?.user?.image || ''}
         alt={''}
       />

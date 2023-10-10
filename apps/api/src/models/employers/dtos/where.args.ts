@@ -7,6 +7,7 @@ import {
   StringFilter,
 } from 'src/common/dtos/common.input'
 import { CompanyRelationFilter } from 'src/models/companies/dtos/where.args'
+import { JobListRelationFilter } from 'src/models/jobs/dtos/where.args'
 import { UserRelationFilter } from 'src/models/users/dtos/where.args'
 
 @InputType()
@@ -19,6 +20,7 @@ export class EmployerWhereInputStrict
   implements
     RestrictProperties<EmployerWhereInputStrict, Prisma.EmployerWhereInput>
 {
+  Job: JobListRelationFilter
   companyId: IntFilter
   company: CompanyRelationFilter
   uid: StringFilter

@@ -2,6 +2,7 @@ import {
   EmployerMeDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
+import { EmployerDilemma } from '../../components/organisms/EmployerDilemma'
 import { Employer } from '../../components/templates/Employer'
 import { fetchGraphQLInfer } from '../util/fetch'
 
@@ -17,8 +18,8 @@ export default async function EmployerPage() {
     },
   )
 
-  if (!data?.employerMe?.uid) {
-    return null
+  if (!data?.employerMe?.company) {
+    return <EmployerDilemma />
   }
 
   return <Employer employerMe={data.employerMe} />

@@ -7,9 +7,13 @@ import { UpdateCompanyInput } from './dtos/update-company.input'
 @Injectable()
 export class CompaniesService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createCompanyInput: CreateCompanyInput) {
+  create({ address, uid, ...createCompanyInput }: CreateCompanyInput) {
     return this.prisma.company.create({
-      data: createCompanyInput,
+      data: {
+        ...createCompanyInput,
+        address: { create: address },
+        Employer: { connect: { uid } },
+      },
     })
   }
 
@@ -22,7 +26,7 @@ export class CompaniesService {
   }
 
   update(updateCompanyInput: UpdateCompanyInput) {
-    const { id, ...data } = updateCompanyInput
+    const { id, address, ...data } = updateCompanyInput
     return this.prisma.company.update({
       where: { id },
       data: data,

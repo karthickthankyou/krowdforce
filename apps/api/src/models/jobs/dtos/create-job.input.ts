@@ -15,6 +15,7 @@ export class CreateJobInput extends PickType(
     'status',
     'title',
     'type',
+    'employerId',
   ],
   InputType,
 ) {

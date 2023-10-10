@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 import { AddressOrderByWithRelationInput } from 'src/models/addresses/dtos/order-by.args'
 import { CompanyOrderByWithRelationInput } from 'src/models/companies/dtos/order-by.args'
+import { EmployerOrderByWithRelationInput } from 'src/models/employers/dtos/order-by.args'
 import { SubCategoryOrderByRelationAggregateInput } from 'src/models/sub-categories/dtos/order-by.args'
 
 @InputType()
@@ -13,6 +14,9 @@ export class JobOrderByWithRelationInputStrict
       Prisma.JobOrderByWithRelationInput
     >
 {
+  @Field(() => Prisma.SortOrder)
+  employerId: Prisma.SortOrder
+  Employer: EmployerOrderByWithRelationInput
   @Field(() => Prisma.SortOrder)
   contactInfo: Prisma.SortOrder
   @Field(() => Prisma.SortOrder)

@@ -22,5 +22,5 @@ export default async function EmployerJobsPage() {
     return <div>No jobs found.</div>
   }
 
-  return <EmployerJobs employerJobs={data.employerJobs} />
+  return <EmployerJobs />
 }

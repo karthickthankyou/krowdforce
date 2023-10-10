@@ -38,6 +38,7 @@ model Employer {
     updatedAt DateTime @updatedAt
     company   Company? @relation(fields: [companyId], references: [id])
     companyId Int?
+    Job       Job[]
 }
 
 model Employee {
@@ -51,12 +52,13 @@ model Employee {
 }
 
 model Company {
-    id        Int        @id @default(autoincrement())
-    name      String
-    Employer  Employer[]
-    Job       Job[]
-    addressId Int?
-    address   Address?   @relation(fields: [addressId], references: [id])
+    id          Int        @id @default(autoincrement())
+    name        String
+    description String?
+    Employer    Employer[]
+    Job         Job[]
+    addressId   Int?
+    address     Address?   @relation(fields: [addressId], references: [id])
 }
 
 model Job {
@@ -78,8 +80,10 @@ model Job {
 
     contactInfo String?
 
-    Company   Company @relation(fields: [companyId], references: [id])
-    companyId Int
+    Company    Company   @relation(fields: [companyId], references: [id])
+    companyId  Int
+    Employer   Employer? @relation(fields: [employerId], references: [uid])
+    employerId String?
 }
 
 model Address {

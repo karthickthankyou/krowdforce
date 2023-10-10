@@ -18,7 +18,7 @@ import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { Popup, ViewStateChangeEvent } from 'react-map-gl'
 import { fetchGraphQLNoAuth } from '../../app/util/fetchNoAuth'
 import { buttonVariants } from '../atoms/button'
-import Pagination from '../atoms/pagination'
+import { Pagination } from '../atoms/pagination'
 import { Description, Title } from '../atoms/typography'
 import { Map } from '../organisms/Map'
 import { Marker } from '../organisms/Map/MapMarker'
@@ -68,7 +68,7 @@ export const SearchJobs = ({ jobs }: { jobs: SearchJobsQuery }) => {
 
   useEffect(() => {
     setSkip(0)
-  }, [skills])
+  }, [skills, bounds])
 
   const handleMapChange = useCallback(
     (target: ViewStateChangeEvent['target']) => {
@@ -95,7 +95,8 @@ export const SearchJobs = ({ jobs }: { jobs: SearchJobsQuery }) => {
       >
         <Panel position="center-bottom">
           {loading ? <Loader className="animate-spin" /> : null}
-          {jobResults?.jobAggregate.count ? (
+          {jobResults?.jobAggregate.count === 0 ? <div>No Results</div> : null}
+          {jobResults?.jobAggregate.count > ITEMS_PER_PAGE ? (
             <Pagination
               skip={skip}
               totalResults={jobResults?.jobAggregate.count}
@@ -103,9 +104,7 @@ export const SearchJobs = ({ jobs }: { jobs: SearchJobsQuery }) => {
                 setSkip((page - 1) * ITEMS_PER_PAGE)
               }}
             />
-          ) : (
-            <div>No results.</div>
-          )}
+          ) : null}
         </Panel>
         <Panel position="left-top">
           <SetCity />
@@ -147,7 +146,9 @@ export const MarkerWithPopup = ({
           <PopupContent onClose={() => setShowPopup(false)}>
             <div className="p-1 space-y-2">
               <Title>{marker.title}</Title>
-              <Description>{marker.description}</Description>
+              <Description className={'max-w-md line-clamp-4'}>
+                {marker.description}
+              </Description>
               <TitleValue title="Company">{marker.company.name}</TitleValue>
               <div className="grid grid-cols-2 gap-1">
                 <TitleValue title="Status">{marker.status}</TitleValue>

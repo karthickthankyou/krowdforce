@@ -1,6 +1,5 @@
 'use client'
-import { FormTypeCreateEmployer } from '@krowdforce/forms/createEmployer'
-import { createEmployer } from '@krowdforce/web/src/actions/createEmployer'
+import { FormTypeCreateCompany } from '@krowdforce/forms/createEmployer'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { Map } from './Map'
@@ -20,31 +19,29 @@ import { Input } from '../atoms/input'
 import { SearchPlace } from '../molecules/ComboBox'
 import { Marker } from './Map/MapMarker'
 import { Panel } from './Map/Panel'
+import { createCompany } from '../../actions/createCompany'
 
-export const BecomeEmployer = () => {
+export const CreateCompany = () => {
   const { register, handleSubmit, reset, setValue } =
-    useFormContext<FormTypeCreateEmployer>()
-
-  const { data: userData } = useSession()
-
-  if (!userData?.user?.uid) {
-    return <Link href="/api/auth/signin">Sign in</Link>
-  }
-
-  const userUID = userData.user.uid
+    useFormContext<FormTypeCreateCompany>()
 
   return (
     <div className="grid grid-cols-2 gap-2">
       <form
-        onSubmit={handleSubmit(async ({ companyName, address }) => {
-          await createEmployer({ companyName, uid: userUID, address })
+        onSubmit={handleSubmit(async ({ name, description, address }) => {
+          await createCompany({ name, address, description })
           reset()
         })}
         className="space-y-2"
       >
         <h1 className="mb-2 text-lg font-semibold">Create company</h1>
-        <Input {...register('companyName')} placeholder="Company name" />
-        <Input {...register('address.address')} placeholder="Full address" />
+        <Input {...register('name')} placeholder="Company name" />
+        <Input {...register('description')} placeholder="Company description" />
+        <Input
+          type="text"
+          {...register('address.address')}
+          placeholder="Full address"
+        />
         <Button type="submit">Submit</Button>
       </form>
       <Map initialViewState={initialViewState}>
@@ -80,8 +77,8 @@ export const MapMarker = ({
   initialLocation?: ViewState
   Icon?: (props: TablerIconsProps) => JSX.Element
 }) => {
-  const { setValue } = useFormContext<FormTypeCreateEmployer>()
-  const { address } = useWatch<FormTypeCreateEmployer>()
+  const { setValue } = useFormContext<FormTypeCreateCompany>()
+  const { address } = useWatch<FormTypeCreateCompany>()
   useEffect(() => {
     if (initialLocation) {
       const { latitude, longitude } = initialLocation

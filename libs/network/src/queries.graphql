@@ -47,6 +47,7 @@ query EmployerMe {
     }
     company {
       name
+      description
       address {
         address
         lat
@@ -59,6 +60,56 @@ query EmployerMe {
 mutation createEmployer($createEmployerInput: CreateEmployerInput!) {
   createEmployer(createEmployerInput: $createEmployerInput) {
     uid
+  }
+}
+
+fragment employerJobDetails on Job {
+  id
+  salary
+  skills {
+    name
+    category {
+      name
+    }
+  }
+  address {
+    address
+    lat
+    lng
+  }
+  company {
+    name
+    address {
+      address
+      lat
+      lng
+    }
+  }
+  description
+  end
+  start
+  status
+  title
+  type
+}
+
+query CompanyJobs(
+  $skip: Int
+  $take: Int
+  $cursor: JobWhereUniqueInput
+  $orderBy: [JobOrderByWithRelationInput!]
+  $where: JobWhereInput
+  $distinct: [JobScalarFieldEnum!]
+) {
+  companyJobs(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+    distinct: $distinct
+  ) {
+    ...employerJobDetails
   }
 }
 
@@ -78,33 +129,7 @@ query EmployerJobs(
     where: $where
     distinct: $distinct
   ) {
-    id
-    salary
-    skills {
-      name
-      category {
-        name
-      }
-    }
-    address {
-      address
-      lat
-      lng
-    }
-    company {
-      name
-      address {
-        address
-        lat
-        lng
-      }
-    }
-    description
-    end
-    start
-    status
-    title
-    type
+    ...employerJobDetails
   }
 }
 
@@ -207,5 +232,64 @@ query Job($where: JobWhereUniqueInput) {
       lat
       lng
     }
+    employer {
+      uid
+      user {
+        image
+        name
+      }
+    }
+  }
+}
+
+query Company($where: CompanyWhereUniqueInput) {
+  company(where: $where) {
+    id
+    name
+    description
+    address {
+      lat
+      lng
+      address
+    }
+    jobs {
+      id
+      title
+      status
+      type
+      skills {
+        name
+      }
+    }
+    employers {
+      uid
+      user {
+        name
+        image
+      }
+    }
+  }
+}
+
+query CompanyEmployers {
+  companyEmployers {
+    createdAt
+    user {
+      name
+      image
+      uid
+    }
+  }
+}
+
+mutation addEmployer($addEmployerInput: AddEmployerInput!) {
+  addEmployer(addEmployerInput: $addEmployerInput) {
+    id
+  }
+}
+
+mutation createCompany($createCompanyInput: CreateCompanyInput!) {
+  createCompany(createCompanyInput: $createCompanyInput) {
+    id
   }
 }
