@@ -1,13 +1,14 @@
 import './globals.css'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { Toaster } from '@krowdforce/ui/src/components/ui/toaster'
-import { Header } from '@krowdforce/ui/src/components/molecules/Header'
-const inter = Inter({ subsets: ['latin'] })
-import { ThemeProvider } from '@krowdforce/ui/src/components/theme-provider'
-import AuthProvider from '../components/AuthProvider'
-import { Container } from '@krowdforce/ui/src/components/atoms/Container'
+
+import AuthProvider from '../components/organisms/AuthProvider'
+import { ThemeProvider } from '../components/organisms/theme-provider'
+import { Container } from '../components/atoms/container'
+import { Header } from '../components/molecules/Header'
+import { Toaster } from '../components/atoms/toaster'
+import { cn } from '../util'
+import { fontSans } from '../util/fonts'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -21,7 +22,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={inter.className}>
+      <body
+        className={cn(
+          'min-h-screen bg-background font-sans antialiased',
+          fontSans.variable,
+        )}
+      >
         <AuthProvider>
           <ThemeProvider attribute='class' defaultTheme='light'>
             <Header />

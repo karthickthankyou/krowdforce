@@ -1,9 +1,8 @@
 'use client'
 import Link from 'next/link'
-import { Map } from '../organisms/Map'
-import { Panel } from '../organisms/Map/Panel'
+
 import { initialBounds, initialViewState } from '@krowdforce/util/constants'
-import { SetCity } from '../organisms/SetCity'
+
 import {
   SearchJobsDocument,
   SearchJobsQuery,
@@ -16,7 +15,9 @@ import { fetchGraphQLNoAuth } from '@krowdforce/web/src/app/util/fetchNoAuth'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { Popup, ViewStateChangeEvent } from 'react-map-gl'
 import { useKeypress } from '@krowdforce/util'
-
+import { SetCity } from '../organisms/SetCity'
+import { Map } from '../organisms/Map'
+import { Panel } from '../organisms/Map/Panel'
 export const SearchJobs = ({
   searchJobs,
 }: {
@@ -178,7 +179,7 @@ export const TitleValue = ({
 }) => {
   if (!children) return null
   return (
-    <div>
+    <div className='text-black'>
       <div className='text-xs font-bold'>{title}</div>
       <div>{children}</div>
     </div>

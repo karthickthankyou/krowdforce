@@ -3,8 +3,8 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { fetchGraphQLInfer } from '../util/fetch'
-import { BecomeEmployer } from '@krowdforce/ui/src/components/organisms/BecomeEmployer'
 import { FormProviderCreateEmployer } from '@krowdforce/forms/createEmployer'
+import { BecomeEmployer } from '../../components/organisms/BecomeEmployer'
 
 export default async function EmployerLayout({
   children,

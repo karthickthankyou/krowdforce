@@ -1,7 +1,6 @@
 'use client'
 import { signIn, useSession, signOut } from 'next-auth/react'
-
-import { Button } from '@krowdforce/ui/src/components/ui/button'
+import { Button } from '../../components/atoms/button'
 
 export default function SignIn() {
   const { data, status, update } = useSession()

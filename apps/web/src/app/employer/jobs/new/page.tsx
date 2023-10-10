@@ -1,10 +1,10 @@
 import { FormProviderCreateJob } from '@krowdforce/forms/createJob'
-import { NewJob } from '@krowdforce/ui/src/components/templates/NewJob'
 import { fetchGraphQLInfer } from '../../../util/fetch'
 import {
   EmployerCompanyDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
+import { NewJob } from '../../../../components/templates/NewJob'
 
 export default async function JobsByEmployerPage() {
   const { data, error } = await fetchGraphQLInfer(
