@@ -73,6 +73,5 @@ export const FIRST_PAGE = 1
 
 export const CompanyTabChoices = {
   Jobs: 'Jobs',
-  PostedByMe: 'PostedByMe',
   Employers: 'Employers',
 }

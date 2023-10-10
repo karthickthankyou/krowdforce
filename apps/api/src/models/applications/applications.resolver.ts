@@ -46,6 +46,18 @@ export class ApplicationsResolver {
     return this.applicationsService.findAll(args)
   }
 
+  @AllowAuthenticated()
+  @Query(() => [Application], { name: 'myApplications' })
+  myApplications(
+    @Args() args: FindManyApplicationArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    return this.applicationsService.findAll({
+      ...args,
+      where: { ...args.where, employeeId: { equals: user.uid } },
+    })
+  }
+
   @Query(() => Application, { name: 'application' })
   findOne(@Args() args: FindUniqueApplicationArgs) {
     return this.applicationsService.findOne(args)

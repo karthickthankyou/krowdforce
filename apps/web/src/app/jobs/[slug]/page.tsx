@@ -1,11 +1,8 @@
 import { JobDocument } from '@krowdforce/network/src/generated'
-import Image from 'next/image'
-import { Badge } from '../../../components/atoms/badge'
-import { Separator } from '../../../components/atoms/separator'
-import { Title3 } from '../../../components/atoms/typography'
 import { fetchGraphQLInfer } from '../../util/fetch'
+import { JobPage } from '../../../components/templates/JobPage'
 
-export default async function JobPage({
+export default async function JobPagePage({
   params,
 }: {
   params: { slug: string }
@@ -17,64 +14,9 @@ export default async function JobPage({
   })
 
   const job = data.data?.job
-  console.log('!data?.job', job)
+  if (!job?.id) {
+    return <div>Job not found.</div>
+  }
 
-  return (
-    <div className="space-y-4 mt-2">
-      <div>
-        <div className="font-semibold text-xl mb-2">{job?.title}</div>
-        <div className=" mb-2 max-w-sm text-sm">{job?.description}</div>
-        <div className="text-gray-500 text-sm">
-          {new Date(job?.createdAt).toLocaleDateString()}
-        </div>
-      </div>
-      <div className="mb-4">
-        <Title3>Posted by</Title3>
-        <div className="flex gap-2 items-center">
-          <Image
-            width={100}
-            height={100}
-            src={job?.employer?.user.image || ''}
-            className="rounded-full w-8 h-8"
-            alt=""
-          />
-          {job?.employer?.user.name}
-        </div>
-      </div>
-      <div className="text-gray-600 mb-4">{job?.company.name}</div>
-
-      <div className="mb-2">
-        <Title3>Salary</Title3>
-        {job?.salary || 'Unspecified'}
-        DS
-      </div>
-
-      <div className="mb-4">
-        <Title3>Type</Title3>
-        {job?.type.split('_').join(' ')}
-      </div>
-
-      <div className="mb-2">
-        <Title3>Skills</Title3>
-        <div className="flex gap-2">
-          {job?.skills.map((skill) => (
-            <Badge key={skill.name} variant={'outline'}>
-              {skill.name}
-            </Badge>
-          ))}
-        </div>
-      </div>
-
-      <div className="mb-4">
-        <Title3>Location</Title3>
-        {job?.address?.address || job?.company.address.address}
-      </div>
-
-      <div className="mb-4">
-        <Title3>Contact</Title3>
-        {job?.contactInfo || 'Unspecified'}
-      </div>
-      <Separator className="my-6" />
-    </div>
-  )
+  return <JobPage job={job} />
 }

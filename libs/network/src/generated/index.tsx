@@ -889,6 +889,7 @@ export type Query = {
   job: Job
   jobAggregate: AggregateCountOutput
   jobs: Array<Job>
+  myApplications: Array<Application>
   myBookmarks: Array<Bookmark>
   searchJobs: Array<Job>
   subCategories: Array<SubCategory>
@@ -1044,6 +1045,15 @@ export type QueryJobsArgs = {
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
   where?: InputMaybe<JobWhereInput>
+}
+
+export type QueryMyApplicationsArgs = {
+  cursor?: InputMaybe<ApplicationWhereUniqueInput>
+  distinct?: InputMaybe<Array<ApplicationScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ApplicationOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ApplicationWhereInput>
 }
 
 export type QueryMyBookmarksArgs = {
@@ -1731,6 +1741,26 @@ export type RemoveBookmarkMutation = {
   removeBookmark: { __typename?: 'Bookmark'; employeeId: string; jobId: number }
 }
 
+export type JobFragFragment = {
+  __typename?: 'Job'
+  id: number
+  type: JobType
+  title: string
+  status: JobStatus
+  start?: any | null
+  salary?: number | null
+  end?: any | null
+  description: string
+  createdAt: any
+  skills: Array<{ __typename?: 'SubCategory'; name: string }>
+  address?: {
+    __typename?: 'Address'
+    lat: number
+    lng: number
+    address: string
+  } | null
+}
+
 export type MyBookmarksQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
@@ -1770,6 +1800,87 @@ export type MyBookmarksQuery = {
   }>
 }
 
+export type MyApplicationsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<ApplicationWhereUniqueInput>
+  orderBy?: InputMaybe<
+    | Array<ApplicationOrderByWithRelationInput>
+    | ApplicationOrderByWithRelationInput
+  >
+  where?: InputMaybe<ApplicationWhereInput>
+  distinct?: InputMaybe<
+    Array<ApplicationScalarFieldEnum> | ApplicationScalarFieldEnum
+  >
+}>
+
+export type MyApplicationsQuery = {
+  __typename?: 'Query'
+  myApplications: Array<{
+    __typename?: 'Application'
+    job: {
+      __typename?: 'Job'
+      id: number
+      type: JobType
+      title: string
+      status: JobStatus
+      start?: any | null
+      salary?: number | null
+      end?: any | null
+      description: string
+      createdAt: any
+      skills: Array<{ __typename?: 'SubCategory'; name: string }>
+      address?: {
+        __typename?: 'Address'
+        lat: number
+        lng: number
+        address: string
+      } | null
+    }
+  }>
+}
+
+export type CreateApplicationMutationVariables = Exact<{
+  createApplicationInput: CreateApplicationInput
+}>
+
+export type CreateApplicationMutation = {
+  __typename?: 'Mutation'
+  createApplication: {
+    __typename?: 'Application'
+    jobId: number
+    employeeId: string
+    status: ApplicationStatus
+  }
+}
+
+export type RemoveApplicationMutationVariables = Exact<{
+  where?: InputMaybe<ApplicationWhereUniqueInput>
+}>
+
+export type RemoveApplicationMutation = {
+  __typename?: 'Mutation'
+  removeApplication: {
+    __typename?: 'Application'
+    employeeId: string
+    jobId: number
+  }
+}
+
+export type ApplicationQueryVariables = Exact<{
+  where?: InputMaybe<ApplicationWhereUniqueInput>
+}>
+
+export type ApplicationQuery = {
+  __typename?: 'Query'
+  application: {
+    __typename?: 'Application'
+    jobId: number
+    employeeId: string
+    status: ApplicationStatus
+  }
+}
+
 export const namedOperations = {
   Query: {
     Users: 'Users',
@@ -1786,6 +1897,8 @@ export const namedOperations = {
     CompanyEmployers: 'CompanyEmployers',
     Bookmark: 'Bookmark',
     myBookmarks: 'myBookmarks',
+    myApplications: 'myApplications',
+    application: 'application',
   },
   Mutation: {
     CreateUser: 'CreateUser',
@@ -1796,9 +1909,12 @@ export const namedOperations = {
     createCompany: 'createCompany',
     createBookmark: 'createBookmark',
     removeBookmark: 'removeBookmark',
+    createApplication: 'createApplication',
+    removeApplication: 'removeApplication',
   },
   Fragment: {
     employerJobDetails: 'employerJobDetails',
+    jobFrag: 'jobFrag',
   },
 }
 export const EmployerJobDetailsFragmentDoc = /*#__PURE__*/ {
@@ -1884,6 +2000,55 @@ export const EmployerJobDetailsFragmentDoc = /*#__PURE__*/ {
     },
   ],
 } as unknown as DocumentNode<EmployerJobDetailsFragment, unknown>
+export const JobFragFragmentDoc = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'jobFrag' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Job' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'skills' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'start' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'salary' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'end' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'description' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'address' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'lat' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'lng' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'address' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<JobFragFragment, unknown>
 export const UsersDocument = /*#__PURE__*/ {
   kind: 'Document',
   definitions: [
@@ -3898,60 +4063,9 @@ export const MyBookmarksDocument = /*#__PURE__*/ {
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                       {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'status' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'skills' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'name' },
-                            },
-                          ],
-                        },
-                      },
-                      { kind: 'Field', name: { kind: 'Name', value: 'start' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'salary' },
-                      },
-                      { kind: 'Field', name: { kind: 'Name', value: 'end' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'description' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'createdAt' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'address' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'lat' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'lng' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'address' },
-                            },
-                          ],
-                        },
+                        kind: 'FragmentSpread',
+                        name: { kind: 'Name', value: 'jobFrag' },
                       },
                     ],
                   },
@@ -3962,5 +4076,409 @@ export const MyBookmarksDocument = /*#__PURE__*/ {
         ],
       },
     },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'jobFrag' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Job' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'skills' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'start' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'salary' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'end' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'description' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'address' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'lat' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'lng' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'address' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 } as unknown as DocumentNode<MyBookmarksQuery, MyBookmarksQueryVariables>
+export const MyApplicationsDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'myApplications' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'cursor' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'ApplicationWhereUniqueInput' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'orderBy' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: {
+                  kind: 'Name',
+                  value: 'ApplicationOrderByWithRelationInput',
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'ApplicationWhereInput' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'distinct' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'ApplicationScalarFieldEnum' },
+              },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'myApplications' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'cursor' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'cursor' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'orderBy' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'distinct' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'distinct' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'job' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'FragmentSpread',
+                        name: { kind: 'Name', value: 'jobFrag' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'jobFrag' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Job' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'skills' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'start' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'salary' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'end' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'description' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'address' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'lat' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'lng' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'address' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<MyApplicationsQuery, MyApplicationsQueryVariables>
+export const CreateApplicationDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createApplication' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createApplicationInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateApplicationInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createApplication' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createApplicationInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createApplicationInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'jobId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'employeeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateApplicationMutation,
+  CreateApplicationMutationVariables
+>
+export const RemoveApplicationDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'removeApplication' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'ApplicationWhereUniqueInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'removeApplication' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'employeeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'jobId' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  RemoveApplicationMutation,
+  RemoveApplicationMutationVariables
+>
+export const ApplicationDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'application' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'ApplicationWhereUniqueInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'application' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'jobId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'employeeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ApplicationQuery, ApplicationQueryVariables>

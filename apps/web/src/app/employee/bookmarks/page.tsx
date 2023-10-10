@@ -2,9 +2,7 @@ import {
   MyBookmarksDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { initialBounds, ITEMS_PER_PAGE } from '@krowdforce/util/constants'
 import { fetchGraphQLInfer } from '../../util/fetch'
-import { BookmarkButton } from '../../../components/organisms/BookmarkButton'
 import { BookmarkCard } from '../../../components/organisms/BookmarkCard'
 import { Title } from '../../../components/atoms/typography'
 

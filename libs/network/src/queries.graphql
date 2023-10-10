@@ -330,6 +330,26 @@ mutation removeBookmark($where: BookmarkWhereUniqueInput) {
   }
 }
 
+fragment jobFrag on Job {
+  id
+  type
+  title
+  status
+  skills {
+    name
+  }
+  start
+  salary
+  end
+  description
+  createdAt
+  address {
+    lat
+    lng
+    address
+  }
+}
+
 query myBookmarks(
   $skip: Int
   $take: Int
@@ -347,23 +367,52 @@ query myBookmarks(
     distinct: $distinct
   ) {
     job {
-      id
-      type
-      title
-      status
-      skills {
-        name
-      }
-      start
-      salary
-      end
-      description
-      createdAt
-      address {
-        lat
-        lng
-        address
-      }
+      ...jobFrag
     }
+  }
+}
+
+query myApplications(
+  $skip: Int
+  $take: Int
+  $cursor: ApplicationWhereUniqueInput
+  $orderBy: [ApplicationOrderByWithRelationInput!]
+  $where: ApplicationWhereInput
+  $distinct: [ApplicationScalarFieldEnum!]
+) {
+  myApplications(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+    distinct: $distinct
+  ) {
+    job {
+      ...jobFrag
+    }
+  }
+}
+
+mutation createApplication($createApplicationInput: CreateApplicationInput!) {
+  createApplication(createApplicationInput: $createApplicationInput) {
+    jobId
+    employeeId
+    status
+  }
+}
+
+mutation removeApplication($where: ApplicationWhereUniqueInput) {
+  removeApplication(where: $where) {
+    employeeId
+    jobId
+  }
+}
+
+query application($where: ApplicationWhereUniqueInput) {
+  application(where: $where) {
+    jobId
+    employeeId
+    status
   }
 }

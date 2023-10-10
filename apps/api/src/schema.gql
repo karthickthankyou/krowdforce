@@ -172,6 +172,7 @@ type Query {
   subCategories(distinct: [SubCategoryScalarFieldEnum!], where: SubCategoryWhereInput, orderBy: [SubCategoryOrderByWithRelationInput!], cursor: SubCategoryWhereUniqueInput, take: Int, skip: Int): [SubCategory!]!
   subCategory(where: SubCategoryWhereUniqueInput): SubCategory!
   applications(distinct: [ApplicationScalarFieldEnum!], where: ApplicationWhereInput, orderBy: [ApplicationOrderByWithRelationInput!], cursor: ApplicationWhereUniqueInput, take: Int, skip: Int): [Application!]!
+  myApplications(distinct: [ApplicationScalarFieldEnum!], where: ApplicationWhereInput, orderBy: [ApplicationOrderByWithRelationInput!], cursor: ApplicationWhereUniqueInput, take: Int, skip: Int): [Application!]!
   application(where: ApplicationWhereUniqueInput): Application!
   bookmarks(distinct: [BookmarkScalarFieldEnum!], where: BookmarkWhereInput, orderBy: [BookmarkOrderByWithRelationInput!], cursor: BookmarkWhereUniqueInput, take: Int, skip: Int): [Bookmark!]!
   myBookmarks(distinct: [BookmarkScalarFieldEnum!], where: BookmarkWhereInput, orderBy: [BookmarkOrderByWithRelationInput!], cursor: BookmarkWhereUniqueInput, take: Int, skip: Int): [Bookmark!]!
