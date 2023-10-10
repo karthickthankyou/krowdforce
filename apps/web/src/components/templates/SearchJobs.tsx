@@ -1,18 +1,24 @@
 'use client'
 import Link from 'next/link'
 
-import { initialBounds, initialViewState } from '@krowdforce/util/constants'
+import {
+  initialBounds,
+  initialViewState,
+  ITEMS_PER_PAGE,
+} from '@krowdforce/util/constants'
 
 import {
   SearchJobsDocument,
   SearchJobsQuery,
 } from '@krowdforce/network/src/generated'
 import { useKeypress } from '@krowdforce/util'
-import { fetchGraphQLNoAuth } from '@krowdforce/web/src/app/util/fetchNoAuth'
 import { IconPick, IconX } from '@tabler/icons-react'
+import { Loader } from 'lucide-react'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { Popup, ViewStateChangeEvent } from 'react-map-gl'
+import { fetchGraphQLNoAuth } from '../../app/util/fetchNoAuth'
 import { buttonVariants } from '../atoms/button'
+import Pagination from '../atoms/pagination'
 import { Description, Title } from '../atoms/typography'
 import { Map } from '../organisms/Map'
 import { Marker } from '../organisms/Map/MapMarker'
@@ -20,38 +26,50 @@ import { Panel } from '../organisms/Map/Panel'
 import { DefaultZoomControls } from '../organisms/Map/ZoomControls/ZoomControls'
 import { SetCity } from '../organisms/SetCity'
 import { SelectMultiSkills } from './NewJob'
-export const SearchJobs = ({
-  searchJobs,
-}: {
-  searchJobs: SearchJobsQuery['searchJobs']
-}) => {
-  const [jobResults, setJobResults] = useState<SearchJobsQuery['searchJobs']>(
-    () => searchJobs,
-  )
+
+export const SearchJobs = ({ jobs }: { jobs: SearchJobsQuery }) => {
+  const [jobResults, setJobResults] = useState<SearchJobsQuery>(() => jobs)
   const [skills, setSkills] = useState<string[]>([])
   const [bounds, setBounds] = useState(() => initialBounds)
+  const [skip, setSkip] = useState(0)
+
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    console.log('bounds ', bounds)
-    // eslint-disable-next-line no-extra-semi
-    ;(async () => {
-      console.log('skills', skills)
-      const jobs = await fetchGraphQLNoAuth(SearchJobsDocument, {
-        locationFilter: bounds,
-        jobFilter: {
-          where: {
-            ...(skills.length
-              ? { skills: { some: { name: { in: skills } } } }
-              : null),
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const take = ITEMS_PER_PAGE
+        const response = await fetchGraphQLNoAuth(SearchJobsDocument, {
+          locationFilter: bounds || initialBounds,
+          jobFilter: {
+            skip,
+            take,
+            where: {
+              ...(skills.length
+                ? { skills: { some: { name: { in: skills } } } }
+                : null),
+            },
           },
-        },
-      })
-      setJobResults(jobs.data?.searchJobs || [])
-      console.log('jobs ', jobs)
-    })()
-  }, [bounds, skills])
+        })
 
-  console.log('searchJobs', searchJobs)
+        setJobResults(
+          response.data || { jobAggregate: { count: 0 }, searchJobs: [] },
+        )
+      } catch (error) {
+        console.error('Error fetching jobs:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [skip, bounds, skills])
+
+  useEffect(() => {
+    setSkip(0)
+  }, [skills])
+
   const handleMapChange = useCallback(
     (target: ViewStateChangeEvent['target']) => {
       const bounds = target.getBounds()
@@ -62,10 +80,10 @@ export const SearchJobs = ({
         sw_lat: bounds?.getSouthWest().lat || 0,
         sw_lng: bounds?.getSouthWest().lng || 0,
       }
-      //   console.log('locationFilter', locationFilter)
+      console.log('locationFilter', locationFilter)
       setBounds(locationFilter)
     },
-    [],
+    [setBounds],
   )
   return (
     <div>
@@ -75,6 +93,20 @@ export const SearchJobs = ({
         onZoomEnd={(e) => handleMapChange(e.target)}
         onDragEnd={(e) => handleMapChange(e.target)}
       >
+        <Panel position="center-bottom">
+          {loading ? <Loader className="animate-spin" /> : null}
+          {jobResults?.jobAggregate.count ? (
+            <Pagination
+              skip={skip}
+              totalResults={jobResults?.jobAggregate.count}
+              onPageChange={(page) => {
+                setSkip((page - 1) * ITEMS_PER_PAGE)
+              }}
+            />
+          ) : (
+            <div>No results.</div>
+          )}
+        </Panel>
         <Panel position="left-top">
           <SetCity />
         </Panel>
@@ -84,7 +116,7 @@ export const SearchJobs = ({
         <Panel position="right-center">
           <DefaultZoomControls />
         </Panel>
-        {jobResults.map((job) => (
+        {jobResults?.searchJobs.map((job) => (
           <MarkerWithPopup marker={job} key={job.id} />
         ))}
       </Map>

@@ -2,63 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  name: String
-  image: String
-  uid: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  employee: Employee!
-  employer: Employer!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type Employee {
-  uid: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  user: User!
-  skills: [SubCategory!]!
-}
-
-type Employer {
-  uid: String!
-  companyId: Int
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  user: User!
-  company: Company!
-}
-
-type SubCategory {
-  name: String!
-  categoryName: String!
-  jobs: [Job!]!
-  employees: [Employee!]!
-  category: Category!
-}
-
-type Company {
-  addressId: Int!
-  id: Int!
-  name: String!
-  address: Address!
-}
-
-type Address {
-  lat: Float!
-  lng: Float!
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  address: String!
-  jobs: [Job!]!
-}
-
 type Job {
   contactInfo: String
   addressId: Int
@@ -90,15 +33,76 @@ enum JobType {
   CONTRACT
 }
 
-type Category {
-  name: String!
-  subCategories: [SubCategory!]!
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Address {
+  lat: Float!
+  lng: Float!
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  address: String!
+  jobs: [Job!]!
+}
+
+type AggregateCountOutput {
+  count: Int!
 }
 
 type Admin {
   uid: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+type SubCategory {
+  name: String!
+  categoryName: String!
+  jobs: [Job!]!
+  employees: [Employee!]!
+  category: Category!
+}
+
+type Category {
+  name: String!
+  subCategories: [SubCategory!]!
+}
+
+type Company {
+  addressId: Int!
+  id: Int!
+  name: String!
+  address: Address!
+}
+
+type User {
+  name: String
+  image: String
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  employee: Employee!
+  employer: Employer!
+}
+
+type Employee {
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+  skills: [SubCategory!]!
+}
+
+type Employer {
+  uid: String!
+  companyId: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+  company: Company!
 }
 
 type Query {
@@ -116,6 +120,7 @@ type Query {
   employerCompany: Company!
   jobs(distinct: [JobScalarFieldEnum!], where: JobWhereInput, orderBy: [JobOrderByWithRelationInput!], cursor: JobWhereUniqueInput, take: Int, skip: Int): [Job!]!
   searchJobs(locationFilter: LocationFilterInput!, jobFilter: JobFilter): [Job!]!
+  jobAggregate(jobFilter: JobFilter, locationFilter: LocationFilterInput!): AggregateCountOutput!
   employerJobs(distinct: [JobScalarFieldEnum!], where: JobWhereInput, orderBy: [JobOrderByWithRelationInput!], cursor: JobWhereUniqueInput, take: Int, skip: Int): [Job!]!
   job(where: JobWhereUniqueInput): Job!
   addresses(distinct: [AddressScalarFieldEnum!], where: AddressWhereInput, orderBy: [AddressOrderByWithRelationInput!], cursor: AddressWhereUniqueInput, take: Int, skip: Int): [Address!]!

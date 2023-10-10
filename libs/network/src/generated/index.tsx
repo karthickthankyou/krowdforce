@@ -114,6 +114,11 @@ export type AdminWhereUniqueInput = {
   uid: Scalars['String']
 }
 
+export type AggregateCountOutput = {
+  __typename?: 'AggregateCountOutput'
+  count: Scalars['Int']
+}
+
 export type Category = {
   __typename?: 'Category'
   name: Scalars['String']
@@ -668,6 +673,7 @@ export type Query = {
   employerMe: Employer
   employers: Array<Employer>
   job: Job
+  jobAggregate: AggregateCountOutput
   jobs: Array<Job>
   searchJobs: Array<Job>
   subCategories: Array<SubCategory>
@@ -765,6 +771,11 @@ export type QueryEmployersArgs = {
 
 export type QueryJobArgs = {
   where?: InputMaybe<JobWhereUniqueInput>
+}
+
+export type QueryJobAggregateArgs = {
+  jobFilter?: InputMaybe<JobFilter>
+  locationFilter: LocationFilterInput
 }
 
 export type QueryJobsArgs = {
@@ -1190,6 +1201,7 @@ export type SearchJobsQuery = {
       address: string
     } | null
   }>
+  jobAggregate: { __typename?: 'AggregateCountOutput'; count: number }
 }
 
 export type JobQueryVariables = Exact<{
@@ -2197,6 +2209,34 @@ export const SearchJobsDocument = /*#__PURE__*/ {
                 { kind: 'Field', name: { kind: 'Name', value: 'status' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'jobAggregate' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'locationFilter' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'locationFilter' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'jobFilter' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'jobFilter' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
               ],
             },
           },

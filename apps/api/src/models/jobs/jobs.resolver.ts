@@ -17,7 +17,10 @@ import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { LocationFilterInput } from 'src/common/dtos/common.input'
+import {
+  AggregateCountOutput,
+  LocationFilterInput,
+} from 'src/common/dtos/common.input'
 import { GetUserType } from 'src/common/types'
 import { Address } from '../addresses/entity/address.entity'
 import { Company } from '../companies/entity/company.entity'
@@ -50,7 +53,7 @@ export class JobsResolver {
       console.log('locationFilter', locationFilter)
       const { where = {}, ...jobFilter } = args || {}
 
-      return this.prisma.job.findMany({
+      const jobs = await this.prisma.job.findMany({
         ...jobFilter,
         where: {
           ...where,
@@ -63,10 +66,36 @@ export class JobsResolver {
           },
         },
       })
+      console.log('jobs ', where, args.skip, args.take, jobs)
+      return jobs
     } catch (error) {
       console.error('Error in searchJobs:', error)
       throw new Error('Error in searchJobs: ' + error.message)
     }
+  }
+
+  @Query(() => AggregateCountOutput, { name: 'jobAggregate' })
+  async jobAggregate(
+    @Args('jobFilter', { nullable: true }) { where }: JobFilter,
+    @Args('locationFilter') locationFilter: LocationFilterInput,
+  ) {
+    const { ne_lat, ne_lng, sw_lat, sw_lng } = locationFilter
+
+    const jobsCount = await this.prisma.job.aggregate({
+      _count: { _all: true },
+      where: {
+        ...where,
+        address: {
+          lat: { lte: ne_lat, gte: sw_lat },
+          lng: { lte: ne_lng, gte: sw_lng },
+        },
+        status: {
+          equals: 'OPEN',
+        },
+      },
+    })
+
+    return { count: jobsCount._count._all }
   }
 
   @AllowAuthenticated()

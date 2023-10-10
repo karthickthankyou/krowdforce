@@ -172,6 +172,10 @@ query SearchJobs($locationFilter: LocationFilterInput!, $jobFilter: JobFilter) {
     title
     type
   }
+
+  jobAggregate(locationFilter: $locationFilter, jobFilter: $jobFilter) {
+    count
+  }
 }
 
 query Job($where: JobWhereUniqueInput) {

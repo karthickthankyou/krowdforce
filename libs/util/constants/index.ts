@@ -67,3 +67,6 @@ export const initialBounds = {
   sw_lat: 10.801454608662539,
   sw_lng: 77.79553938075622,
 }
+
+export const ITEMS_PER_PAGE = 2
+export const FIRST_PAGE = 1
