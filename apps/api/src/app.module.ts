@@ -17,6 +17,8 @@ import { EmployersModule } from './models/employers/employers.module'
 import { JobsModule } from './models/jobs/jobs.module'
 import { SubCategoriesModule } from './models/sub-categories/sub-categories.module'
 import { UsersModule } from './models/users/users.module'
+import { ApplicationsModule } from './models/applications/applications.module'
+import { BookmarksModule } from './models/bookmarks/bookmarks.module'
 
 @Module({
   imports: [
@@ -31,6 +33,7 @@ import { UsersModule } from './models/users/users.module'
       introspection: true,
     }),
 
+    AuthModule,
     PrismaModule,
 
     UsersModule,
@@ -42,7 +45,9 @@ import { UsersModule } from './models/users/users.module'
     AddressesModule,
     CategoriesModule,
     SubCategoriesModule,
-    AuthModule,
+
+    ApplicationsModule,
+    BookmarksModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtService],

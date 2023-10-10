@@ -14,6 +14,8 @@ import { FindManyEmployeeArgs, FindUniqueEmployeeArgs } from './dtos/find.args'
 import { UpdateEmployeeInput } from './dtos/update-employee.input'
 import { EmployeesService } from './employees.service'
 import { Employee } from './entity/employee.entity'
+import { Application } from '../applications/entity/application.entity'
+import { Bookmark } from '../bookmarks/entity/bookmark.entity'
 
 @Resolver(() => Employee)
 export class EmployeesResolver {
@@ -56,6 +58,20 @@ export class EmployeesResolver {
   skills(@Parent() parent: User) {
     return this.prisma.subCategory.findMany({
       where: { employees: { some: { uid: parent.uid } } },
+    })
+  }
+
+  @ResolveField(() => [Application])
+  applications(@Parent() parent: User) {
+    return this.prisma.application.findMany({
+      where: { employeeId: parent.uid },
+    })
+  }
+
+  @ResolveField(() => [Bookmark])
+  bookmarks(@Parent() parent: User) {
+    return this.prisma.bookmark.findMany({
+      where: { employeeId: parent.uid },
     })
   }
 }

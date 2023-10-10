@@ -21,6 +21,8 @@ type Job {
   skills: [SubCategory!]!
   company: Company!
   employer: Employer
+  applications: [Application!]!
+  bookmarks: [Bookmark!]!
 }
 
 enum JobStatus {
@@ -109,6 +111,37 @@ type Employee {
   updatedAt: DateTime!
   user: User!
   skills: [SubCategory!]!
+  applications: [Application!]!
+  bookmarks: [Bookmark!]!
+}
+
+type Application {
+  status: ApplicationStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  employeeId: String!
+  jobId: Int!
+  employee: Employee!
+  job: Job!
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  INTERVIEWED
+  OFFERED
+  REJECTED
+  ACCEPTED
+  WITHDRAW
+}
+
+type Bookmark {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  employeeId: String!
+  jobId: Int!
+  employee: Employee!
+  job: Job!
 }
 
 type Query {
@@ -137,6 +170,10 @@ type Query {
   category(where: CategoryWhereUniqueInput): Category!
   subCategories(distinct: [SubCategoryScalarFieldEnum!], where: SubCategoryWhereInput, orderBy: [SubCategoryOrderByWithRelationInput!], cursor: SubCategoryWhereUniqueInput, take: Int, skip: Int): [SubCategory!]!
   subCategory(where: SubCategoryWhereUniqueInput): SubCategory!
+  applications(distinct: [ApplicationScalarFieldEnum!], where: ApplicationWhereInput, orderBy: [ApplicationOrderByWithRelationInput!], cursor: ApplicationWhereUniqueInput, take: Int, skip: Int): [Application!]!
+  application(where: ApplicationWhereUniqueInput): Application!
+  bookmarks(distinct: [BookmarkScalarFieldEnum!], where: BookmarkWhereInput, orderBy: [BookmarkOrderByWithRelationInput!], cursor: BookmarkWhereUniqueInput, take: Int, skip: Int): [Bookmark!]!
+  bookmark(where: BookmarkWhereUniqueInput): Bookmark!
 }
 
 enum UserScalarFieldEnum {
@@ -197,6 +234,8 @@ input EmployeeRelationFilter {
 }
 
 input EmployeeWhereInput {
+  Bookmark: BookmarkListRelationFilter
+  Application: ApplicationListRelationFilter
   uid: StringFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -207,56 +246,42 @@ input EmployeeWhereInput {
   NOT: [EmployeeWhereInput!]
 }
 
-input UserRelationFilter {
-  is: UserWhereInput
-  isNot: UserWhereInput
+input BookmarkListRelationFilter {
+  every: BookmarkWhereInput
+  some: BookmarkWhereInput
+  none: BookmarkWhereInput
 }
 
-input SubCategoryListRelationFilter {
-  every: SubCategoryWhereInput
-  some: SubCategoryWhereInput
-  none: SubCategoryWhereInput
+input BookmarkWhereInput {
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  employeeId: StringFilter
+  jobId: IntFilter
+  employee: EmployeeRelationFilter
+  job: JobRelationFilter
+  AND: [BookmarkWhereInput!]
+  OR: [BookmarkWhereInput!]
+  NOT: [BookmarkWhereInput!]
 }
 
-input SubCategoryWhereInput {
-  name: StringFilter
-  categoryName: StringFilter
-  category: CategoryRelationFilter
-  employees: EmployeeListRelationFilter
-  jobs: JobListRelationFilter
-  AND: [SubCategoryWhereInput!]
-  OR: [SubCategoryWhereInput!]
-  NOT: [SubCategoryWhereInput!]
+input IntFilter {
+  equals: Int
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
 }
 
-input CategoryRelationFilter {
-  is: CategoryWhereInput
-  isNot: CategoryWhereInput
-}
-
-input CategoryWhereInput {
-  name: StringFilter
-  subCategories: SubCategoryListRelationFilter
-  AND: [CategoryWhereInput!]
-  OR: [CategoryWhereInput!]
-  NOT: [CategoryWhereInput!]
-}
-
-input EmployeeListRelationFilter {
-  every: EmployeeWhereInput
-  some: EmployeeWhereInput
-  none: EmployeeWhereInput
-}
-
-input JobListRelationFilter {
-  every: JobWhereInput
-  some: JobWhereInput
-  none: JobWhereInput
+input JobRelationFilter {
+  is: JobWhereInput
+  isNot: JobWhereInput
 }
 
 input JobWhereInput {
   status: JobStatus
   type: JobType
+  Bookmark: BookmarkListRelationFilter
+  Application: ApplicationListRelationFilter
   employerId: StringFilter
   Employer: EmployerRelationFilter
   contactInfo: StringFilter
@@ -278,6 +303,25 @@ input JobWhereInput {
   NOT: [JobWhereInput!]
 }
 
+input ApplicationListRelationFilter {
+  every: ApplicationWhereInput
+  some: ApplicationWhereInput
+  none: ApplicationWhereInput
+}
+
+input ApplicationWhereInput {
+  status: ApplicationStatus
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  employeeId: StringFilter
+  jobId: IntFilter
+  employee: EmployeeRelationFilter
+  job: JobRelationFilter
+  AND: [ApplicationWhereInput!]
+  OR: [ApplicationWhereInput!]
+  NOT: [ApplicationWhereInput!]
+}
+
 input EmployerRelationFilter {
   is: EmployerWhereInput
   isNot: EmployerWhereInput
@@ -296,12 +340,10 @@ input EmployerWhereInput {
   NOT: [EmployerWhereInput!]
 }
 
-input IntFilter {
-  equals: Int
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
+input JobListRelationFilter {
+  every: JobWhereInput
+  some: JobWhereInput
+  none: JobWhereInput
 }
 
 input CompanyRelationFilter {
@@ -362,6 +404,47 @@ input EmployerListRelationFilter {
   none: EmployerWhereInput
 }
 
+input UserRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
+input SubCategoryListRelationFilter {
+  every: SubCategoryWhereInput
+  some: SubCategoryWhereInput
+  none: SubCategoryWhereInput
+}
+
+input SubCategoryWhereInput {
+  name: StringFilter
+  categoryName: StringFilter
+  category: CategoryRelationFilter
+  employees: EmployeeListRelationFilter
+  jobs: JobListRelationFilter
+  AND: [SubCategoryWhereInput!]
+  OR: [SubCategoryWhereInput!]
+  NOT: [SubCategoryWhereInput!]
+}
+
+input CategoryRelationFilter {
+  is: CategoryWhereInput
+  isNot: CategoryWhereInput
+}
+
+input CategoryWhereInput {
+  name: StringFilter
+  subCategories: SubCategoryListRelationFilter
+  AND: [CategoryWhereInput!]
+  OR: [CategoryWhereInput!]
+  NOT: [CategoryWhereInput!]
+}
+
+input EmployeeListRelationFilter {
+  every: EmployeeWhereInput
+  some: EmployeeWhereInput
+  none: EmployeeWhereInput
+}
+
 input AdminRelationFilter {
   is: AdminWhereInput
   isNot: AdminWhereInput
@@ -397,8 +480,18 @@ input EmployeeOrderByWithRelationInput {
   uid: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
+  Bookmark: BookmarkOrderByRelationAggregateInput
+  Application: ApplicationOrderByRelationAggregateInput
   user: UserOrderByWithRelationInput
   skills: SubCategoryOrderByRelationAggregateInput
+}
+
+input BookmarkOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ApplicationOrderByRelationAggregateInput {
+  _count: SortOrder
 }
 
 input SubCategoryOrderByRelationAggregateInput {
@@ -533,6 +626,8 @@ input JobOrderByWithRelationInput {
   start: SortOrder
   end: SortOrder
   salary: SortOrder
+  Bookmark: BookmarkOrderByRelationAggregateInput
+  Application: ApplicationOrderByRelationAggregateInput
   Employer: EmployerOrderByWithRelationInput
   Company: CompanyOrderByWithRelationInput
   skills: SubCategoryOrderByRelationAggregateInput
@@ -604,6 +699,53 @@ input SubCategoryWhereUniqueInput {
   name: String!
 }
 
+enum ApplicationScalarFieldEnum {
+  createdAt
+  updatedAt
+  employeeId
+  jobId
+  status
+}
+
+input ApplicationOrderByWithRelationInput {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  employeeId: SortOrder
+  jobId: SortOrder
+  status: SortOrder
+  employee: EmployeeOrderByWithRelationInput
+  job: JobOrderByWithRelationInput
+}
+
+input ApplicationWhereUniqueInput {
+  employeeId_jobId: EmployeeIdJobIdCompoundUniqueInput!
+}
+
+input EmployeeIdJobIdCompoundUniqueInput {
+  employeeId: String!
+  jobId: Int!
+}
+
+enum BookmarkScalarFieldEnum {
+  createdAt
+  updatedAt
+  employeeId
+  jobId
+}
+
+input BookmarkOrderByWithRelationInput {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  employeeId: SortOrder
+  jobId: SortOrder
+  employee: EmployeeOrderByWithRelationInput
+  job: JobOrderByWithRelationInput
+}
+
+input BookmarkWhereUniqueInput {
+  employeeId_jobId: EmployeeIdJobIdCompoundUniqueInput!
+}
+
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
@@ -633,6 +775,12 @@ type Mutation {
   createSubCategory(createSubCategoryInput: CreateSubCategoryInput!): SubCategory!
   updateSubCategory(updateSubCategoryInput: UpdateSubCategoryInput!): SubCategory!
   removeSubCategory(where: SubCategoryWhereUniqueInput): SubCategory!
+  createApplication(createApplicationInput: CreateApplicationInput!): Application!
+  updateApplication(updateApplicationInput: UpdateApplicationInput!): Application!
+  removeApplication(where: ApplicationWhereUniqueInput): Application!
+  createBookmark(createBookmarkInput: CreateBookmarkInput!): Bookmark!
+  updateBookmark(updateBookmarkInput: UpdateBookmarkInput!): Bookmark!
+  removeBookmark(where: BookmarkWhereUniqueInput): Bookmark!
 }
 
 input CreateUserInput {
@@ -752,4 +900,26 @@ input CreateSubCategoryInput {
 input UpdateSubCategoryInput {
   name: String!
   categoryName: String
+}
+
+input CreateApplicationInput {
+  employeeId: String!
+  jobId: Int!
+}
+
+input UpdateApplicationInput {
+  employeeId: String
+  jobId: Int
+  employeeId_jobId: EmployeeIdJobIdCompoundUniqueInput!
+}
+
+input CreateBookmarkInput {
+  employeeId: String!
+  jobId: Int!
+}
+
+input UpdateBookmarkInput {
+  employeeId: String
+  jobId: Int
+  employeeId_jobId: EmployeeIdJobIdCompoundUniqueInput!
 }

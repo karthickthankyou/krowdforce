@@ -12,6 +12,8 @@ import {
   StringFilter,
 } from 'src/common/dtos/common.input'
 import { AddressRelationFilter } from 'src/models/addresses/dtos/where.args'
+import { ApplicationListRelationFilter } from 'src/models/applications/dtos/where.args'
+import { BookmarkListRelationFilter } from 'src/models/bookmarks/dtos/where.args'
 import { CompanyRelationFilter } from 'src/models/companies/dtos/where.args'
 import { EmployerRelationFilter } from 'src/models/employers/dtos/where.args'
 import { SubCategoryListRelationFilter } from 'src/models/sub-categories/dtos/where.args'
@@ -29,6 +31,8 @@ registerEnumType($Enums.JobType, { name: 'JobType' })
 export class JobWhereInputStrict
   implements RestrictProperties<JobWhereInputStrict, Prisma.JobWhereInput>
 {
+  Bookmark: BookmarkListRelationFilter
+  Application: ApplicationListRelationFilter
   employerId: StringFilter
   Employer: EmployerRelationFilter
   contactInfo: StringFilter

@@ -48,7 +48,9 @@ model Employee {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    skills SubCategory[]
+    skills      SubCategory[]
+    Bookmark    Bookmark[]
+    Application Application[]
 }
 
 model Company {
@@ -80,10 +82,38 @@ model Job {
 
     contactInfo String?
 
-    Company    Company   @relation(fields: [companyId], references: [id])
-    companyId  Int
-    Employer   Employer? @relation(fields: [employerId], references: [uid])
-    employerId String?
+    Company     Company       @relation(fields: [companyId], references: [id])
+    companyId   Int
+    Employer    Employer?     @relation(fields: [employerId], references: [uid])
+    employerId  String?
+    Bookmark    Bookmark[]
+    Application Application[]
+}
+
+model Application {
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    employeeId String
+    employee   Employee @relation(fields: [employeeId], references: [uid])
+
+    jobId Int
+    job   Job @relation(fields: [jobId], references: [id])
+
+    status ApplicationStatus? @default(SUBMITTED)
+
+    @@id([employeeId, jobId])
+}
+
+model Bookmark {
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    employeeId String
+    employee   Employee @relation(fields: [employeeId], references: [uid])
+
+    jobId Int
+    job   Job @relation(fields: [jobId], references: [id])
+
+    @@id([employeeId, jobId])
 }
 
 model Address {
@@ -122,4 +152,14 @@ enum JobType {
     FULL_TIME
     PART_TIME
     CONTRACT
+}
+
+enum ApplicationStatus {
+    SUBMITTED
+    UNDER_REVIEW
+    INTERVIEWED
+    OFFERED
+    REJECTED
+    ACCEPTED
+    WITHDRAW
 }

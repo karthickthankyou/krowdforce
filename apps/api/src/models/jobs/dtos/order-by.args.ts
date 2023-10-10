@@ -2,6 +2,8 @@ import { Field, InputType, PartialType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 import { AddressOrderByWithRelationInput } from 'src/models/addresses/dtos/order-by.args'
+import { ApplicationOrderByRelationAggregateInput } from 'src/models/applications/dtos/order-by.args'
+import { BookmarkOrderByRelationAggregateInput } from 'src/models/bookmarks/dtos/order-by.args'
 import { CompanyOrderByWithRelationInput } from 'src/models/companies/dtos/order-by.args'
 import { EmployerOrderByWithRelationInput } from 'src/models/employers/dtos/order-by.args'
 import { SubCategoryOrderByRelationAggregateInput } from 'src/models/sub-categories/dtos/order-by.args'
@@ -14,6 +16,8 @@ export class JobOrderByWithRelationInputStrict
       Prisma.JobOrderByWithRelationInput
     >
 {
+  Bookmark: BookmarkOrderByRelationAggregateInput
+  Application: ApplicationOrderByRelationAggregateInput
   @Field(() => Prisma.SortOrder)
   employerId: Prisma.SortOrder
   Employer: EmployerOrderByWithRelationInput

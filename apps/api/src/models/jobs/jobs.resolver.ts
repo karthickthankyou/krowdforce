@@ -26,6 +26,8 @@ import { Address } from '../addresses/entity/address.entity'
 import { Company } from '../companies/entity/company.entity'
 import { Employer } from '../employers/entity/employer.entity'
 import { SubCategory } from '../sub-categories/entity/sub-category.entity'
+import { Application } from '../applications/entity/application.entity'
+import { Bookmark } from '../bookmarks/entity/bookmark.entity'
 
 @Resolver(() => Job)
 export class JobsResolver {
@@ -174,6 +176,20 @@ export class JobsResolver {
     }
     return this.prisma.employer.findUnique({
       where: { uid: parent.employerId },
+    })
+  }
+
+  @ResolveField(() => [Application])
+  applications(@Parent() parent: Job) {
+    return this.prisma.application.findMany({
+      where: { jobId: parent.id },
+    })
+  }
+
+  @ResolveField(() => [Bookmark])
+  bookmarks(@Parent() parent: Job) {
+    return this.prisma.bookmark.findMany({
+      where: { jobId: parent.id },
     })
   }
 }
