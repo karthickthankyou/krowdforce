@@ -23,6 +23,7 @@
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "lucide-react": "^0.284.0",
+    "mapbox-gl": "^2.15.0",
     "next": "latest",
     "next-auth": "^4.23.2",
     "next-themes": "^0.2.1",

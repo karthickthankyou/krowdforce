@@ -191,6 +191,18 @@ export const SelectMultiSkills = ({
       onChange={(v) => {
         setValue(v.map((skill) => skill.value))
       }}
+      classNames={{
+        control: () => 'bg-white/50 text-black border-0',
+        menu: () => 'bg-white/50 text-black',
+        group: () => 'text-black',
+        input: () => 'text-black',
+        multiValue: () => 'text-black bg-white',
+        multiValueLabel: () => 'text-black bg-white',
+
+        option: () => 'bg-white text-black hover:text-primary text-left',
+        multiValueRemove: () => 'bg-white text-black hover:text-red',
+        clearIndicator: () => 'text-black hover:text-red',
+      }}
     />
   )
 }

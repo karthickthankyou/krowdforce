@@ -1,5 +1,5 @@
 'use client'
-import { useKeypress } from '@krowdforce/util'
+import { useKeypressCmd } from '@krowdforce/util'
 import { useState } from 'react'
 import { useMap } from 'react-map-gl'
 import { IconMapPinFilled } from '@tabler/icons-react'
@@ -16,7 +16,7 @@ import {
 
 export const SetCity = () => {
   const [open, setOpen] = useState(false)
-  useKeypress(['l'], () => setOpen((state) => !state))
+  useKeypressCmd(['l'], () => setOpen((state) => !state))
 
   const { current: map } = useMap()
   return (
@@ -24,8 +24,8 @@ export const SetCity = () => {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className="flex flex-col items-center gap-1">
           <IconMapPinFilled />
-          <div className="flex items-center justify-center w-4 h-4 border rounded shadow">
-            L
+          <div className="flex items-center justify-center w-10 h-4 border rounded shadow">
+            ⌘ + L
           </div>
         </DialogTrigger>
         <DialogContent className="rounded ">

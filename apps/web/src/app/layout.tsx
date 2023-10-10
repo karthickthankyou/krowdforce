@@ -1,5 +1,6 @@
 import './globals.css'
-import 'mapbox-gl/dist/mapbox-gl.css'
+import '../styles/map.css'
+
 import type { Metadata } from 'next'
 
 import AuthProvider from '../components/organisms/AuthProvider'
