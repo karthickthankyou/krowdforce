@@ -65,7 +65,7 @@ export class SubCategoriesResolver {
   @ResolveField(() => [Employee])
   employees(@Parent() parent: SubCategory) {
     return this.prisma.employee.findMany({
-      where: {},
+      where: { skills: { some: { name: { equals: parent.name } } } },
     })
   }
 

@@ -1,4 +1,4 @@
-import { Field, InputType, PartialType } from '@nestjs/graphql'
+import { InputType, PartialType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import {
   DateTimeFilter,
@@ -7,7 +7,6 @@ import {
   StringFilter,
 } from 'src/common/dtos/common.input'
 import { CompanyRelationFilter } from 'src/models/companies/dtos/where.args'
-import { JobListRelationFilter } from 'src/models/jobs/dtos/where.args'
 import { UserRelationFilter } from 'src/models/users/dtos/where.args'
 
 @InputType()

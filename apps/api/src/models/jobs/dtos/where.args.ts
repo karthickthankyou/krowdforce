@@ -13,7 +13,6 @@ import {
 } from 'src/common/dtos/common.input'
 import { AddressRelationFilter } from 'src/models/addresses/dtos/where.args'
 import { CompanyRelationFilter } from 'src/models/companies/dtos/where.args'
-import { EmployerRelationFilter } from 'src/models/employers/dtos/where.args'
 import { SubCategoryListRelationFilter } from 'src/models/sub-categories/dtos/where.args'
 
 @InputType()

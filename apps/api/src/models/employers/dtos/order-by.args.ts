@@ -2,7 +2,6 @@ import { Field, InputType, PartialType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 import { CompanyOrderByWithRelationInput } from 'src/models/companies/dtos/order-by.args'
-import { JobOrderByRelationAggregateInput } from 'src/models/jobs/dtos/order-by.args'
 import { UserOrderByWithRelationInput } from 'src/models/users/dtos/order-by.args'
 
 @InputType()

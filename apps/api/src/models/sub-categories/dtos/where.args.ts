@@ -1,4 +1,4 @@
-import { Field, InputType, PartialType } from '@nestjs/graphql'
+import { InputType, PartialType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import { RestrictProperties, StringFilter } from 'src/common/dtos/common.input'
 import { CategoryRelationFilter } from 'src/models/categories/dtos/where.args'
