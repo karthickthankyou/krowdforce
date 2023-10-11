@@ -22,6 +22,7 @@ type Job {
   company: Company!
   employer: Employer
   applications: [Application!]!
+  applicationsCount: Int!
   bookmarks: [Bookmark!]!
 }
 
@@ -106,9 +107,11 @@ type User {
 }
 
 type Employee {
+  addressId: Int!
   uid: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  about: String!
   user: User!
   skills: [SubCategory!]!
   applications: [Application!]!
@@ -151,7 +154,7 @@ type Query {
   admin(where: AdminWhereUniqueInput): Admin!
   employees(distinct: [EmployeeScalarFieldEnum!], where: EmployeeWhereInput, orderBy: [EmployeeOrderByWithRelationInput!], cursor: EmployeeWhereUniqueInput, take: Int, skip: Int): [Employee!]!
   employee(where: EmployeeWhereUniqueInput): Employee!
-  employeeMe: Employee!
+  employeeMe: Employee
   employers(distinct: [EmployerScalarFieldEnum!], where: EmployerWhereInput, orderBy: [EmployerOrderByWithRelationInput!], cursor: EmployerWhereUniqueInput, take: Int, skip: Int): [Employer!]!
   companyEmployers(distinct: [EmployerScalarFieldEnum!], where: EmployerWhereInput, orderBy: [EmployerOrderByWithRelationInput!], cursor: EmployerWhereUniqueInput, take: Int, skip: Int): [Employer!]!
   employer(where: EmployerWhereUniqueInput): Employer!
@@ -237,6 +240,9 @@ input EmployeeRelationFilter {
 }
 
 input EmployeeWhereInput {
+  addressId: IntFilter
+  address: AddressRelationFilter
+  about: StringFilter
   Bookmark: BookmarkListRelationFilter
   Application: ApplicationListRelationFilter
   uid: StringFilter
@@ -249,24 +255,6 @@ input EmployeeWhereInput {
   NOT: [EmployeeWhereInput!]
 }
 
-input BookmarkListRelationFilter {
-  every: BookmarkWhereInput
-  some: BookmarkWhereInput
-  none: BookmarkWhereInput
-}
-
-input BookmarkWhereInput {
-  createdAt: DateTimeFilter
-  updatedAt: DateTimeFilter
-  employeeId: StringFilter
-  jobId: IntFilter
-  employee: EmployeeRelationFilter
-  job: JobRelationFilter
-  AND: [BookmarkWhereInput!]
-  OR: [BookmarkWhereInput!]
-  NOT: [BookmarkWhereInput!]
-}
-
 input IntFilter {
   equals: Int
   lt: Int
@@ -275,9 +263,74 @@ input IntFilter {
   gte: Int
 }
 
-input JobRelationFilter {
-  is: JobWhereInput
-  isNot: JobWhereInput
+input AddressRelationFilter {
+  is: AddressWhereInput
+  isNot: AddressWhereInput
+}
+
+input AddressWhereInput {
+  Employee: EmployeeListRelationFilter
+  Company: CompanyListRelationFilter
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  address: StringFilter
+  lat: FloatFilter
+  lng: FloatFilter
+  job: JobListRelationFilter
+  AND: [AddressWhereInput!]
+  OR: [AddressWhereInput!]
+  NOT: [AddressWhereInput!]
+}
+
+input EmployeeListRelationFilter {
+  every: EmployeeWhereInput
+  some: EmployeeWhereInput
+  none: EmployeeWhereInput
+}
+
+input CompanyListRelationFilter {
+  every: CompanyWhereInput
+  some: CompanyWhereInput
+  none: CompanyWhereInput
+}
+
+input CompanyWhereInput {
+  description: StringFilter
+  addressId: IntFilter
+  address: AddressRelationFilter
+  id: IntFilter
+  name: StringFilter
+  Employer: EmployerListRelationFilter
+  Job: JobListRelationFilter
+  AND: [CompanyWhereInput!]
+  OR: [CompanyWhereInput!]
+  NOT: [CompanyWhereInput!]
+}
+
+input EmployerListRelationFilter {
+  every: EmployerWhereInput
+  some: EmployerWhereInput
+  none: EmployerWhereInput
+}
+
+input EmployerWhereInput {
+  Job: JobListRelationFilter
+  companyId: IntFilter
+  company: CompanyRelationFilter
+  uid: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  AND: [EmployerWhereInput!]
+  OR: [EmployerWhereInput!]
+  NOT: [EmployerWhereInput!]
+}
+
+input JobListRelationFilter {
+  every: JobWhereInput
+  some: JobWhereInput
+  none: JobWhereInput
 }
 
 input JobWhereInput {
@@ -306,6 +359,29 @@ input JobWhereInput {
   NOT: [JobWhereInput!]
 }
 
+input BookmarkListRelationFilter {
+  every: BookmarkWhereInput
+  some: BookmarkWhereInput
+  none: BookmarkWhereInput
+}
+
+input BookmarkWhereInput {
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  employeeId: StringFilter
+  jobId: IntFilter
+  employee: EmployeeRelationFilter
+  job: JobRelationFilter
+  AND: [BookmarkWhereInput!]
+  OR: [BookmarkWhereInput!]
+  NOT: [BookmarkWhereInput!]
+}
+
+input JobRelationFilter {
+  is: JobWhereInput
+  isNot: JobWhereInput
+}
+
 input ApplicationListRelationFilter {
   every: ApplicationWhereInput
   some: ApplicationWhereInput
@@ -330,86 +406,9 @@ input EmployerRelationFilter {
   isNot: EmployerWhereInput
 }
 
-input EmployerWhereInput {
-  Job: JobListRelationFilter
-  companyId: IntFilter
-  company: CompanyRelationFilter
-  uid: StringFilter
-  createdAt: DateTimeFilter
-  updatedAt: DateTimeFilter
-  user: UserRelationFilter
-  AND: [EmployerWhereInput!]
-  OR: [EmployerWhereInput!]
-  NOT: [EmployerWhereInput!]
-}
-
-input JobListRelationFilter {
-  every: JobWhereInput
-  some: JobWhereInput
-  none: JobWhereInput
-}
-
 input CompanyRelationFilter {
   is: CompanyWhereInput
   isNot: CompanyWhereInput
-}
-
-input CompanyWhereInput {
-  description: StringFilter
-  addressId: IntFilter
-  address: AddressRelationFilter
-  id: IntFilter
-  name: StringFilter
-  Employer: EmployerListRelationFilter
-  Job: JobListRelationFilter
-  AND: [CompanyWhereInput!]
-  OR: [CompanyWhereInput!]
-  NOT: [CompanyWhereInput!]
-}
-
-input AddressRelationFilter {
-  is: AddressWhereInput
-  isNot: AddressWhereInput
-}
-
-input AddressWhereInput {
-  Company: CompanyListRelationFilter
-  id: IntFilter
-  createdAt: DateTimeFilter
-  updatedAt: DateTimeFilter
-  address: StringFilter
-  lat: FloatFilter
-  lng: FloatFilter
-  job: JobListRelationFilter
-  AND: [AddressWhereInput!]
-  OR: [AddressWhereInput!]
-  NOT: [AddressWhereInput!]
-}
-
-input CompanyListRelationFilter {
-  every: CompanyWhereInput
-  some: CompanyWhereInput
-  none: CompanyWhereInput
-}
-
-input FloatFilter {
-  equals: Int
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: Int
-}
-
-input EmployerListRelationFilter {
-  every: EmployerWhereInput
-  some: EmployerWhereInput
-  none: EmployerWhereInput
-}
-
-input UserRelationFilter {
-  is: UserWhereInput
-  isNot: UserWhereInput
 }
 
 input SubCategoryListRelationFilter {
@@ -442,10 +441,18 @@ input CategoryWhereInput {
   NOT: [CategoryWhereInput!]
 }
 
-input EmployeeListRelationFilter {
-  every: EmployeeWhereInput
-  some: EmployeeWhereInput
-  none: EmployeeWhereInput
+input UserRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
+input FloatFilter {
+  equals: Int
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: Int
 }
 
 input AdminRelationFilter {
@@ -480,13 +487,40 @@ enum SortOrder {
 }
 
 input EmployeeOrderByWithRelationInput {
+  addressId: SortOrder
+  about: SortOrder
   uid: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
+  address: AddressOrderByWithRelationInput
   Bookmark: BookmarkOrderByRelationAggregateInput
   Application: ApplicationOrderByRelationAggregateInput
   user: UserOrderByWithRelationInput
   skills: SubCategoryOrderByRelationAggregateInput
+}
+
+input AddressOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  address: SortOrder
+  lat: SortOrder
+  lng: SortOrder
+  Employee: EmployeeOrderByRelationAggregateInput
+  job: JobOrderByRelationAggregateInput
+  Company: CompanyOrderByRelationAggregateInput
+}
+
+input EmployeeOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input JobOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input CompanyOrderByRelationAggregateInput {
+  _count: SortOrder
 }
 
 input BookmarkOrderByRelationAggregateInput {
@@ -511,10 +545,6 @@ input EmployerOrderByWithRelationInput {
   user: UserOrderByWithRelationInput
 }
 
-input JobOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
 input CompanyOrderByWithRelationInput {
   description: SortOrder
   addressId: SortOrder
@@ -523,21 +553,6 @@ input CompanyOrderByWithRelationInput {
   address: AddressOrderByWithRelationInput
   Employer: EmployerOrderByRelationAggregateInput
   Job: JobOrderByRelationAggregateInput
-}
-
-input AddressOrderByWithRelationInput {
-  id: SortOrder
-  createdAt: SortOrder
-  updatedAt: SortOrder
-  address: SortOrder
-  lat: SortOrder
-  lng: SortOrder
-  job: JobOrderByRelationAggregateInput
-  Company: CompanyOrderByRelationAggregateInput
-}
-
-input CompanyOrderByRelationAggregateInput {
-  _count: SortOrder
 }
 
 input EmployerOrderByRelationAggregateInput {
@@ -567,8 +582,10 @@ input AdminWhereUniqueInput {
 
 enum EmployeeScalarFieldEnum {
   uid
+  about
   createdAt
   updatedAt
+  addressId
 }
 
 input EmployeeWhereUniqueInput {
@@ -694,10 +711,6 @@ input SubCategoryOrderByWithRelationInput {
   jobs: JobOrderByRelationAggregateInput
 }
 
-input EmployeeOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
 input SubCategoryWhereUniqueInput {
   name: String!
 }
@@ -808,10 +821,22 @@ input UpdateAdminInput {
 
 input CreateEmployeeInput {
   uid: String!
+  about: String!
+  address: CreateAddressInput!
+  skills: [String!]!
+}
+
+input CreateAddressInput {
+  lat: Float!
+  lng: Float!
+  address: String!
 }
 
 input UpdateEmployeeInput {
   uid: String!
+  about: String
+  address: CreateAddressInput
+  skills: [String!]
 }
 
 input CreateEmployerInput {
@@ -827,12 +852,6 @@ input CreateCompanyInput {
   name: String!
   address: CreateAddressInput!
   uid: String!
-}
-
-input CreateAddressInput {
-  lat: Float!
-  lng: Float!
-  address: String!
 }
 
 input AddEmployerInput {
@@ -913,6 +932,7 @@ input CreateApplicationInput {
 input UpdateApplicationInput {
   employeeId: String
   jobId: Int
+  status: ApplicationStatus!
   employeeId_jobId: EmployeeIdJobIdCompoundUniqueInput!
 }
 

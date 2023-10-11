@@ -1,5 +1,6 @@
 import {
   Args,
+  Int,
   Mutation,
   Parent,
   Query,
@@ -28,6 +29,7 @@ import { Employer } from '../employers/entity/employer.entity'
 import { SubCategory } from '../sub-categories/entity/sub-category.entity'
 import { Application } from '../applications/entity/application.entity'
 import { Bookmark } from '../bookmarks/entity/bookmark.entity'
+import { BadRequestException } from '@nestjs/common'
 
 @Resolver(() => Job)
 export class JobsResolver {
@@ -179,9 +181,34 @@ export class JobsResolver {
     })
   }
 
+  @AllowAuthenticated()
   @ResolveField(() => [Application])
-  applications(@Parent() parent: Job) {
+  async applications(@Parent() parent: Job, @GetUser() user: GetUserType) {
+    const employer = await this.prisma.employer.findUnique({
+      where: { uid: user.uid },
+    })
+    if (parent.companyId !== employer.companyId) {
+      throw new BadRequestException(
+        'You are not authorized to view the applications.',
+      )
+    }
     return this.prisma.application.findMany({
+      where: { jobId: parent.id },
+    })
+  }
+
+  @AllowAuthenticated()
+  @ResolveField(() => Int)
+  async applicationsCount(@Parent() parent: Job, @GetUser() user: GetUserType) {
+    const employer = await this.prisma.employer.findUnique({
+      where: { uid: user.uid },
+    })
+    if (parent.companyId !== employer.companyId) {
+      throw new BadRequestException(
+        'You are not authorized to view the applications.',
+      )
+    }
+    return this.prisma.application.count({
       where: { jobId: parent.id },
     })
   }

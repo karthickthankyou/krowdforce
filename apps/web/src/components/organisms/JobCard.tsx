@@ -8,6 +8,7 @@ import {
   JobStatus,
 } from '@krowdforce/network/src/generated'
 import { PulsingDot } from './PulsingDot'
+import { ApplicantsDialog } from './ApplicantsDialog'
 
 export const JobCard = ({ job }: { job: EmployerJobDetailsFragment }) => {
   return (
@@ -16,7 +17,7 @@ export const JobCard = ({ job }: { job: EmployerJobDetailsFragment }) => {
         <Title2>{job.title}</Title2>
         <PulsingDot pulsing={job.status === JobStatus.Open} />
       </div>
-      <div className="text-gray max-w-md">{job.description}</div>
+      <div className="text-gray max-w-md line-clamp-4">{job.description}</div>
       <div className="flex gap-2">
         <Badge variant={'outline'}>{job.status}</Badge>
         <Badge variant={'outline'}>{job.type}</Badge>
@@ -29,11 +30,11 @@ export const JobCard = ({ job }: { job: EmployerJobDetailsFragment }) => {
           {format(new Date(job.end), 'LLL dd, y')}
         </div>
       ) : null}
-      {job.address?.address ? (
+      {/* {job.address?.address ? (
         <MapLink lat={job.address.lat} lng={job.address.lng}>
           <StaticMapLocation position={job.address} className="w-60 h-60" />
         </MapLink>
-      ) : null}
+      ) : null} */}
       <div className="flex flex-wrap gap-2">
         {job.skills.map((skill) => (
           <div className="p-1 border" key={skill.name}>
@@ -42,6 +43,10 @@ export const JobCard = ({ job }: { job: EmployerJobDetailsFragment }) => {
           </div>
         ))}
       </div>
+      <ApplicantsDialog
+        count={job.applicationsCount}
+        applications={job.applications}
+      />
       <div className="py-6">
         <div className="h-[1px] bg-gray-200" />
       </div>

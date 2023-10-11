@@ -4,9 +4,11 @@ import { RestrictProperties } from 'src/common/dtos/common.input'
 
 @ObjectType()
 export class Employee implements RestrictProperties<Employee, EmployeeType> {
+  addressId: number
   uid: string
   createdAt: Date
   updatedAt: Date
+  about: string
   // Todo Add below to make optional fields optional.
   // @Field({ nullable: true })
 }

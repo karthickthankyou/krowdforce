@@ -7,10 +7,15 @@ import { UpdateEmployeeInput } from './dtos/update-employee.input'
 @Injectable()
 export class EmployeesService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createEmployeeInput: CreateEmployeeInput) {
+  create({ address, about, uid, skills }: CreateEmployeeInput) {
     try {
       return this.prisma.employee.create({
-        data: createEmployeeInput,
+        data: {
+          about,
+          user: { connect: { uid } },
+          address: { create: address },
+          skills: { connect: skills.map((skill) => ({ name: skill })) },
+        },
       })
     } catch (error) {
       throw new Error(error)
@@ -26,7 +31,7 @@ export class EmployeesService {
   }
 
   update(updateEmployeeInput: UpdateEmployeeInput) {
-    const { uid, ...data } = updateEmployeeInput
+    const { uid, skills, address, ...data } = updateEmployeeInput
     return this.prisma.employee.update({
       where: { uid },
       data: data,

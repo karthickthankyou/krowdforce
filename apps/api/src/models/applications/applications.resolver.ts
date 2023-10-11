@@ -63,10 +63,20 @@ export class ApplicationsResolver {
     return this.applicationsService.findOne(args)
   }
 
+  @AllowAuthenticated()
   @Mutation(() => Application)
-  updateApplication(
+  async updateApplication(
     @Args('updateApplicationInput') args: UpdateApplicationInput,
+    @GetUser() user: GetUserType,
   ) {
+    const employers = await this.prisma.employer.findMany({
+      where: { company: { Job: { some: { id: args.jobId } } } },
+    })
+
+    checkRowLevelPermission(
+      user,
+      employers.map((emp) => emp.uid),
+    )
     return this.applicationsService.update(args)
   }
 

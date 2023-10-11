@@ -8,8 +8,18 @@ import { revalidateTag } from 'next/cache'
 import { fetchGraphQLInfer } from '../app/util/fetch'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../app/api/auth/authOptions'
+import { z } from 'zod'
+import { formSchemaCreateEmployee } from '@krowdforce/forms'
 
-export async function createEmployee() {
+type FormTypeCreateEmployee = z.infer<typeof formSchemaCreateEmployee>
+
+export async function createEmployee({
+  formData,
+}: {
+  formData: FormTypeCreateEmployee
+}) {
+  const result = formSchemaCreateEmployee.safeParse(formData)
+
   const user = await getServerSession(authOptions)
   if (!user?.user?.uid) {
     return {
@@ -17,13 +27,19 @@ export async function createEmployee() {
     }
   }
 
-  try {
+  if (result.success) {
+    const { about, address, skills } = result.data
     const { data, error } = await fetchGraphQLInfer(CreateEmployeeDocument, {
       createEmployeeInput: {
         uid: user.user.uid,
+        address,
+        about,
+        skills,
       },
     })
+  }
 
+  try {
     revalidateTag(namedOperations.Query.EmployerMe)
   } catch (error) {
     throw new Error('Something went wrong')

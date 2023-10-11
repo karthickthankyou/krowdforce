@@ -1,14 +1,10 @@
 import {
   EmployeeMeDocument,
-  EmployerMeDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { getServerSession } from 'next-auth'
-import Link from 'next/link'
-import { createEmployer } from '../../actions/createEmployer'
-import { authOptions } from '../api/auth/authOptions'
 import { fetchGraphQLInfer } from '../util/fetch'
-import { createEmployee } from '../../actions/createEmployee'
+import { CreateEmployee } from '../../components/organisms/CreateEmployee'
+import { FormProviderCreateEmployee } from '@krowdforce/forms/createEmployee'
 
 export default async function SearchLayout({
   children,
@@ -26,7 +22,11 @@ export default async function SearchLayout({
   )
 
   if (!data?.employeeMe?.uid) {
-    await createEmployee()
+    return (
+      <FormProviderCreateEmployee>
+        <CreateEmployee />
+      </FormProviderCreateEmployee>
+    )
   }
 
   return <>{children}</>

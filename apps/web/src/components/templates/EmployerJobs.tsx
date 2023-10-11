@@ -17,14 +17,15 @@ export const EmployerJobs = async () => {
     },
   )
 
-  console.log('data ', data?.employerJobs.length)
   if (data?.employerJobs.length === 0) {
     return <div>No jobs posted.</div>
   }
   return (
     <div className="mt-4">
       <div className="flex flex-col gap-6">
-        {data?.employerJobs.map((job) => <JobCard key={job.id} job={job} />)}
+        {data?.employerJobs.map((job) => (
+          <JobCard key={job.id} job={job} />
+        ))}
       </div>
     </div>
   )

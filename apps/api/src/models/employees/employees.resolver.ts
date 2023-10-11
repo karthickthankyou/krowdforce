@@ -45,7 +45,7 @@ export class EmployeesResolver {
   }
 
   @AllowAuthenticated()
-  @Query(() => Employee, { name: 'employeeMe' })
+  @Query(() => Employee, { name: 'employeeMe', nullable: true })
   employeeMe(@GetUser() user: GetUserType) {
     return this.employeesService.findOne({
       where: { uid: user.uid },

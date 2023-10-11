@@ -13,6 +13,12 @@ export const formSchemaCreateCompany = z.object({
   address: addressSchema,
 })
 
+export const formSchemaCreateEmployee = z.object({
+  about: z.string(),
+  skills: z.array(z.string()),
+  address: addressSchema,
+})
+
 export const formSchemaCreateUser = z.object({
   email: z.string().email(),
   uid: z.string().min(2),

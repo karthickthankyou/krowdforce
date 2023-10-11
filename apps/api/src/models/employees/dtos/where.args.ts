@@ -2,9 +2,11 @@ import { InputType, PartialType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import {
   DateTimeFilter,
+  IntFilter,
   RestrictProperties,
   StringFilter,
 } from 'src/common/dtos/common.input'
+import { AddressRelationFilter } from 'src/models/addresses/dtos/where.args'
 import { ApplicationListRelationFilter } from 'src/models/applications/dtos/where.args'
 import { BookmarkListRelationFilter } from 'src/models/bookmarks/dtos/where.args'
 import { SubCategoryListRelationFilter } from 'src/models/sub-categories/dtos/where.args'
@@ -20,6 +22,9 @@ export class EmployeeWhereInputStrict
   implements
     RestrictProperties<EmployeeWhereInputStrict, Prisma.EmployeeWhereInput>
 {
+  addressId: IntFilter
+  address: AddressRelationFilter
+  about: StringFilter
   Bookmark: BookmarkListRelationFilter
   Application: ApplicationListRelationFilter
   uid: StringFilter

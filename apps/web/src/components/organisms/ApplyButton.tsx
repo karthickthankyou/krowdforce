@@ -4,6 +4,7 @@ import { cn } from '../../util'
 import {
   ApplicationDocument,
   ApplicationQuery,
+  ApplicationStatus,
 } from '@krowdforce/network/src/generated'
 import { useSession } from 'next-auth/react'
 import { fetchGraphQLNoAuth } from '../../app/util/fetchNoAuth'
@@ -11,6 +12,8 @@ import {
   createApplication,
   removeApplication,
 } from '../../actions/createApplication'
+import { IconCheck } from '@tabler/icons-react'
+import { Button } from '../atoms/button'
 
 export const ApplyButton: FC<{
   className?: string
@@ -47,7 +50,8 @@ export const ApplyButton: FC<{
 
   if (!application?.employeeId) {
     return (
-      <button
+      <Button
+        variant={'link'}
         className={cn('ml-2', className)}
         onClick={async () => {
           await createApplication({ jobId })
@@ -55,19 +59,28 @@ export const ApplyButton: FC<{
         }}
       >
         Apply
-      </button>
+      </Button>
     )
   } else {
     return (
-      <button
-        className={cn('ml-2', className)}
-        onClick={async () => {
-          await removeApplication({ jobId })
-          fetchBookmark()
-        }}
-      >
-        Withdraw ({application.status})
-      </button>
+      <div>
+        <div className={cn('ml-2 flex items-center gap-1')}>
+          <IconCheck />
+          Applied
+          <span className="text-gray text-xs">({application.status})</span>
+        </div>
+        {application.status === ApplicationStatus.Submitted ? (
+          <button
+            className={cn('ml-2', className)}
+            onClick={async () => {
+              await removeApplication({ jobId })
+              fetchBookmark()
+            }}
+          >
+            Remove
+          </button>
+        ) : null}
+      </div>
     )
   }
 }

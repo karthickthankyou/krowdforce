@@ -78,6 +78,25 @@ mutation createEmployee($createEmployeeInput: CreateEmployeeInput!) {
   }
 }
 
+fragment applications on Application {
+  status
+  job {
+    id
+  }
+  employee {
+    uid
+    about
+    skills {
+      name
+    }
+    user {
+      uid
+      name
+      image
+    }
+  }
+}
+
 fragment employerJobDetails on Job {
   id
   salary
@@ -100,6 +119,10 @@ fragment employerJobDetails on Job {
       lng
     }
   }
+  applications {
+    ...applications
+  }
+  applicationsCount
   description
   end
   start
@@ -414,5 +437,32 @@ query application($where: ApplicationWhereUniqueInput) {
     jobId
     employeeId
     status
+  }
+}
+
+mutation updateApplication($updateApplicationInput: UpdateApplicationInput!) {
+  updateApplication(updateApplicationInput: $updateApplicationInput) {
+    status
+    jobId
+  }
+}
+
+query Applications(
+  $skip: Int
+  $take: Int
+  $cursor: ApplicationWhereUniqueInput
+  $orderBy: [ApplicationOrderByWithRelationInput!]
+  $where: ApplicationWhereInput
+  $distinct: [ApplicationScalarFieldEnum!]
+) {
+  applications(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+    distinct: $distinct
+  ) {
+    ...applications
   }
 }

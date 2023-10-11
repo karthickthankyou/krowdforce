@@ -24,7 +24,9 @@ export const CompanyJobs = async () => {
   return (
     <div>
       <div className="grid grid-cols-4 gap-6 mt-6">
-        {data?.companyJobs.map((job) => <JobCard key={job.id} job={job} />)}
+        {data?.companyJobs.map((job) => (
+          <JobCard key={job.id} job={job} />
+        ))}
       </div>
     </div>
   )

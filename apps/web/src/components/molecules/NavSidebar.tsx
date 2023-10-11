@@ -1,5 +1,5 @@
 import { MenuItem } from '@krowdforce/util/types'
-import { IconBookmark, IconMenu2 } from '@tabler/icons-react'
+import { IconBookmark, IconMenu2, IconPaperclip } from '@tabler/icons-react'
 import Link from 'next/link'
 import {
   Sheet,
@@ -65,6 +65,9 @@ export const ShowMenuItems = ({ menuItems }: INavSidebarProps) => {
       <ModeToggle />
       <Link href={'/employee/bookmarks'}>
         <IconBookmark />
+      </Link>
+      <Link href={'/employee/applications'}>
+        <IconPaperclip />
       </Link>
 
       {menuItems

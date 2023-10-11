@@ -138,7 +138,6 @@ export const MarkerWithPopup = ({
         <Popup
           latitude={marker.address?.lat || 0}
           longitude={marker.address?.lng || 0}
-          //   onOpen={() => console.log('Opened')}
           closeOnClick={false}
           anchor="bottom"
           offset={24}
