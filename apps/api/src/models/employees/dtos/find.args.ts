@@ -1,4 +1,11 @@
-import { ArgsType, Field, PartialType, registerEnumType } from '@nestjs/graphql'
+import {
+  ArgsType,
+  Field,
+  InputType,
+  PartialType,
+  PickType,
+  registerEnumType,
+} from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 import { EmployeeOrderByWithRelationInput } from './order-by.args'
@@ -35,3 +42,10 @@ export class FindUniqueEmployeeArgs {
   @Field({ nullable: true })
   where: EmployeeWhereUniqueInput
 }
+
+@InputType()
+export class EmployeeFilter extends PickType(
+  FindManyEmployeeArgs,
+  ['where', 'orderBy', 'skip', 'take'],
+  InputType,
+) {}

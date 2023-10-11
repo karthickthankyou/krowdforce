@@ -45,9 +45,10 @@ model Employee {
     uid  String @id
     user User   @relation(fields: [uid], references: [uid])
 
-    about     String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    about       String
+    contactInfo String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 
     skills      SubCategory[]
     Bookmark    Bookmark[]

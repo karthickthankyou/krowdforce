@@ -29,5 +29,7 @@ export const Title3 = ({ children, className }: TextType) => {
   )
 }
 export const Description = ({ children, className }: TextType) => {
-  return <div className={cn('text-gray capitalize', className)}>{children}</div>
+  return (
+    <div className={cn('text-gray-700 capitalize', className)}>{children}</div>
+  )
 }

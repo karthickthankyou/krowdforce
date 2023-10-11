@@ -22,6 +22,7 @@ export class EmployeeWhereInputStrict
   implements
     RestrictProperties<EmployeeWhereInputStrict, Prisma.EmployeeWhereInput>
 {
+  contactInfo: StringFilter
   addressId: IntFilter
   address: AddressRelationFilter
   about: StringFilter

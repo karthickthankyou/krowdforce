@@ -59,6 +59,12 @@ export const CreateEmployee = () => {
             <Label title={'About you'}>
               <Textarea {...register('about')} placeholder="About you" />
             </Label>
+            <Label title={'About you'}>
+              <Textarea
+                {...register('contactInfo')}
+                placeholder="Contact information"
+              />
+            </Label>
             <Label title="Your skills">
               <SelectMultiSkills
                 setValue={(skills) => {

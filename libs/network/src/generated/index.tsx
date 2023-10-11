@@ -373,6 +373,7 @@ export type CreateCompanyInput = {
 export type CreateEmployeeInput = {
   about: Scalars['String']
   address: CreateAddressInput
+  contactInfo?: InputMaybe<Scalars['String']>
   skills: Array<Scalars['String']>
   uid: Scalars['String']
 }
@@ -420,14 +421,23 @@ export type DateTimeFilter = {
 export type Employee = {
   __typename?: 'Employee'
   about: Scalars['String']
+  address: Address
   addressId: Scalars['Int']
   applications: Array<Application>
   bookmarks: Array<Bookmark>
+  contactInfo?: Maybe<Scalars['String']>
   createdAt: Scalars['DateTime']
   skills: Array<SubCategory>
   uid: Scalars['String']
   updatedAt: Scalars['DateTime']
   user: User
+}
+
+export type EmployeeFilter = {
+  orderBy?: InputMaybe<Array<EmployeeOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<EmployeeWhereInput>
 }
 
 export type EmployeeIdJobIdCompoundUniqueInput = {
@@ -451,6 +461,7 @@ export type EmployeeOrderByWithRelationInput = {
   about?: InputMaybe<SortOrder>
   address?: InputMaybe<AddressOrderByWithRelationInput>
   addressId?: InputMaybe<SortOrder>
+  contactInfo?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
   skills?: InputMaybe<SubCategoryOrderByRelationAggregateInput>
   uid?: InputMaybe<SortOrder>
@@ -466,6 +477,7 @@ export type EmployeeRelationFilter = {
 export enum EmployeeScalarFieldEnum {
   About = 'about',
   AddressId = 'addressId',
+  ContactInfo = 'contactInfo',
   CreatedAt = 'createdAt',
   Uid = 'uid',
   UpdatedAt = 'updatedAt',
@@ -480,6 +492,7 @@ export type EmployeeWhereInput = {
   about?: InputMaybe<StringFilter>
   address?: InputMaybe<AddressRelationFilter>
   addressId?: InputMaybe<IntFilter>
+  contactInfo?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   skills?: InputMaybe<SubCategoryListRelationFilter>
   uid?: InputMaybe<StringFilter>
@@ -895,6 +908,7 @@ export type Query = {
   companyEmployers: Array<Employer>
   companyJobs: Array<Job>
   employee: Employee
+  employeeAggregate: AggregateCountOutput
   employeeMe?: Maybe<Employee>
   employees: Array<Employee>
   employer: Employer
@@ -907,6 +921,7 @@ export type Query = {
   jobs: Array<Job>
   myApplications: Array<Application>
   myBookmarks: Array<Bookmark>
+  searchEmployees: Array<Employee>
   searchJobs: Array<Job>
   subCategories: Array<SubCategory>
   subCategory: SubCategory
@@ -1014,6 +1029,11 @@ export type QueryEmployeeArgs = {
   where?: InputMaybe<EmployeeWhereUniqueInput>
 }
 
+export type QueryEmployeeAggregateArgs = {
+  employeeFilter?: InputMaybe<EmployeeFilter>
+  locationFilter: LocationFilterInput
+}
+
 export type QueryEmployeesArgs = {
   cursor?: InputMaybe<EmployeeWhereUniqueInput>
   distinct?: InputMaybe<Array<EmployeeScalarFieldEnum>>
@@ -1079,6 +1099,11 @@ export type QueryMyBookmarksArgs = {
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
   where?: InputMaybe<BookmarkWhereInput>
+}
+
+export type QuerySearchEmployeesArgs = {
+  employeeFilter?: InputMaybe<EmployeeFilter>
+  locationFilter: LocationFilterInput
 }
 
 export type QuerySearchJobsArgs = {
@@ -1223,6 +1248,7 @@ export type UpdateCompanyInput = {
 export type UpdateEmployeeInput = {
   about?: InputMaybe<Scalars['String']>
   address?: InputMaybe<CreateAddressInput>
+  contactInfo?: InputMaybe<Scalars['String']>
   skills?: InputMaybe<Array<Scalars['String']>>
   uid: Scalars['String']
 }
@@ -2021,6 +2047,56 @@ export type ApplicationsQuery = {
   }>
 }
 
+export type SearchEmployeesQueryVariables = Exact<{
+  locationFilter: LocationFilterInput
+  employeeFilter?: InputMaybe<EmployeeFilter>
+}>
+
+export type SearchEmployeesQuery = {
+  __typename?: 'Query'
+  searchEmployees: Array<{
+    __typename?: 'Employee'
+    about: string
+    skills: Array<{ __typename?: 'SubCategory'; name: string }>
+    address: {
+      __typename?: 'Address'
+      lng: number
+      lat: number
+      address: string
+    }
+    user: {
+      __typename?: 'User'
+      uid: string
+      name?: string | null
+      image?: string | null
+    }
+  }>
+  employeeAggregate: { __typename?: 'AggregateCountOutput'; count: number }
+}
+
+export type EmployeeQueryVariables = Exact<{
+  where?: InputMaybe<EmployeeWhereUniqueInput>
+}>
+
+export type EmployeeQuery = {
+  __typename?: 'Query'
+  employee: {
+    __typename?: 'Employee'
+    createdAt: any
+    uid: string
+    contactInfo?: string | null
+    about: string
+    user: { __typename?: 'User'; name?: string | null; image?: string | null }
+    skills: Array<{ __typename?: 'SubCategory'; name: string }>
+    address: {
+      __typename?: 'Address'
+      lat: number
+      lng: number
+      address: string
+    }
+  }
+}
+
 export const namedOperations = {
   Query: {
     Users: 'Users',
@@ -2040,6 +2116,8 @@ export const namedOperations = {
     myApplications: 'myApplications',
     application: 'application',
     Applications: 'Applications',
+    SearchEmployees: 'SearchEmployees',
+    Employee: 'Employee',
   },
   Mutation: {
     CreateUser: 'CreateUser',
@@ -5161,3 +5239,228 @@ export const ApplicationsDocument = /*#__PURE__*/ {
     },
   ],
 } as unknown as DocumentNode<ApplicationsQuery, ApplicationsQueryVariables>
+export const SearchEmployeesDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'SearchEmployees' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'locationFilter' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'LocationFilterInput' },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'employeeFilter' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'EmployeeFilter' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'searchEmployees' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'locationFilter' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'locationFilter' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'employeeFilter' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'employeeFilter' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'skills' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'about' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'address' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'lng' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'lat' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'address' },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'employeeAggregate' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'locationFilter' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'locationFilter' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'employeeFilter' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'employeeFilter' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SearchEmployeesQuery,
+  SearchEmployeesQueryVariables
+>
+export const EmployeeDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Employee' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'EmployeeWhereUniqueInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'employee' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'contactInfo' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'skills' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'address' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'lat' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'lng' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'address' },
+                      },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'about' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<EmployeeQuery, EmployeeQueryVariables>

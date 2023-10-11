@@ -107,12 +107,14 @@ type User {
 }
 
 type Employee {
+  contactInfo: String
   addressId: Int!
   uid: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   about: String!
   user: User!
+  address: Address!
   skills: [SubCategory!]!
   applications: [Application!]!
   bookmarks: [Bookmark!]!
@@ -153,6 +155,8 @@ type Query {
   admins(distinct: [AdminScalarFieldEnum!], where: AdminWhereInput, orderBy: [AdminOrderByWithRelationInput!], cursor: AdminWhereUniqueInput, take: Int, skip: Int): [Admin!]!
   admin(where: AdminWhereUniqueInput): Admin!
   employees(distinct: [EmployeeScalarFieldEnum!], where: EmployeeWhereInput, orderBy: [EmployeeOrderByWithRelationInput!], cursor: EmployeeWhereUniqueInput, take: Int, skip: Int): [Employee!]!
+  searchEmployees(locationFilter: LocationFilterInput!, employeeFilter: EmployeeFilter): [Employee!]!
+  employeeAggregate(employeeFilter: EmployeeFilter, locationFilter: LocationFilterInput!): AggregateCountOutput!
   employee(where: EmployeeWhereUniqueInput): Employee!
   employeeMe: Employee
   employers(distinct: [EmployerScalarFieldEnum!], where: EmployerWhereInput, orderBy: [EmployerOrderByWithRelationInput!], cursor: EmployerWhereUniqueInput, take: Int, skip: Int): [Employer!]!
@@ -240,6 +244,7 @@ input EmployeeRelationFilter {
 }
 
 input EmployeeWhereInput {
+  contactInfo: StringFilter
   addressId: IntFilter
   address: AddressRelationFilter
   about: StringFilter
@@ -487,6 +492,7 @@ enum SortOrder {
 }
 
 input EmployeeOrderByWithRelationInput {
+  contactInfo: SortOrder
   addressId: SortOrder
   about: SortOrder
   uid: SortOrder
@@ -583,6 +589,7 @@ input AdminWhereUniqueInput {
 enum EmployeeScalarFieldEnum {
   uid
   about
+  contactInfo
   createdAt
   updatedAt
   addressId
@@ -590,6 +597,20 @@ enum EmployeeScalarFieldEnum {
 
 input EmployeeWhereUniqueInput {
   uid: String!
+}
+
+input LocationFilterInput {
+  ne_lat: Float!
+  ne_lng: Float!
+  sw_lat: Float!
+  sw_lng: Float!
+}
+
+input EmployeeFilter {
+  where: EmployeeWhereInput
+  orderBy: [EmployeeOrderByWithRelationInput!]
+  take: Int
+  skip: Int
 }
 
 enum EmployerScalarFieldEnum {
@@ -656,13 +677,6 @@ input JobOrderByWithRelationInput {
 
 input JobWhereUniqueInput {
   id: Int
-}
-
-input LocationFilterInput {
-  ne_lat: Float!
-  ne_lng: Float!
-  sw_lat: Float!
-  sw_lng: Float!
 }
 
 input JobFilter {
@@ -820,6 +834,7 @@ input UpdateAdminInput {
 }
 
 input CreateEmployeeInput {
+  contactInfo: String
   uid: String!
   about: String!
   address: CreateAddressInput!
@@ -833,6 +848,7 @@ input CreateAddressInput {
 }
 
 input UpdateEmployeeInput {
+  contactInfo: String
   uid: String!
   about: String
   address: CreateAddressInput

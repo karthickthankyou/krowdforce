@@ -466,3 +466,55 @@ query Applications(
     ...applications
   }
 }
+
+query SearchEmployees(
+  $locationFilter: LocationFilterInput!
+  $employeeFilter: EmployeeFilter
+) {
+  searchEmployees(
+    locationFilter: $locationFilter
+    employeeFilter: $employeeFilter
+  ) {
+    skills {
+      name
+    }
+    about
+    address {
+      lng
+      lat
+      address
+    }
+    user {
+      uid
+      name
+      image
+    }
+  }
+  employeeAggregate(
+    locationFilter: $locationFilter
+    employeeFilter: $employeeFilter
+  ) {
+    count
+  }
+}
+
+query Employee($where: EmployeeWhereUniqueInput) {
+  employee(where: $where) {
+    createdAt
+    uid
+    contactInfo
+    user {
+      name
+      image
+    }
+    skills {
+      name
+    }
+    address {
+      lat
+      lng
+      address
+    }
+    about
+  }
+}

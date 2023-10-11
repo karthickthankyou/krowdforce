@@ -35,6 +35,7 @@ export async function createEmployee({
         address,
         about,
         skills,
+        contactInfo: result.data.contactInfo,
       },
     })
   }

@@ -5,7 +5,7 @@ import { CreateAddressInput } from 'src/models/addresses/dtos/create-address.inp
 @InputType()
 export class CreateEmployeeInput extends PickType(
   Employee,
-  ['uid', 'about'],
+  ['uid', 'about', 'contactInfo'],
   InputType,
 ) {
   address: CreateAddressInput
