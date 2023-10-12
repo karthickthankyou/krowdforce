@@ -99,6 +99,7 @@ enum ApplicationStatus {
   REJECTED
   ACCEPTED
   WITHDRAW
+  EMPLOYED
 }
 
 type JobCountByStatus {
@@ -193,12 +194,23 @@ type Post {
   author: User!
 }
 
+type Employment {
+  endDate: DateTime
+  id: Int!
+  startDate: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  companyId: Int!
+  employeeId: String!
+}
+
 type Query {
   users(distinct: [UserScalarFieldEnum!], where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int): [User!]!
   user(where: UserWhereUniqueInput): User!
   admins(distinct: [AdminScalarFieldEnum!], where: AdminWhereInput, orderBy: [AdminOrderByWithRelationInput!], cursor: AdminWhereUniqueInput, take: Int, skip: Int): [Admin!]!
   admin(where: AdminWhereUniqueInput): Admin!
   employees(distinct: [EmployeeScalarFieldEnum!], where: EmployeeWhereInput, orderBy: [EmployeeOrderByWithRelationInput!], cursor: EmployeeWhereUniqueInput, take: Int, skip: Int): [Employee!]!
+  companyEmployees(distinct: [EmployeeScalarFieldEnum!], where: EmployeeWhereInput, orderBy: [EmployeeOrderByWithRelationInput!], cursor: EmployeeWhereUniqueInput, take: Int, skip: Int): [Employee!]!
   employeeStats: EmployeeStats!
   searchEmployees(locationFilter: LocationFilterInput!, employeeFilter: EmployeeFilter): [Employee!]!
   employeeAggregate(employeeFilter: EmployeeFilter, locationFilter: LocationFilterInput!): AggregateCountOutput!
@@ -224,6 +236,8 @@ type Query {
   category(where: CategoryWhereUniqueInput): Category!
   subCategories(distinct: [SubCategoryScalarFieldEnum!], where: SubCategoryWhereInput, orderBy: [SubCategoryOrderByWithRelationInput!], cursor: SubCategoryWhereUniqueInput, take: Int, skip: Int): [SubCategory!]!
   subCategory(where: SubCategoryWhereUniqueInput): SubCategory!
+  employments(distinct: [EmploymentScalarFieldEnum!], where: EmploymentWhereInput, orderBy: [EmploymentOrderByWithRelationInput!], cursor: EmploymentWhereUniqueInput, take: Int, skip: Int): [Employment!]!
+  employment(where: EmploymentWhereUniqueInput): Employment!
   follows(distinct: [FollowScalarFieldEnum!], where: FollowWhereInput, orderBy: [FollowOrderByWithRelationInput!], cursor: FollowWhereUniqueInput, take: Int, skip: Int): [Follow!]!
   followedByMe(distinct: [FollowScalarFieldEnum!], where: FollowWhereInput, orderBy: [FollowOrderByWithRelationInput!], cursor: FollowWhereUniqueInput, take: Int, skip: Int): [Follow!]!
   followers(distinct: [FollowScalarFieldEnum!], where: FollowWhereInput, orderBy: [FollowOrderByWithRelationInput!], cursor: FollowWhereUniqueInput, take: Int, skip: Int): [Follow!]!
@@ -352,6 +366,7 @@ input EmployeeRelationFilter {
 }
 
 input EmployeeWhereInput {
+  Employment: EmploymentListRelationFilter
   contactInfo: StringFilter
   addressId: IntFilter
   address: AddressRelationFilter
@@ -366,6 +381,46 @@ input EmployeeWhereInput {
   AND: [EmployeeWhereInput!]
   OR: [EmployeeWhereInput!]
   NOT: [EmployeeWhereInput!]
+}
+
+input EmploymentListRelationFilter {
+  every: EmploymentWhereInput
+  some: EmploymentWhereInput
+  none: EmploymentWhereInput
+}
+
+input EmploymentWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  startDate: DateTimeFilter
+  endDate: DateTimeFilter
+  companyId: IntFilter
+  employeeId: StringFilter
+  company: CompanyRelationFilter
+  employee: EmployeeRelationFilter
+  AND: [EmploymentWhereInput!]
+  OR: [EmploymentWhereInput!]
+  NOT: [EmploymentWhereInput!]
+}
+
+input CompanyRelationFilter {
+  is: CompanyWhereInput
+  isNot: CompanyWhereInput
+}
+
+input CompanyWhereInput {
+  Employment: EmploymentListRelationFilter
+  description: StringFilter
+  addressId: IntFilter
+  address: AddressRelationFilter
+  id: IntFilter
+  name: StringFilter
+  Employer: EmployerListRelationFilter
+  Job: JobListRelationFilter
+  AND: [CompanyWhereInput!]
+  OR: [CompanyWhereInput!]
+  NOT: [CompanyWhereInput!]
 }
 
 input AddressRelationFilter {
@@ -400,36 +455,13 @@ input CompanyListRelationFilter {
   none: CompanyWhereInput
 }
 
-input CompanyWhereInput {
-  description: StringFilter
-  addressId: IntFilter
-  address: AddressRelationFilter
-  id: IntFilter
-  name: StringFilter
-  Employer: EmployerListRelationFilter
-  Job: JobListRelationFilter
-  AND: [CompanyWhereInput!]
-  OR: [CompanyWhereInput!]
-  NOT: [CompanyWhereInput!]
-}
-
-input EmployerListRelationFilter {
-  every: EmployerWhereInput
-  some: EmployerWhereInput
-  none: EmployerWhereInput
-}
-
-input EmployerWhereInput {
-  Job: JobListRelationFilter
-  companyId: IntFilter
-  company: CompanyRelationFilter
-  uid: StringFilter
-  createdAt: DateTimeFilter
-  updatedAt: DateTimeFilter
-  user: UserRelationFilter
-  AND: [EmployerWhereInput!]
-  OR: [EmployerWhereInput!]
-  NOT: [EmployerWhereInput!]
+input FloatFilter {
+  equals: Int
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: Int
 }
 
 input JobListRelationFilter {
@@ -511,9 +543,17 @@ input EmployerRelationFilter {
   isNot: EmployerWhereInput
 }
 
-input CompanyRelationFilter {
-  is: CompanyWhereInput
-  isNot: CompanyWhereInput
+input EmployerWhereInput {
+  Job: JobListRelationFilter
+  companyId: IntFilter
+  company: CompanyRelationFilter
+  uid: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  AND: [EmployerWhereInput!]
+  OR: [EmployerWhereInput!]
+  NOT: [EmployerWhereInput!]
 }
 
 input SubCategoryListRelationFilter {
@@ -546,13 +586,10 @@ input CategoryWhereInput {
   NOT: [CategoryWhereInput!]
 }
 
-input FloatFilter {
-  equals: Int
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: Int
+input EmployerListRelationFilter {
+  every: EmployerWhereInput
+  some: EmployerWhereInput
+  none: EmployerWhereInput
 }
 
 input AdminRelationFilter {
@@ -604,11 +641,16 @@ input EmployeeOrderByWithRelationInput {
   uid: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
+  Employment: EmploymentOrderByRelationAggregateInput
   address: AddressOrderByWithRelationInput
   Bookmark: BookmarkOrderByRelationAggregateInput
   Application: ApplicationOrderByRelationAggregateInput
   user: UserOrderByWithRelationInput
   skills: SubCategoryOrderByRelationAggregateInput
+}
+
+input EmploymentOrderByRelationAggregateInput {
+  _count: SortOrder
 }
 
 input AddressOrderByWithRelationInput {
@@ -662,6 +704,7 @@ input CompanyOrderByWithRelationInput {
   addressId: SortOrder
   id: SortOrder
   name: SortOrder
+  Employment: EmploymentOrderByRelationAggregateInput
   address: AddressOrderByWithRelationInput
   Employer: EmployerOrderByRelationAggregateInput
   Job: JobOrderByRelationAggregateInput
@@ -835,6 +878,32 @@ input SubCategoryWhereUniqueInput {
   name: String!
 }
 
+enum EmploymentScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  startDate
+  endDate
+  companyId
+  employeeId
+}
+
+input EmploymentOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  startDate: SortOrder
+  endDate: SortOrder
+  companyId: SortOrder
+  employeeId: SortOrder
+  company: CompanyOrderByWithRelationInput
+  employee: EmployeeOrderByWithRelationInput
+}
+
+input EmploymentWhereUniqueInput {
+  id: Int
+}
+
 enum FollowScalarFieldEnum {
   id
   createdAt
@@ -962,6 +1031,9 @@ type Mutation {
   createSubCategory(createSubCategoryInput: CreateSubCategoryInput!): SubCategory!
   updateSubCategory(updateSubCategoryInput: UpdateSubCategoryInput!): SubCategory!
   removeSubCategory(where: SubCategoryWhereUniqueInput): SubCategory!
+  createEmployment(createEmploymentInput: CreateEmploymentInput!): Employment!
+  updateEmployment(updateEmploymentInput: UpdateEmploymentInput!): Employment!
+  removeEmployment(where: EmploymentWhereUniqueInput): Employment!
   createFollow(createFollowInput: CreateFollowInput!): Follow!
   updateFollow(updateFollowInput: UpdateFollowInput!): Follow!
   removeFollow(where: FollowWhereUniqueInput): Follow!
@@ -969,6 +1041,7 @@ type Mutation {
   updatePost(updatePostInput: UpdatePostInput!): Post!
   removePost(where: PostWhereUniqueInput): Post!
   createApplication(createApplicationInput: CreateApplicationInput!): Application!
+  acceptOffer(updateApplicationInput: UpdateApplicationInput!): Application!
   updateApplication(updateApplicationInput: UpdateApplicationInput!): Application!
   removeApplication(where: ApplicationWhereUniqueInput): Application!
   createBookmark(createBookmarkInput: CreateBookmarkInput!): Bookmark!
@@ -1101,6 +1174,21 @@ input CreateSubCategoryInput {
 input UpdateSubCategoryInput {
   name: String!
   categoryName: String
+}
+
+input CreateEmploymentInput {
+  startDate: DateTime!
+  companyId: Int!
+  employeeId: String!
+  jobId: Int!
+}
+
+input UpdateEmploymentInput {
+  startDate: DateTime
+  companyId: Int
+  employeeId: String
+  jobId: Int
+  id: Int!
 }
 
 input CreateFollowInput {

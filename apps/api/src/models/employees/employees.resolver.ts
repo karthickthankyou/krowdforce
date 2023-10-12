@@ -49,6 +49,28 @@ export class EmployeesResolver {
   }
 
   @AllowAuthenticated()
+  @Query(() => [Employee], { name: 'companyEmployees' })
+  async companyEmployees(
+    @Args() args: FindManyEmployeeArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const employer = await this.prisma.employer.findUnique({
+      where: { uid: user.uid },
+    })
+    return this.employeesService.findAll({
+      ...args,
+      where: {
+        ...args.where,
+        Employment: {
+          some: {
+            companyId: { equals: employer.companyId },
+          },
+        },
+      },
+    })
+  }
+
+  @AllowAuthenticated()
   @Query(() => EmployeeStats, { name: 'employeeStats' })
   async employeeStats(@GetUser() user: GetUserType): Promise<EmployeeStats> {
     const [followedBy, followers, applications, bookmarks] = await Promise.all([

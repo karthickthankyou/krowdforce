@@ -9,6 +9,7 @@ import {
 import { AddressRelationFilter } from 'src/models/addresses/dtos/where.args'
 import { ApplicationListRelationFilter } from 'src/models/applications/dtos/where.args'
 import { BookmarkListRelationFilter } from 'src/models/bookmarks/dtos/where.args'
+import { EmploymentListRelationFilter } from 'src/models/employments/dtos/where.args'
 import { SubCategoryListRelationFilter } from 'src/models/sub-categories/dtos/where.args'
 import { UserRelationFilter } from 'src/models/users/dtos/where.args'
 
@@ -22,6 +23,7 @@ export class EmployeeWhereInputStrict
   implements
     RestrictProperties<EmployeeWhereInputStrict, Prisma.EmployeeWhereInput>
 {
+  Employment: EmploymentListRelationFilter
   contactInfo: StringFilter
   addressId: IntFilter
   address: AddressRelationFilter

@@ -83,8 +83,6 @@ export class EmployersResolver {
       }),
     ])
 
-    console.log('appications', applicationStatusCounts)
-
     return {
       jobs: jobs.map((item) => ({
         name: item.status,

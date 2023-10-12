@@ -1,6 +1,8 @@
 'use server'
 
 import {
+  AcceptOfferDocument,
+  ApplicationStatus,
   CreateApplicationDocument,
   RemoveApplicationDocument,
   RemoveBookmarkDocument,
@@ -47,6 +49,28 @@ export async function removeApplication({ jobId }: { jobId: number }) {
     },
   })
   if (data?.removeApplication) {
+    revalidateTag(namedOperations.Query.application)
+    revalidateTag(namedOperations.Query.myApplications)
+  }
+}
+
+export async function acceptOfferApplication({ jobId }: { jobId: number }) {
+  const user = await getServerSession(authOptions)
+
+  if (!user?.user?.uid) {
+    throw new Error('User uid not valid')
+  }
+
+  const { data, error } = await fetchGraphQLInfer(AcceptOfferDocument, {
+    updateApplicationInput: {
+      employeeId_jobId: {
+        employeeId: user.user.uid,
+        jobId,
+      },
+      status: ApplicationStatus.Accepted,
+    },
+  })
+  if (data?.acceptOffer) {
     revalidateTag(namedOperations.Query.application)
     revalidateTag(namedOperations.Query.myApplications)
   }

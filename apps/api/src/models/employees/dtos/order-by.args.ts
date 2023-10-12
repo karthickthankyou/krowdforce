@@ -4,6 +4,7 @@ import { RestrictProperties } from 'src/common/dtos/common.input'
 import { AddressOrderByWithRelationInput } from 'src/models/addresses/dtos/order-by.args'
 import { ApplicationOrderByRelationAggregateInput } from 'src/models/applications/dtos/order-by.args'
 import { BookmarkOrderByRelationAggregateInput } from 'src/models/bookmarks/dtos/order-by.args'
+import { EmploymentOrderByRelationAggregateInput } from 'src/models/employments/dtos/order-by.args'
 import { SubCategoryOrderByRelationAggregateInput } from 'src/models/sub-categories/dtos/order-by.args'
 import { UserOrderByWithRelationInput } from 'src/models/users/dtos/order-by.args'
 
@@ -15,6 +16,7 @@ export class EmployeeOrderByWithRelationInputStrict
       Prisma.EmployeeOrderByWithRelationInput
     >
 {
+  Employment: EmploymentOrderByRelationAggregateInput
   @Field(() => Prisma.SortOrder)
   contactInfo: Prisma.SortOrder
   @Field(() => Prisma.SortOrder)

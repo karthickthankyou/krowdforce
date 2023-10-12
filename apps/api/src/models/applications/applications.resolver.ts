@@ -23,6 +23,7 @@ import {
 } from 'src/common/decorators/auth/auth.decorator'
 import { GetUserType } from 'src/common/types'
 import { checkRowLevelPermission } from 'src/common/guards'
+import { ApplicationStatus } from '@prisma/client'
 
 @Resolver(() => Application)
 export class ApplicationsResolver {
@@ -79,6 +80,26 @@ export class ApplicationsResolver {
   @Query(() => Application, { name: 'application' })
   findOne(@Args() args: FindUniqueApplicationArgs) {
     return this.applicationsService.findOne(args)
+  }
+
+  @AllowAuthenticated()
+  @Mutation(() => Application)
+  async acceptOffer(
+    @Args('updateApplicationInput')
+    { employeeId_jobId }: UpdateApplicationInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const { employeeId, jobId } = employeeId_jobId
+    const application = await this.prisma.application.findUnique({
+      where: { employeeId_jobId: { employeeId, jobId } },
+    })
+
+    checkRowLevelPermission(user, application.employeeId)
+
+    return this.applicationsService.update({
+      employeeId_jobId,
+      status: ApplicationStatus.ACCEPTED,
+    })
   }
 
   @AllowAuthenticated()

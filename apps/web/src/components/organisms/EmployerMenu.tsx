@@ -23,6 +23,7 @@ export const EmployerMenu = ({ employerMe }: EmployerMeQuery) => {
         <Link href="/employer">Dashboard</Link>
         <Link href="/employer/searchEmployees">Search employees</Link>
         <Link href="/employer/jobs">Jobs</Link>
+        <Link href="/employer/employees">Employees</Link>
         <Link href="/employer/applications">Applications</Link>
         <Link href="/employer/employers">Manage employers</Link>
         <Link href="/employer/jobs/new">New job</Link>

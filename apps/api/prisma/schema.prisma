@@ -83,8 +83,24 @@ model Employee {
     Bookmark    Bookmark[]
     Application Application[]
 
-    addressId Int
-    address   Address @relation(fields: [addressId], references: [id])
+    addressId  Int
+    address    Address      @relation(fields: [addressId], references: [id])
+    Employment Employment[]
+}
+
+model Employment {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    startDate DateTime  @default(now())
+    endDate   DateTime?
+
+    companyId Int
+    company   Company @relation(fields: [companyId], references: [id])
+
+    employeeId String
+    employee   Employee @relation(fields: [employeeId], references: [uid])
 }
 
 model Company {
@@ -95,6 +111,8 @@ model Company {
     Job         Job[]
     addressId   Int?
     address     Address?   @relation(fields: [addressId], references: [id])
+
+    Employment Employment[]
 }
 
 model Job {
@@ -194,7 +212,10 @@ enum ApplicationStatus {
     UNDER_REVIEW
     INTERVIEWED
     OFFERED
+
     REJECTED
     ACCEPTED
     WITHDRAW
+
+    EMPLOYED
 }

@@ -310,17 +310,6 @@ query Company($where: CompanyWhereUniqueInput) {
   }
 }
 
-query CompanyEmployers {
-  companyEmployers {
-    createdAt
-    user {
-      name
-      image
-      uid
-    }
-  }
-}
-
 mutation addEmployer($addEmployerInput: AddEmployerInput!) {
   addEmployer(addEmployerInput: $addEmployerInput) {
     id
@@ -365,6 +354,7 @@ fragment jobFrag on Job {
   start
   salary
   end
+  companyId
   description
   createdAt
   address {
@@ -436,6 +426,13 @@ query companyApplications(
   ) {
     job {
       ...jobFrag
+    }
+    employee {
+      uid
+      user {
+        name
+        image
+      }
     }
   }
 }
@@ -633,5 +630,57 @@ query CompanyStats {
       name
       count
     }
+  }
+}
+
+query CompanyEmployees(
+  $skip: Int
+  $take: Int
+  $cursor: EmployeeWhereUniqueInput
+  $orderBy: [EmployeeOrderByWithRelationInput!]
+  $where: EmployeeWhereInput
+  $distinct: [EmployeeScalarFieldEnum!]
+) {
+  companyEmployees(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+    distinct: $distinct
+  ) {
+    createdAt
+    user {
+      uid
+      name
+      image
+    }
+    skills {
+      name
+    }
+  }
+}
+
+query CompanyEmployers {
+  companyEmployers {
+    createdAt
+    user {
+      name
+      image
+      uid
+    }
+  }
+}
+
+mutation createEmployment($createEmploymentInput: CreateEmploymentInput!) {
+  createEmployment(createEmploymentInput: $createEmploymentInput) {
+    id
+  }
+}
+
+mutation acceptOffer($updateApplicationInput: UpdateApplicationInput!) {
+  acceptOffer(updateApplicationInput: $updateApplicationInput) {
+    jobId
+    employeeId
   }
 }

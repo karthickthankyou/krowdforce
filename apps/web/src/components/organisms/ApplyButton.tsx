@@ -9,6 +9,7 @@ import {
 import { useSession } from 'next-auth/react'
 import { fetchGraphQLNoAuth } from '../../app/util/fetchNoAuth'
 import {
+  acceptOfferApplication,
   createApplication,
   removeApplication,
 } from '../../actions/createApplication'
@@ -25,7 +26,7 @@ export const ApplyButton: FC<{
     ApplicationQuery['application'] | null
   >()
 
-  const fetchBookmark = useCallback(async () => {
+  const fetchApplication = useCallback(async () => {
     if (user.data?.user?.uid) {
       const userApplication = await fetchGraphQLNoAuth(ApplicationDocument, {
         where: {
@@ -41,8 +42,8 @@ export const ApplyButton: FC<{
   }, [user.data?.user?.uid, jobId])
 
   useEffect(() => {
-    fetchBookmark()
-  }, [fetchBookmark])
+    fetchApplication()
+  }, [fetchApplication])
 
   if (!user.data?.user?.uid) {
     return null
@@ -55,7 +56,7 @@ export const ApplyButton: FC<{
         className={cn('ml-2', className)}
         onClick={async () => {
           await createApplication({ jobId })
-          fetchBookmark()
+          fetchApplication()
         }}
       >
         Apply
@@ -74,10 +75,21 @@ export const ApplyButton: FC<{
             className={cn('ml-2', className)}
             onClick={async () => {
               await removeApplication({ jobId })
-              fetchBookmark()
+              fetchApplication()
             }}
           >
             Remove
+          </button>
+        ) : null}
+        {application.status === ApplicationStatus.Offered ? (
+          <button
+            className={cn('ml-2', className)}
+            onClick={async () => {
+              await acceptOfferApplication({ jobId })
+              fetchApplication()
+            }}
+          >
+            Accept
           </button>
         ) : null}
       </div>

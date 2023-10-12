@@ -21,6 +21,7 @@ import { ApplicationsModule } from './models/applications/applications.module'
 import { BookmarksModule } from './models/bookmarks/bookmarks.module'
 import { FollowsModule } from './models/follows/follows.module'
 import { PostsModule } from './models/posts/posts.module'
+import { EmploymentsModule } from './models/employments/employments.module'
 
 @Module({
   imports: [
@@ -47,6 +48,8 @@ import { PostsModule } from './models/posts/posts.module'
     AddressesModule,
     CategoriesModule,
     SubCategoriesModule,
+
+    EmploymentsModule,
 
     FollowsModule,
     PostsModule,

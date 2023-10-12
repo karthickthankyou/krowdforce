@@ -7,6 +7,13 @@ export const addressSchema = z.object({
   address: z.string(),
 })
 
+export const formSchemaCreateEmployment = z.object({
+  startDate: z.string(),
+  companyId: z.number(),
+  jobId: z.number(),
+  employeeId: z.string(),
+})
+
 export const formSchemaCreateCompany = z.object({
   name: z.string(),
   description: z.string().optional(),
