@@ -11,12 +11,7 @@ import { ApplicationStatus } from '@prisma/client'
 @Injectable()
 export class EmploymentsService {
   constructor(private readonly prisma: PrismaService) {}
-  async create({
-    jobId,
-    employeeId,
-    companyId,
-    startDate,
-  }: CreateEmploymentInput) {
+  async create({ jobId, employeeId, startDate }: CreateEmploymentInput) {
     const updateApplication = this.prisma.application.update({
       data: {
         status: ApplicationStatus.EMPLOYED,
@@ -30,7 +25,7 @@ export class EmploymentsService {
     })
     const createEmployment = this.prisma.employment.create({
       data: {
-        companyId,
+        jobId,
         startDate,
         employeeId,
       },

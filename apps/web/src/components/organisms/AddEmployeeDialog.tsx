@@ -31,7 +31,6 @@ export const AddEmployeeDialog = ({
 
   useEffect(() => {
     setValue('jobId', jobId)
-    setValue('companyId', companyId)
     setValue('employeeId', employeeId)
   }, [companyId, employeeId, setValue, jobId])
 

@@ -22,11 +22,10 @@ export async function createEmployment(formData: FormTypeCreateEmployment) {
     return { error: JSON.stringify(result.error.flatten().fieldErrors) }
   }
 
-  const { companyId, employeeId, startDate, jobId } = result.data
+  const { employeeId, startDate, jobId } = result.data
 
   const { data, error } = await fetchGraphQLInfer(CreateEmploymentDocument, {
     createEmploymentInput: {
-      companyId,
       employeeId,
       startDate,
       jobId,

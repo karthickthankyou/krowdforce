@@ -9,7 +9,6 @@ export const addressSchema = z.object({
 
 export const formSchemaCreateEmployment = z.object({
   startDate: z.string(),
-  companyId: z.number(),
   jobId: z.number(),
   employeeId: z.string(),
 })

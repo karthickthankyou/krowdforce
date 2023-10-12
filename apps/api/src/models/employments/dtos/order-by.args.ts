@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 import { CompanyOrderByWithRelationInput } from 'src/models/companies/dtos/order-by.args'
 import { EmployeeOrderByWithRelationInput } from 'src/models/employees/dtos/order-by.args'
+import { JobOrderByWithRelationInput } from 'src/models/jobs/dtos/order-by.args'
 
 @InputType()
 export class EmploymentOrderByWithRelationInputStrict
@@ -23,10 +24,10 @@ export class EmploymentOrderByWithRelationInputStrict
   @Field(() => Prisma.SortOrder)
   endDate: Prisma.SortOrder
   @Field(() => Prisma.SortOrder)
-  companyId: Prisma.SortOrder
+  jobId: Prisma.SortOrder
   @Field(() => Prisma.SortOrder)
   employeeId: Prisma.SortOrder
-  company: CompanyOrderByWithRelationInput
+  job: JobOrderByWithRelationInput
   employee: EmployeeOrderByWithRelationInput
   // Todo: Add below field decorator to the SortOrder properties.
   // @Field(() => Prisma.SortOrder)

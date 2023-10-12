@@ -8,6 +8,7 @@ import {
 } from 'src/common/dtos/common.input'
 import { CompanyRelationFilter } from 'src/models/companies/dtos/where.args'
 import { EmployeeRelationFilter } from 'src/models/employees/dtos/where.args'
+import { JobRelationFilter } from 'src/models/jobs/dtos/where.args'
 
 @InputType()
 export class EmploymentWhereUniqueInput {
@@ -25,9 +26,9 @@ export class EmploymentWhereInputStrict
   updatedAt: DateTimeFilter
   startDate: DateTimeFilter
   endDate: DateTimeFilter
-  companyId: IntFilter
+  jobId: IntFilter
   employeeId: StringFilter
-  company: CompanyRelationFilter
+  job: JobRelationFilter
   employee: EmployeeRelationFilter
   // Todo: Add the below field decorator only to the $Enums types.
   // @Field(() => $Enums.x)

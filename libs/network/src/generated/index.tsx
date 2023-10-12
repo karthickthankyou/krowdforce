@@ -305,7 +305,6 @@ export type CompanyOrderByRelationAggregateInput = {
 
 export type CompanyOrderByWithRelationInput = {
   Employer?: InputMaybe<EmployerOrderByRelationAggregateInput>
-  Employment?: InputMaybe<EmploymentOrderByRelationAggregateInput>
   Job?: InputMaybe<JobOrderByRelationAggregateInput>
   address?: InputMaybe<AddressOrderByWithRelationInput>
   addressId?: InputMaybe<SortOrder>
@@ -329,7 +328,6 @@ export enum CompanyScalarFieldEnum {
 export type CompanyWhereInput = {
   AND?: InputMaybe<Array<CompanyWhereInput>>
   Employer?: InputMaybe<EmployerListRelationFilter>
-  Employment?: InputMaybe<EmploymentListRelationFilter>
   Job?: InputMaybe<JobListRelationFilter>
   NOT?: InputMaybe<Array<CompanyWhereInput>>
   OR?: InputMaybe<Array<CompanyWhereInput>>
@@ -392,7 +390,6 @@ export type CreateEmployerInput = {
 }
 
 export type CreateEmploymentInput = {
-  companyId: Scalars['Int']
   employeeId: Scalars['String']
   jobId: Scalars['Int']
   startDate: Scalars['DateTime']
@@ -610,11 +607,11 @@ export type EmployerWhereUniqueInput = {
 
 export type Employment = {
   __typename?: 'Employment'
-  companyId: Scalars['Int']
   createdAt: Scalars['DateTime']
   employeeId: Scalars['String']
   endDate?: Maybe<Scalars['DateTime']>
   id: Scalars['Int']
+  jobId: Scalars['Int']
   startDate: Scalars['DateTime']
   updatedAt: Scalars['DateTime']
 }
@@ -630,23 +627,23 @@ export type EmploymentOrderByRelationAggregateInput = {
 }
 
 export type EmploymentOrderByWithRelationInput = {
-  company?: InputMaybe<CompanyOrderByWithRelationInput>
-  companyId?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
   employee?: InputMaybe<EmployeeOrderByWithRelationInput>
   employeeId?: InputMaybe<SortOrder>
   endDate?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
+  job?: InputMaybe<JobOrderByWithRelationInput>
+  jobId?: InputMaybe<SortOrder>
   startDate?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
 }
 
 export enum EmploymentScalarFieldEnum {
-  CompanyId = 'companyId',
   CreatedAt = 'createdAt',
   EmployeeId = 'employeeId',
   EndDate = 'endDate',
   Id = 'id',
+  JobId = 'jobId',
   StartDate = 'startDate',
   UpdatedAt = 'updatedAt',
 }
@@ -655,13 +652,13 @@ export type EmploymentWhereInput = {
   AND?: InputMaybe<Array<EmploymentWhereInput>>
   NOT?: InputMaybe<Array<EmploymentWhereInput>>
   OR?: InputMaybe<Array<EmploymentWhereInput>>
-  company?: InputMaybe<CompanyRelationFilter>
-  companyId?: InputMaybe<IntFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   employee?: InputMaybe<EmployeeRelationFilter>
   employeeId?: InputMaybe<StringFilter>
   endDate?: InputMaybe<DateTimeFilter>
   id?: InputMaybe<IntFilter>
+  job?: InputMaybe<JobRelationFilter>
+  jobId?: InputMaybe<IntFilter>
   startDate?: InputMaybe<DateTimeFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
 }
@@ -798,6 +795,7 @@ export type JobOrderByWithRelationInput = {
   Bookmark?: InputMaybe<BookmarkOrderByRelationAggregateInput>
   Company?: InputMaybe<CompanyOrderByWithRelationInput>
   Employer?: InputMaybe<EmployerOrderByWithRelationInput>
+  Employment?: InputMaybe<EmploymentOrderByRelationAggregateInput>
   address?: InputMaybe<AddressOrderByWithRelationInput>
   addressId?: InputMaybe<SortOrder>
   companyId?: InputMaybe<SortOrder>
@@ -856,6 +854,7 @@ export type JobWhereInput = {
   Bookmark?: InputMaybe<BookmarkListRelationFilter>
   Company?: InputMaybe<CompanyRelationFilter>
   Employer?: InputMaybe<EmployerRelationFilter>
+  Employment?: InputMaybe<EmploymentListRelationFilter>
   NOT?: InputMaybe<Array<JobWhereInput>>
   OR?: InputMaybe<Array<JobWhereInput>>
   address?: InputMaybe<AddressRelationFilter>
@@ -1636,7 +1635,6 @@ export type UpdateEmployerInput = {
 }
 
 export type UpdateEmploymentInput = {
-  companyId?: InputMaybe<Scalars['Int']>
   employeeId?: InputMaybe<Scalars['String']>
   id: Scalars['Int']
   jobId?: InputMaybe<Scalars['Int']>

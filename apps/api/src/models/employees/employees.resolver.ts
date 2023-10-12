@@ -63,7 +63,11 @@ export class EmployeesResolver {
         ...args.where,
         Employment: {
           some: {
-            companyId: { equals: employer.companyId },
+            job: {
+              is: {
+                companyId: { equals: employer.companyId },
+              },
+            },
           },
         },
       },

@@ -12,7 +12,7 @@ export class Employment
   endDate: Date
   createdAt: Date
   updatedAt: Date
-  companyId: number
+  jobId: number
   employeeId: string
   // Todo Add below to make optional fields optional.
   // @Field({ nullable: true })

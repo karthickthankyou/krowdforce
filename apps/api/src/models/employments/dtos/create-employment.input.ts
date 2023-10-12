@@ -4,7 +4,7 @@ import { Employment } from '../entity/employment.entity'
 @InputType()
 export class CreateEmploymentInput extends PickType(
   Employment,
-  ['companyId', 'employeeId', 'startDate'],
+  ['jobId', 'employeeId', 'startDate'],
   InputType,
 ) {
   jobId: number
