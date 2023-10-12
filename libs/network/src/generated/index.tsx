@@ -2370,6 +2370,7 @@ export type CompanyApplicationsQuery = {
   __typename?: 'Query'
   companyApplications: Array<{
     __typename?: 'Application'
+    status: ApplicationStatus
     job: {
       __typename?: 'Job'
       id: number
@@ -5607,6 +5608,7 @@ export const CompanyApplicationsDocument = /*#__PURE__*/ {
                     ],
                   },
                 },
+                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'employee' },

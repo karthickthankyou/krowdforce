@@ -68,7 +68,11 @@ export const ApplicantsDialog: FC<{
                     ))}
                   </div>
                   <Separator />
-                  <SetApplicationStatus application={application} />
+                  <SetApplicationStatus
+                    employeeId={application.employee.uid}
+                    jobId={application.job.id}
+                    status={application.status}
+                  />
                 </div>
               </div>
             </div>
@@ -84,9 +88,13 @@ export const ApplicantsDialog: FC<{
 }
 
 export const SetApplicationStatus = ({
-  application: { status, job, employee },
+  employeeId,
+  jobId,
+  status,
 }: {
-  application: EmployerJobDetailsFragment['applications'][0]
+  employeeId: string
+  jobId: number
+  status: ApplicationStatus
 }) => {
   const options = Object.entries(ApplicationStatus).map(([key, value]) => ({
     label: key,
@@ -113,7 +121,7 @@ export const SetApplicationStatus = ({
           variant={'link'}
           onClick={async () => {
             await updateApplicationStatus({
-              employeeId_jobId: { employeeId: employee.uid, jobId: job.id },
+              employeeId_jobId: { employeeId, jobId },
               status: newStatus,
             })
           }}

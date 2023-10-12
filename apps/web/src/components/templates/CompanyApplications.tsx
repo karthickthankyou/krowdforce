@@ -4,7 +4,7 @@ import {
   SortOrder,
 } from '@krowdforce/network/src/generated'
 import { fetchGraphQLInfer } from '../../app/util/fetch'
-import { ApplicationCard } from '../organisms/ApplicationCard'
+import { ApplicationUpdateStatusCard } from '../organisms/ApplicationUpdateStatus'
 
 export const CompanyApplications = async () => {
   const { data, error } = await fetchGraphQLInfer(
@@ -24,7 +24,10 @@ export const CompanyApplications = async () => {
     <div>
       <div className="grid grid-cols-4 gap-6 mt-6">
         {data?.companyApplications.map((application) => (
-          <ApplicationCard key={application.job.id} application={application} />
+          <ApplicationUpdateStatusCard
+            key={application.job.id}
+            application={application}
+          />
         ))}
       </div>
     </div>

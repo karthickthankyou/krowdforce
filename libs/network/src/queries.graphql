@@ -427,6 +427,7 @@ query companyApplications(
     job {
       ...jobFrag
     }
+    status
     employee {
       uid
       user {
