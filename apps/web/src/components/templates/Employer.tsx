@@ -1,61 +1,50 @@
-import { EmployerMeQuery } from '@krowdforce/network/src/generated'
-import Link from 'next/link'
-import { Title } from '../atoms/typography'
-import { EmployerJobs } from './EmployerJobs'
 import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '../../components/atoms/tabs'
-import { CompanyTabChoices } from '@krowdforce/util/constants'
-import { Employers } from './Employers'
-import { AddEmployerDialog } from '../organisms/AddEmployerDialog'
-import { CompanyJobs } from './CompanyJobs'
+  CompanyStatsDocument,
+  EmployerMeQuery,
+  namedOperations,
+} from '@krowdforce/network/src/generated'
+import { fetchGraphQLInfer } from '../../app/util/fetch'
+import { StatCard } from '../organisms/StatCard'
+import { Title } from '../atoms/typography'
 
-export const Employer = ({ employerMe }: EmployerMeQuery) => {
+export const EmployerDashboard = async ({ employerMe }: EmployerMeQuery) => {
+  const companyStats = await fetchGraphQLInfer(
+    CompanyStatsDocument,
+    {},
+    { next: { tags: [namedOperations.Query.CompanyStats] } },
+  )
+
+  console.log('companyStats', companyStats)
   return (
     <div className="my-4">
-      {' '}
       <div className="text-xl font-semibold">{employerMe?.company?.name}</div>
       <div>{employerMe?.company?.description}</div>
       <div className="text-gray">{employerMe?.company?.address.address}</div>
-      <Link
-        href={'/employer/search'}
-        className="my-4 underline underline-offset-4 block font-semibold"
-      >
-        Search employees
-      </Link>
-      <Tabs defaultValue={CompanyTabChoices.Jobs} className="mt-8">
-        <TabsList className="flex justify-start gap-2">
-          <TabsTrigger value={CompanyTabChoices.Jobs}>Jobs</TabsTrigger>
+      <Title className={'mt-6'}>Jobs</Title>
 
-          <TabsTrigger value={CompanyTabChoices.Employers}>
-            Employers
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value={CompanyTabChoices.Jobs}>
-          <div className="flex justify-between mt-6">
-            <Title>Jobs</Title>
-            <Link
-              href={'/employer/jobs/new'}
-              className="block mt-2 underline underline-offset-4"
-            >
-              + New job
-            </Link>
-          </div>
-          <CompanyJobs />
-        </TabsContent>
-
-        <TabsContent value={CompanyTabChoices.Employers}>
-          <div className="flex justify-between mt-6">
-            <Title>Employers</Title>
-            <AddEmployerDialog />
-          </div>
-
-          <Employers />
-        </TabsContent>
-      </Tabs>
+      <div className="flex flex-wrap gap-2 mt-2">
+        {companyStats.data?.companyStats.jobs.map((job) => (
+          <StatCard
+            className="max-w-sm w-full"
+            key={job.name}
+            count={job.count}
+            title={job.name}
+            href="/employer/jobs"
+          />
+        ))}
+      </div>
+      <Title className={'mt-6'}>Applications</Title>
+      <div className="flex flex-wrap gap-2 mt-2">
+        {companyStats.data?.companyStats.applications.map((application) => (
+          <StatCard
+            className="max-w-sm w-full"
+            key={application.name}
+            count={application.count}
+            title={application.name}
+            href="/employer/applications"
+          />
+        ))}
+      </div>
     </div>
   )
 }

@@ -24,6 +24,7 @@ export async function createFollow({ followingId }: { followingId: string }) {
   })
   if (data?.createFollow) {
     revalidateTag(namedOperations.Query.follow)
+    revalidateTag(namedOperations.Query.followedByMe)
     return data
   }
   return error
@@ -45,6 +46,7 @@ export async function removeFollow({ followingId }: { followingId: string }) {
   })
   if (data?.removeFollow) {
     revalidateTag(namedOperations.Query.follow)
+    revalidateTag(namedOperations.Query.followedByMe)
     return data
   }
   return error

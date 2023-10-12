@@ -47,6 +47,24 @@ export class ApplicationsResolver {
   }
 
   @AllowAuthenticated()
+  @Query(() => [Application], { name: 'companyApplications' })
+  async companyApplications(
+    @Args() args: FindManyApplicationArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const { companyId } = await this.prisma.employer.findUnique({
+      where: { uid: user.uid },
+    })
+    return this.applicationsService.findAll({
+      ...args,
+      where: {
+        ...args.where,
+        job: { is: { companyId: { equals: companyId } } },
+      },
+    })
+  }
+
+  @AllowAuthenticated()
   @Query(() => [Application], { name: 'myApplications' })
   myApplications(
     @Args() args: FindManyApplicationArgs,

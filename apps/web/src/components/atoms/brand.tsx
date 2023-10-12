@@ -6,8 +6,18 @@ export const Brand = () => {
       <div className={`flex  items-center `}>
         <IconPick className="mr-2" />
         <div>
-          <span className="font-bold ">Krowd</span>
-          <span className="italic">Force</span>
+          <div className="flex">
+            <span className="font-bold ">Krowd</span>
+            <div className="relative">
+              <span className="italic absolute">Force</span>
+              <span className="italic absolute translate-x-0.5  opacity-20">
+                Force
+              </span>
+              <span className="italic absolute translate-x-1 opacity-10">
+                Force
+              </span>
+            </div>
+          </div>
           <div className="text-xs text-gray">Soma & Karthick Ragavendran</div>
         </div>
       </div>

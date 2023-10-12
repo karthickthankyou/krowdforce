@@ -59,6 +59,7 @@ query EmployerMe {
 query EmployeeMe {
   employeeMe {
     uid
+    about
     createdAt
     user {
       image
@@ -417,6 +418,28 @@ query myApplications(
   }
 }
 
+query companyApplications(
+  $skip: Int
+  $take: Int
+  $cursor: ApplicationWhereUniqueInput
+  $orderBy: [ApplicationOrderByWithRelationInput!]
+  $where: ApplicationWhereInput
+  $distinct: [ApplicationScalarFieldEnum!]
+) {
+  companyApplications(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+    distinct: $distinct
+  ) {
+    job {
+      ...jobFrag
+    }
+  }
+}
+
 mutation createApplication($createApplicationInput: CreateApplicationInput!) {
   createApplication(createApplicationInput: $createApplicationInput) {
     jobId
@@ -539,5 +562,76 @@ query follow($where: FollowWhereUniqueInput) {
 mutation removeFollow($where: FollowWhereUniqueInput) {
   removeFollow(where: $where) {
     id
+  }
+}
+
+fragment followInfo on User {
+  name
+  uid
+  image
+  createdAt
+}
+
+query followedByMe {
+  followedByMe {
+    id
+
+    following {
+      ...followInfo
+    }
+    createdAt
+  }
+}
+
+query followers {
+  followers {
+    id
+
+    follower {
+      ...followInfo
+    }
+    createdAt
+  }
+}
+
+query followSuggestions(
+  $skip: Int
+  $take: Int
+  $cursor: UserWhereUniqueInput
+  $orderBy: [UserOrderByWithRelationInput!]
+  $where: UserWhereInput
+  $distinct: [UserScalarFieldEnum!]
+) {
+  users(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+    distinct: $distinct
+  ) {
+    ...followInfo
+  }
+}
+
+query EmployeeStats {
+  employeeStats {
+    followers
+    followedBy
+    bookmarks
+    applications
+  }
+}
+
+query CompanyStats {
+  companyStats {
+    jobs {
+      name
+      count
+    }
+    applications {
+      name
+      count
+    }
   }
 }

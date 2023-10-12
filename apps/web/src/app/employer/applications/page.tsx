@@ -1,15 +1,15 @@
 import {
-  EmployerJobsDocument,
+  CompanyApplicationsDocument,
   namedOperations,
   SortOrder,
 } from '@krowdforce/network/src/generated'
 
 import { fetchGraphQLInfer } from '../../util/fetch'
-import { CompanyJobs } from '../../../components/templates/CompanyJobs'
+import { CompanyApplications } from '../../../components/templates/CompanyApplications'
 
-export default async function EmployerJobsPage() {
+export default async function ApplicationsPage() {
   const { data, error } = await fetchGraphQLInfer(
-    EmployerJobsDocument,
+    CompanyApplicationsDocument,
     { orderBy: { createdAt: SortOrder.Desc } },
     {
       next: {
@@ -18,9 +18,9 @@ export default async function EmployerJobsPage() {
     },
   )
 
-  if (!data?.employerJobs) {
-    return <div>No jobs found.</div>
+  if (!data?.companyApplications) {
+    return <div>No applications.</div>
   }
 
-  return <CompanyJobs />
+  return <CompanyApplications />
 }

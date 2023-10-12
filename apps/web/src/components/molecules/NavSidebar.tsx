@@ -31,6 +31,7 @@ export function NavSidebar({ menuItems }: INavSidebarProps) {
       <SheetContent>
         <SheetHeader>
           <DisplayUser />
+          <Link href="/employee">Employee</Link>
           <Link href="/employer">Employer</Link>
 
           <SheetDescription>

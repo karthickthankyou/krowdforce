@@ -19,7 +19,7 @@ import { CreateEmployerInput } from './dtos/create-employer.input'
 import { FindManyEmployerArgs, FindUniqueEmployerArgs } from './dtos/find.args'
 import { UpdateEmployerInput } from './dtos/update-employer.input'
 import { EmployersService } from './employers.service'
-import { Employer } from './entity/employer.entity'
+import { Employer, EmployerStats } from './entity/employer.entity'
 
 @Resolver(() => Employer)
 export class EmployersResolver {
@@ -51,6 +51,50 @@ export class EmployersResolver {
         company: { Employer: { some: { uid: { equals: user.uid } } } },
       },
     })
+  }
+
+  @AllowAuthenticated()
+  @Query(() => EmployerStats, { name: 'companyStats' })
+  async companyStats(@GetUser() user: GetUserType): Promise<EmployerStats> {
+    const employer = await this.prisma.employer.findUnique({
+      where: { uid: user.uid },
+    })
+
+    const { companyId } = employer
+
+    const [jobs, applicationStatusCounts] = await Promise.all([
+      this.prisma.job.groupBy({
+        by: ['status'],
+        _count: {
+          status: true,
+        },
+        where: {
+          companyId,
+        },
+      }),
+      this.prisma.application.groupBy({
+        by: ['status'],
+        _count: {
+          status: true,
+        },
+        where: {
+          job: { companyId },
+        },
+      }),
+    ])
+
+    console.log('appications', applicationStatusCounts)
+
+    return {
+      jobs: jobs.map((item) => ({
+        name: item.status,
+        count: item._count.status,
+      })),
+      applications: applicationStatusCounts.map((item) => ({
+        name: item.status,
+        count: item._count.status,
+      })),
+    }
   }
 
   @Query(() => Employer, { name: 'employer' })

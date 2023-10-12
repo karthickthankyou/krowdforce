@@ -13,6 +13,11 @@ import { CreateFollowInput } from './dtos/create-follow.input'
 import { UpdateFollowInput } from './dtos/update-follow.input'
 import { User } from '../users/entity/user.entity'
 import { PrismaService } from 'src/common/prisma/prisma.service'
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator'
+import { GetUserType } from 'src/common/types'
 
 @Resolver(() => Follow)
 export class FollowsResolver {
@@ -29,6 +34,24 @@ export class FollowsResolver {
   @Query(() => [Follow], { name: 'follows' })
   findAll(@Args() args: FindManyFollowArgs) {
     return this.followsService.findAll(args)
+  }
+
+  @AllowAuthenticated()
+  @Query(() => [Follow], { name: 'followedByMe' })
+  followedByMe(@Args() args: FindManyFollowArgs, @GetUser() user: GetUserType) {
+    return this.followsService.findAll({
+      ...args,
+      where: { ...args.where, followerId: { equals: user.uid } },
+    })
+  }
+
+  @AllowAuthenticated()
+  @Query(() => [Follow], { name: 'followers' })
+  followers(@Args() args: FindManyFollowArgs, @GetUser() user: GetUserType) {
+    return this.followsService.findAll({
+      ...args,
+      where: { ...args.where, followingId: { equals: user.uid } },
+    })
   }
 
   @Query(() => Follow, { name: 'follow' })

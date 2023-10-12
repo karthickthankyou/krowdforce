@@ -17,7 +17,7 @@ import {
 } from './dtos/find.args'
 import { UpdateEmployeeInput } from './dtos/update-employee.input'
 import { EmployeesService } from './employees.service'
-import { Employee } from './entity/employee.entity'
+import { Employee, EmployeeStats } from './entity/employee.entity'
 import { Application } from '../applications/entity/application.entity'
 import { Bookmark } from '../bookmarks/entity/bookmark.entity'
 import {
@@ -46,6 +46,27 @@ export class EmployeesResolver {
   @Query(() => [Employee], { name: 'employees' })
   findAll(@Args() args: FindManyEmployeeArgs) {
     return this.employeesService.findAll(args)
+  }
+
+  @AllowAuthenticated()
+  @Query(() => EmployeeStats, { name: 'employeeStats' })
+  async employeeStats(@GetUser() user: GetUserType): Promise<EmployeeStats> {
+    const [followedBy, followers, applications, bookmarks] = await Promise.all([
+      this.prisma.follow.count({
+        where: { followerId: user.uid },
+      }),
+      this.prisma.follow.count({
+        where: { followingId: user.uid },
+      }),
+      this.prisma.application.count({
+        where: { employeeId: user.uid },
+      }),
+      this.prisma.bookmark.count({
+        where: { employeeId: user.uid },
+      }),
+    ])
+
+    return { followedBy, followers, applications, bookmarks }
   }
 
   @Query(() => [Employee], { name: 'searchEmployees' })

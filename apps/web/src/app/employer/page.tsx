@@ -3,7 +3,7 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { EmployerDilemma } from '../../components/organisms/EmployerDilemma'
-import { Employer } from '../../components/templates/Employer'
+import { EmployerDashboard } from '../../components/templates/Employer'
 import { fetchGraphQLInfer } from '../util/fetch'
 
 export default async function EmployerPage() {
@@ -18,9 +18,10 @@ export default async function EmployerPage() {
     },
   )
 
-  if (!data?.employerMe?.company) {
-    return <EmployerDilemma />
+  if (!data?.employerMe) {
+    // This condition should not technically happen as we check this in layout file. But right now there is no way of passing the data fetched in layout to the page.
+    return <div>Employer account not found.</div>
   }
 
-  return <Employer employerMe={data.employerMe} />
+  return <EmployerDashboard employerMe={data?.employerMe} />
 }

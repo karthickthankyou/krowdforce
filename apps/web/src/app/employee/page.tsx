@@ -1,21 +1,27 @@
-import { SearchJobsDocument } from '@krowdforce/network/src/generated'
+import {
+  EmployeeMeDocument,
+  SearchJobsDocument,
+  namedOperations,
+} from '@krowdforce/network/src/generated'
 import { initialBounds, ITEMS_PER_PAGE } from '@krowdforce/util/constants'
 import { fetchGraphQLInfer } from '../util/fetch'
 import { SearchJobs } from '../../components/templates/SearchJobs'
+import { EmployeeDashboard } from '../../components/templates/EmployeeDashboard'
 
 export default async function Home() {
-  const jobs = await fetchGraphQLInfer(SearchJobsDocument, {
-    locationFilter: initialBounds,
-    jobFilter: {
-      take: ITEMS_PER_PAGE,
+  const { data, error } = await fetchGraphQLInfer(
+    EmployeeMeDocument,
+    {},
+    {
+      next: {
+        tags: [namedOperations.Query.EmployeeMe],
+      },
     },
-  })
+  )
 
   return (
     <main>
-      <SearchJobs
-        jobs={jobs.data || { jobAggregate: { count: 0 }, searchJobs: [] }}
-      />
+      <EmployeeDashboard employeeMe={data?.employeeMe} />
     </main>
   )
 }

@@ -49,7 +49,7 @@ export class PostsResolver {
       return this.prisma.post.findMany({ skip, take })
     }
 
-    const posts = await this.prisma.post.findMany({
+    return this.prisma.post.findMany({
       where: {
         AND: [
           {
@@ -70,11 +70,6 @@ export class PostsResolver {
         createdAt: 'desc',
       },
     })
-
-    if (posts.length === 0) {
-      return this.prisma.post.findMany({ skip, take })
-    }
-    return posts
   }
 
   @Query(() => Post, { name: 'post' })

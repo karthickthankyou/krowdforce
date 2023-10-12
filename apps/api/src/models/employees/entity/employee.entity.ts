@@ -14,3 +14,11 @@ export class Employee implements RestrictProperties<Employee, EmployeeType> {
   // Todo Add below to make optional fields optional.
   // @Field({ nullable: true })
 }
+
+@ObjectType()
+export class EmployeeStats {
+  applications: number
+  bookmarks: number
+  followers: number
+  followedBy: number
+}

@@ -5,8 +5,11 @@ import {
 import { fetchGraphQLInfer } from '../util/fetch'
 import { CreateEmployee } from '../../components/organisms/CreateEmployee'
 import { FormProviderCreateEmployee } from '@krowdforce/forms/createEmployee'
+import { EmployeeMenu } from '../../components/organisms/EmployeeMenu'
+import { IconMenu } from '@tabler/icons-react'
+import { EmployeeSidebar } from '../../components/molecules/EmployeeSidebar'
 
-export default async function SearchLayout({
+export default async function EmployeeLayout({
   children,
 }: {
   children: React.ReactNode
@@ -29,5 +32,18 @@ export default async function SearchLayout({
     )
   }
 
-  return <>{children}</>
+  return (
+    <div className="flex mt-2">
+      <div className="w-full max-w-xs hidden sm:block">
+        <EmployeeMenu employeeMe={data.employeeMe} />
+      </div>
+
+      <div className="flex-grow">
+        <div className="sm:hidden">
+          <EmployeeSidebar employeeMe={data.employeeMe} />
+        </div>
+        {children}
+      </div>
+    </div>
+  )
 }

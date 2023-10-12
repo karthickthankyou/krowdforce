@@ -86,6 +86,31 @@ type Employer {
   jobs: [Job!]!
 }
 
+type ApplicationCountByStatus {
+  name: ApplicationStatus!
+  count: Int!
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  INTERVIEWED
+  OFFERED
+  REJECTED
+  ACCEPTED
+  WITHDRAW
+}
+
+type JobCountByStatus {
+  name: JobStatus!
+  count: Int!
+}
+
+type EmployerStats {
+  jobs: [JobCountByStatus!]!
+  applications: [ApplicationCountByStatus!]!
+}
+
 type Company {
   description: String
   addressId: Int!
@@ -122,6 +147,13 @@ type Employee {
   bookmarks: [Bookmark!]!
 }
 
+type EmployeeStats {
+  applications: Int!
+  bookmarks: Int!
+  followers: Int!
+  followedBy: Int!
+}
+
 type Application {
   status: ApplicationStatus!
   createdAt: DateTime!
@@ -130,16 +162,6 @@ type Application {
   jobId: Int!
   employee: Employee!
   job: Job!
-}
-
-enum ApplicationStatus {
-  SUBMITTED
-  UNDER_REVIEW
-  INTERVIEWED
-  OFFERED
-  REJECTED
-  ACCEPTED
-  WITHDRAW
 }
 
 type Bookmark {
@@ -177,12 +199,14 @@ type Query {
   admins(distinct: [AdminScalarFieldEnum!], where: AdminWhereInput, orderBy: [AdminOrderByWithRelationInput!], cursor: AdminWhereUniqueInput, take: Int, skip: Int): [Admin!]!
   admin(where: AdminWhereUniqueInput): Admin!
   employees(distinct: [EmployeeScalarFieldEnum!], where: EmployeeWhereInput, orderBy: [EmployeeOrderByWithRelationInput!], cursor: EmployeeWhereUniqueInput, take: Int, skip: Int): [Employee!]!
+  employeeStats: EmployeeStats!
   searchEmployees(locationFilter: LocationFilterInput!, employeeFilter: EmployeeFilter): [Employee!]!
   employeeAggregate(employeeFilter: EmployeeFilter, locationFilter: LocationFilterInput!): AggregateCountOutput!
   employee(where: EmployeeWhereUniqueInput): Employee!
   employeeMe: Employee
   employers(distinct: [EmployerScalarFieldEnum!], where: EmployerWhereInput, orderBy: [EmployerOrderByWithRelationInput!], cursor: EmployerWhereUniqueInput, take: Int, skip: Int): [Employer!]!
   companyEmployers(distinct: [EmployerScalarFieldEnum!], where: EmployerWhereInput, orderBy: [EmployerOrderByWithRelationInput!], cursor: EmployerWhereUniqueInput, take: Int, skip: Int): [Employer!]!
+  companyStats: EmployerStats!
   employer(where: EmployerWhereUniqueInput): Employer!
   employerMe: Employer!
   companies(distinct: [CompanyScalarFieldEnum!], where: CompanyWhereInput, orderBy: [CompanyOrderByWithRelationInput!], cursor: CompanyWhereUniqueInput, take: Int, skip: Int): [Company!]!
@@ -201,11 +225,14 @@ type Query {
   subCategories(distinct: [SubCategoryScalarFieldEnum!], where: SubCategoryWhereInput, orderBy: [SubCategoryOrderByWithRelationInput!], cursor: SubCategoryWhereUniqueInput, take: Int, skip: Int): [SubCategory!]!
   subCategory(where: SubCategoryWhereUniqueInput): SubCategory!
   follows(distinct: [FollowScalarFieldEnum!], where: FollowWhereInput, orderBy: [FollowOrderByWithRelationInput!], cursor: FollowWhereUniqueInput, take: Int, skip: Int): [Follow!]!
+  followedByMe(distinct: [FollowScalarFieldEnum!], where: FollowWhereInput, orderBy: [FollowOrderByWithRelationInput!], cursor: FollowWhereUniqueInput, take: Int, skip: Int): [Follow!]!
+  followers(distinct: [FollowScalarFieldEnum!], where: FollowWhereInput, orderBy: [FollowOrderByWithRelationInput!], cursor: FollowWhereUniqueInput, take: Int, skip: Int): [Follow!]!
   follow(where: FollowWhereUniqueInput): Follow!
   posts(distinct: [PostScalarFieldEnum!], where: PostWhereInput, orderBy: [PostOrderByWithRelationInput!], cursor: PostWhereUniqueInput, take: Int, skip: Int): [Post!]!
   postFeed(distinct: [PostScalarFieldEnum!], where: PostWhereInput, orderBy: [PostOrderByWithRelationInput!], cursor: PostWhereUniqueInput, take: Int, skip: Int): [Post!]!
   post(where: PostWhereUniqueInput): Post!
   applications(distinct: [ApplicationScalarFieldEnum!], where: ApplicationWhereInput, orderBy: [ApplicationOrderByWithRelationInput!], cursor: ApplicationWhereUniqueInput, take: Int, skip: Int): [Application!]!
+  companyApplications(distinct: [ApplicationScalarFieldEnum!], where: ApplicationWhereInput, orderBy: [ApplicationOrderByWithRelationInput!], cursor: ApplicationWhereUniqueInput, take: Int, skip: Int): [Application!]!
   myApplications(distinct: [ApplicationScalarFieldEnum!], where: ApplicationWhereInput, orderBy: [ApplicationOrderByWithRelationInput!], cursor: ApplicationWhereUniqueInput, take: Int, skip: Int): [Application!]!
   application(where: ApplicationWhereUniqueInput): Application!
   bookmarks(distinct: [BookmarkScalarFieldEnum!], where: BookmarkWhereInput, orderBy: [BookmarkOrderByWithRelationInput!], cursor: BookmarkWhereUniqueInput, take: Int, skip: Int): [Bookmark!]!
