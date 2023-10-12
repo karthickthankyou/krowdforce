@@ -826,6 +826,12 @@ input FollowOrderByWithRelationInput {
 
 input FollowWhereUniqueInput {
   id: Int
+  followerId_followingId: FollowFollowerIdFollowingIdCompoundUniqueInput
+}
+
+input FollowFollowerIdFollowingIdCompoundUniqueInput {
+  followerId: String!
+  followingId: String!
 }
 
 enum PostScalarFieldEnum {

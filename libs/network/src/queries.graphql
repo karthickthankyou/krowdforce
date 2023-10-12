@@ -518,3 +518,26 @@ query Employee($where: EmployeeWhereUniqueInput) {
     about
   }
 }
+
+mutation createFollow($createFollowInput: CreateFollowInput!) {
+  createFollow(createFollowInput: $createFollowInput) {
+    id
+    followingId
+    followerId
+  }
+}
+
+query follow($where: FollowWhereUniqueInput) {
+  follow(where: $where) {
+    id
+    followingId
+    followerId
+    createdAt
+  }
+}
+
+mutation removeFollow($where: FollowWhereUniqueInput) {
+  removeFollow(where: $where) {
+    id
+  }
+}

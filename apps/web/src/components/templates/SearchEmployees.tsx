@@ -29,6 +29,7 @@ import { SetCity } from '../organisms/SetCity'
 
 import { SelectMultiSkills } from './NewJob'
 import { Badge } from '../atoms/badge'
+import { FollowButton } from '../organisms/FollowButton'
 
 export const SearchEmployees = ({
   employees,
@@ -160,6 +161,7 @@ export const MarkerWithPopup = ({
             <div className="p-1 space-y-2">
               <Title>{marker.user.name}</Title>
               <Description>{marker.about}</Description>
+              <FollowButton followingId={marker.user.uid} />
               <div className="flex gap-2 flex-wrap">
                 {marker.skills.map((skill) => (
                   <Badge variant={'outline'} key={skill.name}>

@@ -382,6 +382,11 @@ export type CreateEmployerInput = {
   uid: Scalars['String']
 }
 
+export type CreateFollowInput = {
+  followerId: Scalars['String']
+  followingId: Scalars['String']
+}
+
 export type CreateJobInput = {
   address?: InputMaybe<CreateAddressInput>
   companyAddressId?: InputMaybe<Scalars['Int']>
@@ -395,6 +400,13 @@ export type CreateJobInput = {
   status: JobStatus
   title: Scalars['String']
   type: JobType
+}
+
+export type CreatePostInput = {
+  authorId: Scalars['String']
+  content: Scalars['String']
+  image?: InputMaybe<Scalars['String']>
+  title: Scalars['String']
 }
 
 export type CreateSubCategoryInput = {
@@ -573,6 +585,64 @@ export type FloatFilter = {
   not?: InputMaybe<Scalars['Int']>
 }
 
+export type Follow = {
+  __typename?: 'Follow'
+  createdAt: Scalars['DateTime']
+  follower: User
+  followerId: Scalars['String']
+  following: User
+  followingId: Scalars['String']
+  id: Scalars['Int']
+}
+
+export type FollowFollowerIdFollowingIdCompoundUniqueInput = {
+  followerId: Scalars['String']
+  followingId: Scalars['String']
+}
+
+export type FollowListRelationFilter = {
+  every?: InputMaybe<FollowWhereInput>
+  none?: InputMaybe<FollowWhereInput>
+  some?: InputMaybe<FollowWhereInput>
+}
+
+export type FollowOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type FollowOrderByWithRelationInput = {
+  createdAt?: InputMaybe<SortOrder>
+  follower?: InputMaybe<UserOrderByWithRelationInput>
+  followerId?: InputMaybe<SortOrder>
+  following?: InputMaybe<UserOrderByWithRelationInput>
+  followingId?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+}
+
+export enum FollowScalarFieldEnum {
+  CreatedAt = 'createdAt',
+  FollowerId = 'followerId',
+  FollowingId = 'followingId',
+  Id = 'id',
+}
+
+export type FollowWhereInput = {
+  AND?: InputMaybe<Array<FollowWhereInput>>
+  NOT?: InputMaybe<Array<FollowWhereInput>>
+  OR?: InputMaybe<Array<FollowWhereInput>>
+  createdAt?: InputMaybe<DateTimeFilter>
+  follower?: InputMaybe<UserRelationFilter>
+  followerId?: InputMaybe<StringFilter>
+  following?: InputMaybe<UserRelationFilter>
+  followingId?: InputMaybe<StringFilter>
+  id?: InputMaybe<IntFilter>
+}
+
+export type FollowWhereUniqueInput = {
+  followerId_followingId?: InputMaybe<FollowFollowerIdFollowingIdCompoundUniqueInput>
+  id?: InputMaybe<Scalars['Int']>
+}
+
 export type IntFilter = {
   equals?: InputMaybe<Scalars['Int']>
   gt?: InputMaybe<Scalars['Int']>
@@ -728,7 +798,9 @@ export type Mutation = {
   createCompany: Company
   createEmployee: Employee
   createEmployer?: Maybe<Employer>
+  createFollow: Follow
   createJob: Job
+  createPost: Post
   createSubCategory: SubCategory
   createUser: User
   removeAddress: Address
@@ -739,7 +811,9 @@ export type Mutation = {
   removeCompany: Company
   removeEmployee: Employee
   removeEmployer: Employer
+  removeFollow: Follow
   removeJob: Job
+  removePost: Post
   removeSubCategory: SubCategory
   removeUser: User
   updateAddress: Address
@@ -750,7 +824,9 @@ export type Mutation = {
   updateCompany: Company
   updateEmployee: Employee
   updateEmployer: Employer
+  updateFollow: Follow
   updateJob: Job
+  updatePost: Post
   updateSubCategory: SubCategory
   updateUser: User
 }
@@ -791,8 +867,16 @@ export type MutationCreateEmployerArgs = {
   createEmployerInput: CreateEmployerInput
 }
 
+export type MutationCreateFollowArgs = {
+  createFollowInput: CreateFollowInput
+}
+
 export type MutationCreateJobArgs = {
   createJobInput: CreateJobInput
+}
+
+export type MutationCreatePostArgs = {
+  createPostInput: CreatePostInput
 }
 
 export type MutationCreateSubCategoryArgs = {
@@ -835,8 +919,16 @@ export type MutationRemoveEmployerArgs = {
   where?: InputMaybe<EmployerWhereUniqueInput>
 }
 
+export type MutationRemoveFollowArgs = {
+  where?: InputMaybe<FollowWhereUniqueInput>
+}
+
 export type MutationRemoveJobArgs = {
   where?: InputMaybe<JobWhereUniqueInput>
+}
+
+export type MutationRemovePostArgs = {
+  where?: InputMaybe<PostWhereUniqueInput>
 }
 
 export type MutationRemoveSubCategoryArgs = {
@@ -879,8 +971,16 @@ export type MutationUpdateEmployerArgs = {
   updateEmployerInput: UpdateEmployerInput
 }
 
+export type MutationUpdateFollowArgs = {
+  updateFollowInput: UpdateFollowInput
+}
+
 export type MutationUpdateJobArgs = {
   updateJobInput: UpdateJobInput
+}
+
+export type MutationUpdatePostArgs = {
+  updatePostInput: UpdatePostInput
 }
 
 export type MutationUpdateSubCategoryArgs = {
@@ -889,6 +989,67 @@ export type MutationUpdateSubCategoryArgs = {
 
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput
+}
+
+export type Post = {
+  __typename?: 'Post'
+  author: User
+  authorId: Scalars['String']
+  content: Scalars['String']
+  createdAt: Scalars['DateTime']
+  id: Scalars['Int']
+  image?: Maybe<Scalars['String']>
+  title: Scalars['String']
+  updatedAt: Scalars['DateTime']
+}
+
+export type PostListRelationFilter = {
+  every?: InputMaybe<PostWhereInput>
+  none?: InputMaybe<PostWhereInput>
+  some?: InputMaybe<PostWhereInput>
+}
+
+export type PostOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type PostOrderByWithRelationInput = {
+  author?: InputMaybe<UserOrderByWithRelationInput>
+  authorId?: InputMaybe<SortOrder>
+  content?: InputMaybe<SortOrder>
+  createdAt?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  image?: InputMaybe<SortOrder>
+  title?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export enum PostScalarFieldEnum {
+  AuthorId = 'authorId',
+  Content = 'content',
+  CreatedAt = 'createdAt',
+  Id = 'id',
+  Image = 'image',
+  Title = 'title',
+  UpdatedAt = 'updatedAt',
+}
+
+export type PostWhereInput = {
+  AND?: InputMaybe<Array<PostWhereInput>>
+  NOT?: InputMaybe<Array<PostWhereInput>>
+  OR?: InputMaybe<Array<PostWhereInput>>
+  author?: InputMaybe<UserRelationFilter>
+  authorId?: InputMaybe<StringFilter>
+  content?: InputMaybe<StringFilter>
+  createdAt?: InputMaybe<DateTimeFilter>
+  id?: InputMaybe<IntFilter>
+  image?: InputMaybe<StringFilter>
+  title?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type PostWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>
 }
 
 export type Query = {
@@ -916,11 +1077,16 @@ export type Query = {
   employerJobs: Array<Job>
   employerMe: Employer
   employers: Array<Employer>
+  follow: Follow
+  follows: Array<Follow>
   job: Job
   jobAggregate: AggregateCountOutput
   jobs: Array<Job>
   myApplications: Array<Application>
   myBookmarks: Array<Bookmark>
+  post: Post
+  postFeed: Array<Post>
+  posts: Array<Post>
   searchEmployees: Array<Employee>
   searchJobs: Array<Job>
   subCategories: Array<SubCategory>
@@ -1065,6 +1231,19 @@ export type QueryEmployersArgs = {
   where?: InputMaybe<EmployerWhereInput>
 }
 
+export type QueryFollowArgs = {
+  where?: InputMaybe<FollowWhereUniqueInput>
+}
+
+export type QueryFollowsArgs = {
+  cursor?: InputMaybe<FollowWhereUniqueInput>
+  distinct?: InputMaybe<Array<FollowScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<FollowOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<FollowWhereInput>
+}
+
 export type QueryJobArgs = {
   where?: InputMaybe<JobWhereUniqueInput>
 }
@@ -1099,6 +1278,28 @@ export type QueryMyBookmarksArgs = {
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
   where?: InputMaybe<BookmarkWhereInput>
+}
+
+export type QueryPostArgs = {
+  where?: InputMaybe<PostWhereUniqueInput>
+}
+
+export type QueryPostFeedArgs = {
+  cursor?: InputMaybe<PostWhereUniqueInput>
+  distinct?: InputMaybe<Array<PostScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<PostOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<PostWhereInput>
+}
+
+export type QueryPostsArgs = {
+  cursor?: InputMaybe<PostWhereUniqueInput>
+  distinct?: InputMaybe<Array<PostScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<PostOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<PostWhereInput>
 }
 
 export type QuerySearchEmployeesArgs = {
@@ -1257,6 +1458,12 @@ export type UpdateEmployerInput = {
   uid: Scalars['String']
 }
 
+export type UpdateFollowInput = {
+  followerId?: InputMaybe<Scalars['String']>
+  followingId?: InputMaybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
 export type UpdateJobInput = {
   companyAddressId?: InputMaybe<Scalars['Int']>
   companyId?: InputMaybe<Scalars['Int']>
@@ -1269,6 +1476,14 @@ export type UpdateJobInput = {
   status?: InputMaybe<JobStatus>
   title?: InputMaybe<Scalars['String']>
   type?: InputMaybe<JobType>
+}
+
+export type UpdatePostInput = {
+  authorId?: InputMaybe<Scalars['String']>
+  content?: InputMaybe<Scalars['String']>
+  id: Scalars['Int']
+  image?: InputMaybe<Scalars['String']>
+  title?: InputMaybe<Scalars['String']>
 }
 
 export type UpdateSubCategoryInput = {
@@ -1287,6 +1502,8 @@ export type User = {
   createdAt: Scalars['DateTime']
   employee: Employee
   employer: Employer
+  followedBy: Array<Follow>
+  following: Array<Follow>
   image?: Maybe<Scalars['String']>
   name?: Maybe<Scalars['String']>
   uid: Scalars['String']
@@ -1295,9 +1512,12 @@ export type User = {
 
 export type UserOrderByWithRelationInput = {
   Admin?: InputMaybe<AdminOrderByWithRelationInput>
+  Post?: InputMaybe<PostOrderByRelationAggregateInput>
   createdAt?: InputMaybe<SortOrder>
   employee?: InputMaybe<EmployeeOrderByWithRelationInput>
   employer?: InputMaybe<EmployerOrderByWithRelationInput>
+  followedBy?: InputMaybe<FollowOrderByRelationAggregateInput>
+  following?: InputMaybe<FollowOrderByRelationAggregateInput>
   image?: InputMaybe<SortOrder>
   name?: InputMaybe<SortOrder>
   uid?: InputMaybe<SortOrder>
@@ -1322,9 +1542,12 @@ export type UserWhereInput = {
   Admin?: InputMaybe<AdminRelationFilter>
   NOT?: InputMaybe<Array<UserWhereInput>>
   OR?: InputMaybe<Array<UserWhereInput>>
+  Post?: InputMaybe<PostListRelationFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   employee?: InputMaybe<EmployeeRelationFilter>
   employer?: InputMaybe<EmployerRelationFilter>
+  followedBy?: InputMaybe<FollowListRelationFilter>
+  following?: InputMaybe<FollowListRelationFilter>
   image?: InputMaybe<StringFilter>
   name?: InputMaybe<StringFilter>
   uid?: InputMaybe<StringFilter>
@@ -2097,6 +2320,44 @@ export type EmployeeQuery = {
   }
 }
 
+export type CreateFollowMutationVariables = Exact<{
+  createFollowInput: CreateFollowInput
+}>
+
+export type CreateFollowMutation = {
+  __typename?: 'Mutation'
+  createFollow: {
+    __typename?: 'Follow'
+    id: number
+    followingId: string
+    followerId: string
+  }
+}
+
+export type FollowQueryVariables = Exact<{
+  where?: InputMaybe<FollowWhereUniqueInput>
+}>
+
+export type FollowQuery = {
+  __typename?: 'Query'
+  follow: {
+    __typename?: 'Follow'
+    id: number
+    followingId: string
+    followerId: string
+    createdAt: any
+  }
+}
+
+export type RemoveFollowMutationVariables = Exact<{
+  where?: InputMaybe<FollowWhereUniqueInput>
+}>
+
+export type RemoveFollowMutation = {
+  __typename?: 'Mutation'
+  removeFollow: { __typename?: 'Follow'; id: number }
+}
+
 export const namedOperations = {
   Query: {
     Users: 'Users',
@@ -2118,6 +2379,7 @@ export const namedOperations = {
     Applications: 'Applications',
     SearchEmployees: 'SearchEmployees',
     Employee: 'Employee',
+    follow: 'follow',
   },
   Mutation: {
     CreateUser: 'CreateUser',
@@ -2131,6 +2393,8 @@ export const namedOperations = {
     createApplication: 'createApplication',
     removeApplication: 'removeApplication',
     updateApplication: 'updateApplication',
+    createFollow: 'createFollow',
+    removeFollow: 'removeFollow',
   },
   Fragment: {
     applications: 'applications',
@@ -5464,3 +5728,161 @@ export const EmployeeDocument = /*#__PURE__*/ {
     },
   ],
 } as unknown as DocumentNode<EmployeeQuery, EmployeeQueryVariables>
+export const CreateFollowDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createFollow' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createFollowInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateFollowInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createFollow' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createFollowInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createFollowInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'followingId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'followerId' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateFollowMutation,
+  CreateFollowMutationVariables
+>
+export const FollowDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'follow' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'FollowWhereUniqueInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'follow' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'followingId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'followerId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<FollowQuery, FollowQueryVariables>
+export const RemoveFollowDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'removeFollow' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'FollowWhereUniqueInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'removeFollow' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  RemoveFollowMutation,
+  RemoveFollowMutationVariables
+>

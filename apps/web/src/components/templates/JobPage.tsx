@@ -5,6 +5,8 @@ import { Badge } from '../atoms/badge'
 import { Separator } from '../atoms/separator'
 import { FC } from 'react'
 import { ApplyButton } from '../organisms/ApplyButton'
+import { Button } from '../atoms/button'
+import { FollowButton } from '../organisms/FollowButton'
 
 export const JobPage: FC<{ job: JobQuery['job'] }> = ({ job }) => {
   return (
@@ -28,6 +30,7 @@ export const JobPage: FC<{ job: JobQuery['job'] }> = ({ job }) => {
           />
           {job?.employer?.user.name}
         </div>
+        <FollowButton followingId={job.employer?.uid} />
       </div>
       <div className="text-gray-600 mb-4">{job?.company.name}</div>
 

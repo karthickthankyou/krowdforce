@@ -9,9 +9,17 @@ import {
 import { UserRelationFilter } from 'src/models/users/dtos/where.args'
 
 @InputType()
+export class FollowFollowerIdFollowingIdCompoundUniqueInput {
+  followerId: string
+  followingId: string
+}
+
+@InputType()
 export class FollowWhereUniqueInput {
-  @Field(() => Number, { nullable: true })
+  @Field({ nullable: true })
   id: number
+  @Field({ nullable: true })
+  followerId_followingId?: FollowFollowerIdFollowingIdCompoundUniqueInput
 }
 
 @InputType()
