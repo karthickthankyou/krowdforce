@@ -104,6 +104,8 @@ type User {
   updatedAt: DateTime!
   employee: Employee!
   employer: Employer!
+  followedBy: [Follow!]!
+  following: [Follow!]!
 }
 
 type Employee {
@@ -149,6 +151,26 @@ type Bookmark {
   job: Job!
 }
 
+type Follow {
+  id: Int!
+  createdAt: DateTime!
+  followerId: String!
+  followingId: String!
+  follower: User!
+  following: User!
+}
+
+type Post {
+  image: String
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  content: String!
+  authorId: String!
+  author: User!
+}
+
 type Query {
   users(distinct: [UserScalarFieldEnum!], where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int): [User!]!
   user(where: UserWhereUniqueInput): User!
@@ -178,6 +200,11 @@ type Query {
   category(where: CategoryWhereUniqueInput): Category!
   subCategories(distinct: [SubCategoryScalarFieldEnum!], where: SubCategoryWhereInput, orderBy: [SubCategoryOrderByWithRelationInput!], cursor: SubCategoryWhereUniqueInput, take: Int, skip: Int): [SubCategory!]!
   subCategory(where: SubCategoryWhereUniqueInput): SubCategory!
+  follows(distinct: [FollowScalarFieldEnum!], where: FollowWhereInput, orderBy: [FollowOrderByWithRelationInput!], cursor: FollowWhereUniqueInput, take: Int, skip: Int): [Follow!]!
+  follow(where: FollowWhereUniqueInput): Follow!
+  posts(distinct: [PostScalarFieldEnum!], where: PostWhereInput, orderBy: [PostOrderByWithRelationInput!], cursor: PostWhereUniqueInput, take: Int, skip: Int): [Post!]!
+  postFeed(distinct: [PostScalarFieldEnum!], where: PostWhereInput, orderBy: [PostOrderByWithRelationInput!], cursor: PostWhereUniqueInput, take: Int, skip: Int): [Post!]!
+  post(where: PostWhereUniqueInput): Post!
   applications(distinct: [ApplicationScalarFieldEnum!], where: ApplicationWhereInput, orderBy: [ApplicationOrderByWithRelationInput!], cursor: ApplicationWhereUniqueInput, take: Int, skip: Int): [Application!]!
   myApplications(distinct: [ApplicationScalarFieldEnum!], where: ApplicationWhereInput, orderBy: [ApplicationOrderByWithRelationInput!], cursor: ApplicationWhereUniqueInput, take: Int, skip: Int): [Application!]!
   application(where: ApplicationWhereUniqueInput): Application!
@@ -195,6 +222,9 @@ enum UserScalarFieldEnum {
 }
 
 input UserWhereInput {
+  followedBy: FollowListRelationFilter
+  following: FollowListRelationFilter
+  Post: PostListRelationFilter
   uid: StringFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -206,6 +236,42 @@ input UserWhereInput {
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
+}
+
+input FollowListRelationFilter {
+  every: FollowWhereInput
+  some: FollowWhereInput
+  none: FollowWhereInput
+}
+
+input FollowWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  followerId: StringFilter
+  followingId: StringFilter
+  follower: UserRelationFilter
+  following: UserRelationFilter
+  AND: [FollowWhereInput!]
+  OR: [FollowWhereInput!]
+  NOT: [FollowWhereInput!]
+}
+
+input IntFilter {
+  equals: Int
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+}
+
+input DateTimeFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
 }
 
 input StringFilter {
@@ -228,14 +294,29 @@ enum QueryMode {
   insensitive
 }
 
-input DateTimeFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
+input UserRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
+input PostListRelationFilter {
+  every: PostWhereInput
+  some: PostWhereInput
+  none: PostWhereInput
+}
+
+input PostWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  title: StringFilter
+  content: StringFilter
+  image: StringFilter
+  authorId: StringFilter
+  author: UserRelationFilter
+  AND: [PostWhereInput!]
+  OR: [PostWhereInput!]
+  NOT: [PostWhereInput!]
 }
 
 input EmployeeRelationFilter {
@@ -258,14 +339,6 @@ input EmployeeWhereInput {
   AND: [EmployeeWhereInput!]
   OR: [EmployeeWhereInput!]
   NOT: [EmployeeWhereInput!]
-}
-
-input IntFilter {
-  equals: Int
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
 }
 
 input AddressRelationFilter {
@@ -446,11 +519,6 @@ input CategoryWhereInput {
   NOT: [CategoryWhereInput!]
 }
 
-input UserRelationFilter {
-  is: UserWhereInput
-  isNot: UserWhereInput
-}
-
 input FloatFilter {
   equals: Int
   lt: Int
@@ -481,6 +549,9 @@ input UserOrderByWithRelationInput {
   updatedAt: SortOrder
   name: SortOrder
   image: SortOrder
+  followedBy: FollowOrderByRelationAggregateInput
+  following: FollowOrderByRelationAggregateInput
+  Post: PostOrderByRelationAggregateInput
   employee: EmployeeOrderByWithRelationInput
   employer: EmployerOrderByWithRelationInput
   Admin: AdminOrderByWithRelationInput
@@ -489,6 +560,14 @@ input UserOrderByWithRelationInput {
 enum SortOrder {
   asc
   desc
+}
+
+input FollowOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input PostOrderByRelationAggregateInput {
+  _count: SortOrder
 }
 
 input EmployeeOrderByWithRelationInput {
@@ -729,6 +808,51 @@ input SubCategoryWhereUniqueInput {
   name: String!
 }
 
+enum FollowScalarFieldEnum {
+  id
+  createdAt
+  followerId
+  followingId
+}
+
+input FollowOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  followerId: SortOrder
+  followingId: SortOrder
+  follower: UserOrderByWithRelationInput
+  following: UserOrderByWithRelationInput
+}
+
+input FollowWhereUniqueInput {
+  id: Int
+}
+
+enum PostScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  title
+  content
+  image
+  authorId
+}
+
+input PostOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  title: SortOrder
+  content: SortOrder
+  image: SortOrder
+  authorId: SortOrder
+  author: UserOrderByWithRelationInput
+}
+
+input PostWhereUniqueInput {
+  id: Int
+}
+
 enum ApplicationScalarFieldEnum {
   createdAt
   updatedAt
@@ -805,6 +929,12 @@ type Mutation {
   createSubCategory(createSubCategoryInput: CreateSubCategoryInput!): SubCategory!
   updateSubCategory(updateSubCategoryInput: UpdateSubCategoryInput!): SubCategory!
   removeSubCategory(where: SubCategoryWhereUniqueInput): SubCategory!
+  createFollow(createFollowInput: CreateFollowInput!): Follow!
+  updateFollow(updateFollowInput: UpdateFollowInput!): Follow!
+  removeFollow(where: FollowWhereUniqueInput): Follow!
+  createPost(createPostInput: CreatePostInput!): Post!
+  updatePost(updatePostInput: UpdatePostInput!): Post!
+  removePost(where: PostWhereUniqueInput): Post!
   createApplication(createApplicationInput: CreateApplicationInput!): Application!
   updateApplication(updateApplicationInput: UpdateApplicationInput!): Application!
   removeApplication(where: ApplicationWhereUniqueInput): Application!
@@ -938,6 +1068,32 @@ input CreateSubCategoryInput {
 input UpdateSubCategoryInput {
   name: String!
   categoryName: String
+}
+
+input CreateFollowInput {
+  followerId: String!
+  followingId: String!
+}
+
+input UpdateFollowInput {
+  followerId: String
+  followingId: String
+  id: Int!
+}
+
+input CreatePostInput {
+  image: String
+  title: String!
+  content: String!
+  authorId: String!
+}
+
+input UpdatePostInput {
+  image: String
+  title: String
+  content: String
+  authorId: String
+  id: Int!
 }
 
 input CreateApplicationInput {

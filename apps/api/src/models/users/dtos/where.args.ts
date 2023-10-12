@@ -8,6 +8,8 @@ import {
 import { AdminRelationFilter } from 'src/models/admins/dtos/where.args'
 import { EmployeeRelationFilter } from 'src/models/employees/dtos/where.args'
 import { EmployerRelationFilter } from 'src/models/employers/dtos/where.args'
+import { FollowListRelationFilter } from 'src/models/follows/dtos/where.args'
+import { PostListRelationFilter } from 'src/models/posts/dtos/where.args'
 
 @InputType()
 export class UserWhereUniqueInput {
@@ -18,6 +20,9 @@ export class UserWhereUniqueInput {
 export class UserWhereInputStrict
   implements RestrictProperties<UserWhereInputStrict, Prisma.UserWhereInput>
 {
+  followedBy: FollowListRelationFilter
+  following: FollowListRelationFilter
+  Post: PostListRelationFilter
   uid: StringFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter

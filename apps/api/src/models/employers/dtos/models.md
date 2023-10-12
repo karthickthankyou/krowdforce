@@ -7,4 +7,6 @@ npx nestjs-prisma-codegen --entity Address
 npx nestjs-prisma-codegen --entity Category
 npx nestjs-prisma-codegen --entity SubCategory
 npx nestjs-prisma-codegen --entity Bookmark
-npx nestjs-prisma-codegen --entity Application 
+npx nestjs-prisma-codegen --entity Application
+npx nestjs-prisma-codegen --entity Follow
+npx nestjs-prisma-codegen --entity Post

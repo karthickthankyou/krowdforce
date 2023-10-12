@@ -20,6 +20,35 @@ model User {
     employee Employee?
     employer Employer?
     Admin    Admin?
+
+    followedBy Follow[] @relation("FollowedBy")
+    following  Follow[] @relation("Following")
+    Post       Post[]
+}
+
+model Follow {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+
+    followerId String
+    follower   User   @relation("Following", fields: [followerId], references: [uid])
+
+    followingId String
+    following   User   @relation("FollowedBy", fields: [followingId], references: [uid])
+
+    @@unique([followerId, followingId])
+}
+
+model Post {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    title     String
+    content   String
+    image     String?
+
+    authorId String
+    author   User   @relation(fields: [authorId], references: [uid])
 }
 
 model Admin {

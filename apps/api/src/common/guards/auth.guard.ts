@@ -71,10 +71,6 @@ export class AuthGuard implements CanActivate {
 
     const chosenToken = authCookie || token
 
-    if (!chosenToken) {
-      throw new UnauthorizedException()
-    }
-
     try {
       // Decode and verify JWT.
       const user = await this.jwtService.verify(chosenToken, {
@@ -85,7 +81,7 @@ export class AuthGuard implements CanActivate {
       req.user = user
     } catch (err) {
       console.log('err', err)
-      throw new UnauthorizedException()
+      //   throw new UnauthorizedException()
     }
 
     const allowUnauthenticated = this.reflector.getAllAndOverride<boolean>(

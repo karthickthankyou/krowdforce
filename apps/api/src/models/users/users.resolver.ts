@@ -19,6 +19,7 @@ import { FindManyUserArgs, FindUniqueUserArgs } from './dtos/find.args'
 import { UpdateUserInput } from './dtos/update-user.input'
 import { User } from './entity/user.entity'
 import { UsersService } from './users.service'
+import { Follow } from '../follows/entity/follow.entity'
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -65,5 +66,15 @@ export class UsersResolver {
   @ResolveField(() => Employer)
   employer(@Parent() parent: User) {
     return this.prisma.employer.findUnique({ where: { uid: parent.uid } })
+  }
+
+  @ResolveField(() => [Follow])
+  followedBy(@Parent() parent: User): Promise<Follow[]> {
+    return this.prisma.follow.findMany({ where: { followingId: parent.uid } })
+  }
+
+  @ResolveField(() => [Follow])
+  following(@Parent() parent: User): Promise<Follow[]> {
+    return this.prisma.follow.findMany({ where: { followerId: parent.uid } })
   }
 }

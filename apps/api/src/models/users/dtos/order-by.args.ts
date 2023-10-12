@@ -4,6 +4,8 @@ import { RestrictProperties } from 'src/common/dtos/common.input'
 import { AdminOrderByWithRelationInput } from 'src/models/admins/dtos/order-by.args'
 import { EmployeeOrderByWithRelationInput } from 'src/models/employees/dtos/order-by.args'
 import { EmployerOrderByWithRelationInput } from 'src/models/employers/dtos/order-by.args'
+import { FollowOrderByRelationAggregateInput } from 'src/models/follows/dtos/order-by.args'
+import { PostOrderByRelationAggregateInput } from 'src/models/posts/dtos/order-by.args'
 
 @InputType()
 export class UserOrderByWithRelationInputStrict
@@ -13,6 +15,9 @@ export class UserOrderByWithRelationInputStrict
       Prisma.UserOrderByWithRelationInput
     >
 {
+  followedBy: FollowOrderByRelationAggregateInput
+  following: FollowOrderByRelationAggregateInput
+  Post: PostOrderByRelationAggregateInput
   @Field(() => Prisma.SortOrder)
   uid: Prisma.SortOrder
   @Field(() => Prisma.SortOrder)

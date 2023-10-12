@@ -19,6 +19,8 @@ import { SubCategoriesModule } from './models/sub-categories/sub-categories.modu
 import { UsersModule } from './models/users/users.module'
 import { ApplicationsModule } from './models/applications/applications.module'
 import { BookmarksModule } from './models/bookmarks/bookmarks.module'
+import { FollowsModule } from './models/follows/follows.module'
+import { PostsModule } from './models/posts/posts.module'
 
 @Module({
   imports: [
@@ -45,6 +47,9 @@ import { BookmarksModule } from './models/bookmarks/bookmarks.module'
     AddressesModule,
     CategoriesModule,
     SubCategoriesModule,
+
+    FollowsModule,
+    PostsModule,
 
     ApplicationsModule,
     BookmarksModule,
