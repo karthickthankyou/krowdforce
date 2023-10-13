@@ -71,7 +71,7 @@ export async function fetchGraphQLInfer<TData, V>(
   }).then(async (res) => {
     const { data, errors } = await res.json()
     if (errors) {
-      console.log('Error', JSON.stringify(errors[0].message))
+      console.log('Error', JSON.stringify(errors))
       return { error: JSON.stringify(errors[0].message) }
     }
     return { data }

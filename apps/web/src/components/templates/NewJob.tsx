@@ -35,10 +35,17 @@ import { DatePickerWithRange } from '../atoms/date-picker'
 import { AsyncSelect, Select } from '../atoms/react-select'
 import { Separator } from '../atoms/separator'
 import { Textarea } from '../atoms/textArea'
+import { Label } from '../atoms/label'
+import { Weekdays } from '../organisms/Weekdays'
 
 export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
-  const { register, handleSubmit, reset, setValue } =
-    useFormContext<FormTypeCreateJob>()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useFormContext<FormTypeCreateJob>()
 
   const { data } = useSession()
 
@@ -52,9 +59,10 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
     setValue('companyId', employerCompany.id)
   }, [employerCompany.id, setValue])
   const [sameAddress, setSameAddress] = useState(false)
+  const [showShiftInformation, setShowShiftInformation] = useState(false)
   return (
-    <div>
-      <div className="grid grid-cols-2 gap-2">
+    <div className="grid grid-cols-2 gap-4 h-[calc(100vh-4rem)]">
+      <div className="top-16 sticky">
         <Map initialViewState={initialViewState}>
           {sameAddress ? (
             <MapMarker initialLocation={initialViewState} Icon={IconPick} />
@@ -88,75 +96,140 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
               ) : null}
             </DefaultZoomControls>
           </Panel>
-        </Map>{' '}
+        </Map>
+      </div>
+      <div className="overflow-y-auto">
         <form
           onSubmit={handleSubmit(async (formData) => {
             await createJob(formData)
             reset()
           })}
-          className="space-y-2"
+          className="flex flex-col my-4"
         >
           <h1 className="mb-2 text-lg font-semibold">Post new job</h1>
-          <Input {...register('title')} placeholder="Job title" />
-          <Textarea
-            {...register('description')}
-            placeholder="Job description"
-          />
-          <Input {...register('salary')} placeholder="Salary" />
-          <Select
-            placeholder="Select job type"
-            onChange={(option) => {
-              if (option) {
-                setValue('type', option.value)
-              }
-            }}
-            options={Object.entries(JobType).map(([key, value]) => ({
-              label: key,
-              value: value,
-            }))}
-          />
+          <Label title="Title">
+            <Input {...register('title')} placeholder="Job title" />
+          </Label>
+          <Label title="Description">
+            <Textarea
+              {...register('description')}
+              placeholder="Job description"
+            />
+          </Label>
+          <Label title="Salary" error={errors.salary?.message}>
+            <Input {...register('salary')} placeholder="Salary" />
+          </Label>
+          <Label title="Job type">
+            <Select
+              placeholder="Select job type"
+              onChange={(option) => {
+                if (option) {
+                  setValue('type', option.value)
+                }
+              }}
+              options={Object.entries(JobType).map(([key, value]) => ({
+                label: key,
+                value: value,
+              }))}
+            />
+          </Label>
           <SelectDates />
 
-          <SelectMultiSkills
-            setValue={(skills: string[]) => {
-              setValue(
-                'skills',
-                skills.map((name) => ({ name })),
-              )
-            }}
-          />
-
-          <Select
-            placeholder="Select job status"
-            onChange={(option) => {
-              if (option) {
-                setValue('status', option.value)
-              }
-            }}
-            options={Object.entries(JobStatus).map(([key, value]) => ({
-              label: key,
-              value: value,
-            }))}
-          />
-          <Separator />
-          <Input
-            type="checkbox"
-            checked={sameAddress}
-            onChange={(e) => {
-              setSameAddress(Boolean(e.target.value))
-              setValue('companyAddressId', employerCompany.address.id)
-            }}
-          />
-
-          {sameAddress ? (
-            <Input
-              type="text"
-              {...register('address.address')}
-              placeholder="Full address"
+          <Label title="Select skills">
+            <SelectMultiSkills
+              setValue={(skills: string[]) => {
+                setValue(
+                  'skills',
+                  skills.map((name) => ({ name })),
+                )
+              }}
             />
+          </Label>
+          <Label title="Job status">
+            <Select
+              placeholder="Select job status"
+              onChange={(option) => {
+                if (option) {
+                  setValue('status', option.value)
+                }
+              }}
+              options={Object.entries(JobStatus).map(([key, value]) => ({
+                label: key,
+                value: value,
+              }))}
+            />
+          </Label>
+          <Label title="Contact info">
+            <Textarea {...register('contactInfo')} placeholder="Full address" />
+          </Label>
+          <Separator />
+          <div className="flex gap-1">
+            <input
+              id="changeAddress"
+              type="checkbox"
+              checked={sameAddress}
+              className="transform scale-150 mr-2"
+              onChange={(e) => {
+                setSameAddress(Boolean(e.target.checked))
+                setValue('companyAddressId', employerCompany.address.id)
+              }}
+            />
+            <label htmlFor="changeAddress" className="select-none">
+              Add different address for the job?
+            </label>
+          </div>
+          {sameAddress ? (
+            <Label title="Full address">
+              <Textarea
+                {...register('address.address')}
+                placeholder="Full address"
+              />
+            </Label>
           ) : null}
-          {/* Status and  */}
 
+          <div className="flex gap-1">
+            <input
+              id="showShiftInformation"
+              type="checkbox"
+              checked={showShiftInformation}
+              className="transform scale-150 mr-2"
+              onChange={(e) => {
+                setShowShiftInformation(Boolean(e.target.checked))
+              }}
+            />
+            <label htmlFor="showShiftInformation" className="select-none">
+              Add shift information
+            </label>
+          </div>
+          {showShiftInformation ? (
+            <>
+              <Label
+                title="Week days"
+                error={errors.shiftInformation?.days?.message}
+              >
+                <Weekdays
+                  onToggle={(v) => {
+                    setValue('shiftInformation.days', v)
+                  }}
+                />
+              </Label>
+              <Label
+                title="Start time"
+                error={errors.shiftInformation?.endTime?.message}
+              >
+                <Input
+                  type="time"
+                  {...register('shiftInformation.startTime')}
+                />
+              </Label>
+              <Label
+                title="End time"
+                error={errors.shiftInformation?.endTime?.message}
+              >
+                <Input type="time" {...register('shiftInformation.endTime')} />
+              </Label>
+            </>
+          ) : null}
           <Button type="submit">Submit</Button>
         </form>
       </div>
@@ -228,11 +301,13 @@ export const SelectDates = () => {
   }
 
   return (
-    <DatePickerWithRange
-      setDates={(dates) => {
-        setValue('start', dates?.from?.toISOString())
-        setValue('end', dates?.to?.toISOString())
-      }}
-    />
+    <Label title="Date range">
+      <DatePickerWithRange
+        setDates={(dates) => {
+          setValue('start', dates?.from?.toISOString())
+          setValue('end', dates?.to?.toISOString())
+        }}
+      />
+    </Label>
   )
 }

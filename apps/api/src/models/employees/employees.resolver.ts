@@ -102,7 +102,7 @@ export class EmployeesResolver {
   ) {
     try {
       const { ne_lat, ne_lng, sw_lat, sw_lng } = locationFilter
-      console.log('locationFilter', locationFilter)
+
       const { where = {}, ...employeeFilter } = args || {}
 
       const employees = await this.prisma.employee.findMany({

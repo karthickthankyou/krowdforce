@@ -9,7 +9,7 @@ export interface ICurrentPath {
 
 export const CurrentPath = ({ children }: ICurrentPath) => {
   const currentPage = usePathname()
-  console.log('currentPage', currentPage)
+
   return (
     <>
       {typeof children === 'function'

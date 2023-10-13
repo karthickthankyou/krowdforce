@@ -3,10 +3,10 @@ import {
   EmployerCompanyDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { NewJob } from '../../../../components/templates/NewJob'
-import { fetchGraphQLInfer } from '../../../util/fetch'
+import { fetchGraphQLInfer } from '../../util/fetch'
+import { NewJob } from '../../../components/templates/NewJob'
 
-export default async function JobsByEmployerPage() {
+export default async function NewJobPage() {
   const { data, error } = await fetchGraphQLInfer(
     EmployerCompanyDocument,
     {},

@@ -5,6 +5,7 @@ import { ReactNode } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { formSchemaCreateJob } from '.'
+import React from 'react'
 
 export type FormTypeCreateJob = z.infer<typeof formSchemaCreateJob>
 

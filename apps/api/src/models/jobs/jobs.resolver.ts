@@ -30,6 +30,7 @@ import { SubCategory } from '../sub-categories/entity/sub-category.entity'
 import { Application } from '../applications/entity/application.entity'
 import { Bookmark } from '../bookmarks/entity/bookmark.entity'
 import { BadRequestException } from '@nestjs/common'
+import { ShiftInformation } from '../shift-informations/entity/shift-information.entity'
 
 @Resolver(() => Job)
 export class JobsResolver {
@@ -55,7 +56,7 @@ export class JobsResolver {
   ) {
     try {
       const { ne_lat, ne_lng, sw_lat, sw_lng } = locationFilter
-      console.log('locationFilter', locationFilter)
+
       const { where = {}, ...jobFilter } = args || {}
 
       const jobs = await this.prisma.job.findMany({
@@ -71,7 +72,7 @@ export class JobsResolver {
           },
         },
       })
-      console.log('jobs ', where, args.skip, args.take, jobs)
+
       return jobs
     } catch (error) {
       console.error('Error in searchJobs:', error)
@@ -216,6 +217,13 @@ export class JobsResolver {
   @ResolveField(() => [Bookmark])
   bookmarks(@Parent() parent: Job) {
     return this.prisma.bookmark.findMany({
+      where: { jobId: parent.id },
+    })
+  }
+
+  @ResolveField(() => ShiftInformation, { nullable: true })
+  shiftInformation(@Parent() parent: Job) {
+    return this.prisma.shiftInformation.findUnique({
       where: { jobId: parent.id },
     })
   }

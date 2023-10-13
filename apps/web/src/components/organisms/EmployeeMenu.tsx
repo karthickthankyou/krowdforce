@@ -23,6 +23,8 @@ export const EmployeeMenu = ({ employeeMe }: EmployeeMeQuery) => {
       <div className="flex flex-col gap-2">
         <Link href="/employee">Dashboard</Link>
         <Link href="/employee/jobSearch">Job search</Link>
+        <Link href="/employee/employments">Employments</Link>
+        <Link href="/employee/shifts">Shifts</Link>
         <Link href="/employee/applications">Applications</Link>
         <Link href="/employee/bookmarks">Bookmarks</Link>
         <Link href="/employee/following">Following</Link>

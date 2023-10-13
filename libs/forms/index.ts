@@ -1,4 +1,4 @@
-import { JobStatus, JobType } from '@krowdforce/network/src/generated'
+import { JobStatus, JobType, Weekday } from '@krowdforce/network/src/generated'
 import { z } from 'zod'
 
 export const addressSchema = z.object({
@@ -34,6 +34,20 @@ export const formSchemaCreateUser = z.object({
   name: z.string().optional(),
 })
 
+export const formSchemaShiftInfomation = z.object({
+  days: z.nativeEnum(Weekday).array().min(1, 'Select at least one day.'),
+  endTime: z
+    .string()
+    .refine((value) => /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value), {
+      message: 'Invalid time format, expected HH:MM',
+    }),
+  startTime: z
+    .string()
+    .refine((value) => /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value), {
+      message: 'Invalid time format, expected HH:MM',
+    }),
+})
+
 export const formSchemaCreateJob = z.object({
   title: z.string(),
   description: z.string(),
@@ -47,4 +61,6 @@ export const formSchemaCreateJob = z.object({
   skills: z.array(z.object({ name: z.string() })),
   companyId: z.number(),
   employerId: z.string(),
+  shiftInformation: formSchemaShiftInfomation.optional(),
+  contactInfo: z.string().optional(),
 })

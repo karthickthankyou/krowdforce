@@ -139,6 +139,16 @@ model Job {
     Bookmark    Bookmark[]
     Application Application[]
     Employment  Employment[]
+
+    shiftInformation ShiftInformation?
+}
+
+model ShiftInformation {
+    jobId     Int       @id
+    startTime String
+    endTime   String
+    days      Weekday[]
+    Job       Job       @relation(fields: [jobId], references: [id])
 }
 
 model Application {
@@ -217,4 +227,14 @@ enum ApplicationStatus {
     WITHDRAW
 
     EMPLOYED
+}
+
+enum Weekday {
+    MONDAY
+    TUESDAY
+    WEDNESDAY
+    THURSDAY
+    FRIDAY
+    SATURDAY
+    SUNDAY
 }

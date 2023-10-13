@@ -26,7 +26,6 @@ export const EmployerMenu = ({ employerMe }: EmployerMeQuery) => {
         <Link href="/employer/employees">Employees</Link>
         <Link href="/employer/applications">Applications</Link>
         <Link href="/employer/employers">Manage employers</Link>
-        <Link href="/employer/jobs/new">New job</Link>
         <Link href="/employer/following">Following</Link>
       </div>
     </div>

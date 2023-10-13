@@ -685,3 +685,28 @@ mutation acceptOffer($updateApplicationInput: UpdateApplicationInput!) {
     employeeId
   }
 }
+
+query MyEmployments(
+  $skip: Int
+  $take: Int
+  $orderBy: [EmploymentOrderByWithRelationInput!]
+  $where: EmploymentWhereInput
+) {
+  myEmployments(skip: $skip, take: $take, orderBy: $orderBy, where: $where) {
+    id
+    job {
+      id
+      title
+      company {
+        name
+      }
+      shiftInformation {
+        startTime
+        endTime
+        days
+      }
+    }
+    startDate
+    endDate
+  }
+}

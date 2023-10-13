@@ -408,6 +408,7 @@ export type CreateJobInput = {
   employerId?: InputMaybe<Scalars['String']>
   end?: InputMaybe<Scalars['DateTime']>
   salary?: InputMaybe<Scalars['Int']>
+  shiftInformation?: InputMaybe<CreateShiftInformationInputWithoutJobId>
   skills: Array<ConnectSubCategoryInput>
   start?: InputMaybe<Scalars['DateTime']>
   status: JobStatus
@@ -420,6 +421,19 @@ export type CreatePostInput = {
   content: Scalars['String']
   image?: InputMaybe<Scalars['String']>
   title: Scalars['String']
+}
+
+export type CreateShiftInformationInput = {
+  days?: InputMaybe<Array<Weekday>>
+  endTime: Scalars['String']
+  jobId: Scalars['Int']
+  startTime: Scalars['String']
+}
+
+export type CreateShiftInformationInputWithoutJobId = {
+  days?: InputMaybe<Array<Weekday>>
+  endTime: Scalars['String']
+  startTime: Scalars['String']
 }
 
 export type CreateSubCategoryInput = {
@@ -608,9 +622,11 @@ export type EmployerWhereUniqueInput = {
 export type Employment = {
   __typename?: 'Employment'
   createdAt: Scalars['DateTime']
+  employee: Employee
   employeeId: Scalars['String']
   endDate?: Maybe<Scalars['DateTime']>
   id: Scalars['Int']
+  job: Job
   jobId: Scalars['Int']
   startDate: Scalars['DateTime']
   updatedAt: Scalars['DateTime']
@@ -665,6 +681,14 @@ export type EmploymentWhereInput = {
 
 export type EmploymentWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>
+}
+
+export type EnumWeekdayListFilter = {
+  equals: Array<Weekday>
+  has: Weekday
+  hasEvery?: InputMaybe<Array<Weekday>>
+  hasSome?: InputMaybe<Array<Weekday>>
+  isEmpty?: InputMaybe<Scalars['Boolean']>
 }
 
 export type FloatFilter = {
@@ -759,6 +783,7 @@ export type Job = {
   end?: Maybe<Scalars['DateTime']>
   id: Scalars['Int']
   salary?: Maybe<Scalars['Int']>
+  shiftInformation?: Maybe<ShiftInformation>
   skills: Array<SubCategory>
   start?: Maybe<Scalars['DateTime']>
   status: JobStatus
@@ -806,6 +831,7 @@ export type JobOrderByWithRelationInput = {
   end?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
   salary?: InputMaybe<SortOrder>
+  shiftInformation?: InputMaybe<ShiftInformationOrderByWithRelationInput>
   skills?: InputMaybe<SubCategoryOrderByRelationAggregateInput>
   start?: InputMaybe<SortOrder>
   status?: InputMaybe<SortOrder>
@@ -867,6 +893,7 @@ export type JobWhereInput = {
   end?: InputMaybe<DateTimeFilter>
   id?: InputMaybe<IntFilter>
   salary?: InputMaybe<IntFilter>
+  shiftInformation?: InputMaybe<ShiftInformationRelationFilter>
   skills?: InputMaybe<SubCategoryListRelationFilter>
   start?: InputMaybe<DateTimeFilter>
   status?: InputMaybe<JobStatus>
@@ -902,6 +929,7 @@ export type Mutation = {
   createFollow: Follow
   createJob: Job
   createPost: Post
+  createShiftInformation: ShiftInformation
   createSubCategory: SubCategory
   createUser: User
   removeAddress: Address
@@ -916,6 +944,7 @@ export type Mutation = {
   removeFollow: Follow
   removeJob: Job
   removePost: Post
+  removeShiftInformation: ShiftInformation
   removeSubCategory: SubCategory
   removeUser: User
   updateAddress: Address
@@ -930,6 +959,7 @@ export type Mutation = {
   updateFollow: Follow
   updateJob: Job
   updatePost: Post
+  updateShiftInformation: ShiftInformation
   updateSubCategory: SubCategory
   updateUser: User
 }
@@ -990,6 +1020,10 @@ export type MutationCreatePostArgs = {
   createPostInput: CreatePostInput
 }
 
+export type MutationCreateShiftInformationArgs = {
+  createShiftInformationInput: CreateShiftInformationInput
+}
+
 export type MutationCreateSubCategoryArgs = {
   createSubCategoryInput: CreateSubCategoryInput
 }
@@ -1046,6 +1080,10 @@ export type MutationRemovePostArgs = {
   where?: InputMaybe<PostWhereUniqueInput>
 }
 
+export type MutationRemoveShiftInformationArgs = {
+  where?: InputMaybe<ShiftInformationWhereUniqueInput>
+}
+
 export type MutationRemoveSubCategoryArgs = {
   where?: InputMaybe<SubCategoryWhereUniqueInput>
 }
@@ -1100,6 +1138,10 @@ export type MutationUpdateJobArgs = {
 
 export type MutationUpdatePostArgs = {
   updatePostInput: UpdatePostInput
+}
+
+export type MutationUpdateShiftInformationArgs = {
+  updateShiftInformationInput: UpdateShiftInformationInput
 }
 
 export type MutationUpdateSubCategoryArgs = {
@@ -1211,11 +1253,14 @@ export type Query = {
   jobs: Array<Job>
   myApplications: Array<Application>
   myBookmarks: Array<Bookmark>
+  myEmployments: Array<Employment>
   post: Post
   postFeed: Array<Post>
   posts: Array<Post>
   searchEmployees: Array<Employee>
   searchJobs: Array<Job>
+  shiftInformation: ShiftInformation
+  shiftInformations: Array<ShiftInformation>
   subCategories: Array<SubCategory>
   subCategory: SubCategory
   user: User
@@ -1456,6 +1501,15 @@ export type QueryMyBookmarksArgs = {
   where?: InputMaybe<BookmarkWhereInput>
 }
 
+export type QueryMyEmploymentsArgs = {
+  cursor?: InputMaybe<EmploymentWhereUniqueInput>
+  distinct?: InputMaybe<Array<EmploymentScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<EmploymentOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<EmploymentWhereInput>
+}
+
 export type QueryPostArgs = {
   where?: InputMaybe<PostWhereUniqueInput>
 }
@@ -1488,6 +1542,19 @@ export type QuerySearchJobsArgs = {
   locationFilter: LocationFilterInput
 }
 
+export type QueryShiftInformationArgs = {
+  where?: InputMaybe<ShiftInformationWhereUniqueInput>
+}
+
+export type QueryShiftInformationsArgs = {
+  cursor?: InputMaybe<ShiftInformationWhereUniqueInput>
+  distinct?: InputMaybe<Array<ShiftInformationScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ShiftInformationOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ShiftInformationWhereInput>
+}
+
 export type QuerySubCategoriesArgs = {
   cursor?: InputMaybe<SubCategoryWhereUniqueInput>
   distinct?: InputMaybe<Array<SubCategoryScalarFieldEnum>>
@@ -1517,6 +1584,49 @@ export type QueryUsersArgs = {
 export enum QueryMode {
   Default = 'default',
   Insensitive = 'insensitive',
+}
+
+export type ShiftInformation = {
+  __typename?: 'ShiftInformation'
+  days?: Maybe<Array<Weekday>>
+  endTime: Scalars['String']
+  jobId: Scalars['Int']
+  startTime: Scalars['String']
+}
+
+export type ShiftInformationOrderByWithRelationInput = {
+  Job?: InputMaybe<JobOrderByWithRelationInput>
+  days?: InputMaybe<SortOrder>
+  endTime?: InputMaybe<SortOrder>
+  jobId?: InputMaybe<SortOrder>
+  startTime?: InputMaybe<SortOrder>
+}
+
+export type ShiftInformationRelationFilter = {
+  is?: InputMaybe<ShiftInformationWhereInput>
+  isNot?: InputMaybe<ShiftInformationWhereInput>
+}
+
+export enum ShiftInformationScalarFieldEnum {
+  Days = 'days',
+  EndTime = 'endTime',
+  JobId = 'jobId',
+  StartTime = 'startTime',
+}
+
+export type ShiftInformationWhereInput = {
+  AND?: InputMaybe<Array<ShiftInformationWhereInput>>
+  Job?: InputMaybe<JobRelationFilter>
+  NOT?: InputMaybe<Array<ShiftInformationWhereInput>>
+  OR?: InputMaybe<Array<ShiftInformationWhereInput>>
+  days?: InputMaybe<EnumWeekdayListFilter>
+  endTime?: InputMaybe<StringFilter>
+  jobId?: InputMaybe<IntFilter>
+  startTime?: InputMaybe<StringFilter>
+}
+
+export type ShiftInformationWhereUniqueInput = {
+  jobId: Scalars['Int']
 }
 
 export enum SortOrder {
@@ -1655,6 +1765,7 @@ export type UpdateJobInput = {
   end?: InputMaybe<Scalars['DateTime']>
   id: Scalars['Int']
   salary?: InputMaybe<Scalars['Int']>
+  shiftInformation?: InputMaybe<CreateShiftInformationInputWithoutJobId>
   start?: InputMaybe<Scalars['DateTime']>
   status?: InputMaybe<JobStatus>
   title?: InputMaybe<Scalars['String']>
@@ -1667,6 +1778,13 @@ export type UpdatePostInput = {
   id: Scalars['Int']
   image?: InputMaybe<Scalars['String']>
   title?: InputMaybe<Scalars['String']>
+}
+
+export type UpdateShiftInformationInput = {
+  days?: InputMaybe<Array<Weekday>>
+  endTime?: InputMaybe<Scalars['String']>
+  jobId: Scalars['Int']
+  startTime?: InputMaybe<Scalars['String']>
 }
 
 export type UpdateSubCategoryInput = {
@@ -1739,6 +1857,16 @@ export type UserWhereInput = {
 
 export type UserWhereUniqueInput = {
   uid: Scalars['String']
+}
+
+export enum Weekday {
+  Friday = 'FRIDAY',
+  Monday = 'MONDAY',
+  Saturday = 'SATURDAY',
+  Sunday = 'SUNDAY',
+  Thursday = 'THURSDAY',
+  Tuesday = 'TUESDAY',
+  Wednesday = 'WEDNESDAY',
 }
 
 export type UsersQueryVariables = Exact<{
@@ -2736,6 +2864,38 @@ export type AcceptOfferMutation = {
   acceptOffer: { __typename?: 'Application'; jobId: number; employeeId: string }
 }
 
+export type MyEmploymentsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  orderBy?: InputMaybe<
+    | Array<EmploymentOrderByWithRelationInput>
+    | EmploymentOrderByWithRelationInput
+  >
+  where?: InputMaybe<EmploymentWhereInput>
+}>
+
+export type MyEmploymentsQuery = {
+  __typename?: 'Query'
+  myEmployments: Array<{
+    __typename?: 'Employment'
+    id: number
+    startDate: any
+    endDate?: any | null
+    job: {
+      __typename?: 'Job'
+      id: number
+      title: string
+      company: { __typename?: 'Company'; name: string }
+      shiftInformation?: {
+        __typename?: 'ShiftInformation'
+        startTime: string
+        endTime: string
+        days?: Array<Weekday> | null
+      } | null
+    }
+  }>
+}
+
 export const namedOperations = {
   Query: {
     Users: 'Users',
@@ -2765,6 +2925,7 @@ export const namedOperations = {
     CompanyStats: 'CompanyStats',
     CompanyEmployees: 'CompanyEmployees',
     CompanyEmployers: 'CompanyEmployers',
+    MyEmployments: 'MyEmployments',
   },
   Mutation: {
     CreateUser: 'CreateUser',
@@ -7166,3 +7327,152 @@ export const AcceptOfferDocument = /*#__PURE__*/ {
     },
   ],
 } as unknown as DocumentNode<AcceptOfferMutation, AcceptOfferMutationVariables>
+export const MyEmploymentsDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'MyEmployments' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'orderBy' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: {
+                  kind: 'Name',
+                  value: 'EmploymentOrderByWithRelationInput',
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'EmploymentWhereInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'myEmployments' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'orderBy' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'job' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'company' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'name' },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'shiftInformation' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'startTime' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'endTime' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'days' },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'startDate' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'endDate' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<MyEmploymentsQuery, MyEmploymentsQueryVariables>

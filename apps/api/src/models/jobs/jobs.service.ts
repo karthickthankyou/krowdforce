@@ -14,6 +14,7 @@ export class JobsService {
     companyId,
     companyAddressId,
     employerId,
+    shiftInformation,
     ...createJobInput
   }: CreateJobInput) {
     const skillsConnect: SubCategoryWhereUniqueInput[] = skills.map(
@@ -33,6 +34,13 @@ export class JobsService {
             ? { address: { create: address } }
             : { address: { connect: { id: companyAddressId } } }),
           Company: { connect: { id: companyId } },
+          ...(shiftInformation
+            ? {
+                shiftInformation: {
+                  create: shiftInformation,
+                },
+              }
+            : null),
         },
       })
     } catch (error) {
@@ -51,7 +59,7 @@ export class JobsService {
   }
 
   update(updateJobInput: UpdateJobInput) {
-    const { id, ...data } = updateJobInput
+    const { id, shiftInformation, ...data } = updateJobInput
     return this.prisma.job.update({
       where: { id },
       data: data,

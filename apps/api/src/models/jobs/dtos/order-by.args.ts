@@ -7,6 +7,7 @@ import { BookmarkOrderByRelationAggregateInput } from 'src/models/bookmarks/dtos
 import { CompanyOrderByWithRelationInput } from 'src/models/companies/dtos/order-by.args'
 import { EmployerOrderByWithRelationInput } from 'src/models/employers/dtos/order-by.args'
 import { EmploymentOrderByRelationAggregateInput } from 'src/models/employments/dtos/order-by.args'
+import { ShiftInformationOrderByWithRelationInput } from 'src/models/shift-informations/dtos/order-by.args'
 import { SubCategoryOrderByRelationAggregateInput } from 'src/models/sub-categories/dtos/order-by.args'
 
 @InputType()
@@ -17,6 +18,7 @@ export class JobOrderByWithRelationInputStrict
       Prisma.JobOrderByWithRelationInput
     >
 {
+  shiftInformation: ShiftInformationOrderByWithRelationInput
   Employment: EmploymentOrderByRelationAggregateInput
   Bookmark: BookmarkOrderByRelationAggregateInput
   Application: ApplicationOrderByRelationAggregateInput

@@ -2,6 +2,7 @@ import { Field, InputType, PickType } from '@nestjs/graphql'
 import { CreateAddressInput } from 'src/models/addresses/dtos/create-address.input'
 import { ConnectSubCategoryInput } from 'src/models/sub-categories/dtos/create-sub-category.input'
 import { Job } from '../entity/job.entity'
+import { CreateShiftInformationInputWithoutJobId } from 'src/models/shift-informations/dtos/create-shift-information.input'
 
 @InputType()
 export class CreateJobInput extends PickType(
@@ -16,6 +17,7 @@ export class CreateJobInput extends PickType(
     'title',
     'type',
     'employerId',
+    'contactInfo',
   ],
   InputType,
 ) {
@@ -24,4 +26,7 @@ export class CreateJobInput extends PickType(
   address: CreateAddressInput
   @Field({ nullable: true })
   companyAddressId: number
+
+  @Field({ nullable: true })
+  shiftInformation: CreateShiftInformationInputWithoutJobId
 }

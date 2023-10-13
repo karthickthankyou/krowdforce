@@ -29,6 +29,8 @@ export async function createJob(formData: FormTypeCreateJob) {
       start,
       companyAddressId,
       employerId,
+      shiftInformation,
+      contactInfo,
     } = result.data
 
     const { data, error } = await fetchGraphQLInfer(CreateJobDocument, {
@@ -45,6 +47,8 @@ export async function createJob(formData: FormTypeCreateJob) {
         skills,
         companyAddressId,
         employerId,
+        shiftInformation,
+        contactInfo,
       },
     })
 

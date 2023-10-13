@@ -81,7 +81,7 @@ export const SearchJobs = ({ jobs }: { jobs: SearchJobsQuery }) => {
         sw_lat: bounds?.getSouthWest().lat || 0,
         sw_lng: bounds?.getSouthWest().lng || 0,
       }
-      console.log('locationFilter', locationFilter)
+
       setBounds(locationFilter)
     },
     [setBounds],

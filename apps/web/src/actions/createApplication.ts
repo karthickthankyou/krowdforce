@@ -70,6 +70,7 @@ export async function acceptOfferApplication({ jobId }: { jobId: number }) {
       status: ApplicationStatus.Accepted,
     },
   })
+
   if (data?.acceptOffer) {
     revalidateTag(namedOperations.Query.application)
     revalidateTag(namedOperations.Query.myApplications)

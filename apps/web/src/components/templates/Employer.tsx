@@ -14,7 +14,6 @@ export const EmployerDashboard = async ({ employerMe }: EmployerMeQuery) => {
     { next: { tags: [namedOperations.Query.CompanyStats] } },
   )
 
-  console.log('companyStats', companyStats)
   return (
     <div className="my-4">
       <div className="text-xl font-semibold">{employerMe?.company?.name}</div>
