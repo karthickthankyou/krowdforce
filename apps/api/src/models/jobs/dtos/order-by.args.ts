@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 import { AddressOrderByWithRelationInput } from 'src/models/addresses/dtos/order-by.args'
 import { ApplicationOrderByRelationAggregateInput } from 'src/models/applications/dtos/order-by.args'
+import { AttendanceOrderByRelationAggregateInput } from 'src/models/attendances/dtos/order-by.args'
 import { BookmarkOrderByRelationAggregateInput } from 'src/models/bookmarks/dtos/order-by.args'
 import { CompanyOrderByWithRelationInput } from 'src/models/companies/dtos/order-by.args'
 import { EmployerOrderByWithRelationInput } from 'src/models/employers/dtos/order-by.args'
@@ -18,6 +19,9 @@ export class JobOrderByWithRelationInputStrict
       Prisma.JobOrderByWithRelationInput
     >
 {
+  @Field(() => Prisma.SortOrder)
+  payPerHour: Prisma.SortOrder
+  Attendance: AttendanceOrderByRelationAggregateInput
   shiftInformation: ShiftInformationOrderByWithRelationInput
   Employment: EmploymentOrderByRelationAggregateInput
   Bookmark: BookmarkOrderByRelationAggregateInput
@@ -50,8 +54,6 @@ export class JobOrderByWithRelationInputStrict
   start: Prisma.SortOrder
   @Field(() => Prisma.SortOrder)
   end: Prisma.SortOrder
-  @Field(() => Prisma.SortOrder)
-  salary: Prisma.SortOrder
 
   skills: SubCategoryOrderByRelationAggregateInput
   address: AddressOrderByWithRelationInput

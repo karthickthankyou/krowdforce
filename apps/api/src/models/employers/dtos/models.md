@@ -11,4 +11,6 @@ npx nestjs-prisma-codegen --entity Application
 npx nestjs-prisma-codegen --entity Follow
 npx nestjs-prisma-codegen --entity Post
 
+npx nestjs-prisma-codegen --entity Attendance
+
 <!-- Create new post and feed -->

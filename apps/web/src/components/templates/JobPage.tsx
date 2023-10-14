@@ -36,7 +36,7 @@ export const JobPage: FC<{ job: JobQuery['job'] }> = ({ job }) => {
 
       <div className="mb-2">
         <Title3>Salary</Title3>
-        {job?.salary || 'Unspecified'}
+        {job.payPerHour}
         DS
       </div>
 

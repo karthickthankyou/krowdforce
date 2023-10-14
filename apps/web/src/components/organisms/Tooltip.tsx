@@ -1,6 +1,5 @@
 import { IconQuestionMark } from '@tabler/icons-react'
 import { FC, ReactNode } from 'react'
-import { Button } from '../atoms/button'
 import {
   Tooltip as TooltipReact,
   TooltipContent,

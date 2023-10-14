@@ -23,6 +23,7 @@ import { FollowsModule } from './models/follows/follows.module'
 import { PostsModule } from './models/posts/posts.module'
 import { EmploymentsModule } from './models/employments/employments.module'
 import { ShiftInformationsModule } from './models/shift-informations/shift-informations.module'
+import { AttendancesModule } from './models/attendances/attendances.module'
 
 @Module({
   imports: [
@@ -59,6 +60,8 @@ import { ShiftInformationsModule } from './models/shift-informations/shift-infor
     BookmarksModule,
 
     ShiftInformationsModule,
+
+    AttendancesModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtService],

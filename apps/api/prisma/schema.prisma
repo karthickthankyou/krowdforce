@@ -86,6 +86,7 @@ model Employee {
     addressId  Int
     address    Address      @relation(fields: [addressId], references: [id])
     Employment Employment[]
+    Attendance Attendance[]
 }
 
 model Employment {
@@ -124,11 +125,11 @@ model Job {
     addressId Int?
     address   Address?      @relation(fields: [addressId], references: [id])
 
-    status JobStatus
-    type   JobType
-    start  DateTime?
-    end    DateTime?
-    salary Int?
+    status     JobStatus
+    type       JobType
+    start      DateTime?
+    end        DateTime?
+    payPerHour Float     @default(20)
 
     contactInfo String?
 
@@ -141,6 +142,7 @@ model Job {
     Employment  Employment[]
 
     shiftInformation ShiftInformation?
+    Attendance       Attendance[]
 }
 
 model ShiftInformation {
@@ -149,6 +151,21 @@ model ShiftInformation {
     endTime   String
     days      Weekday[]
     Job       Job       @relation(fields: [jobId], references: [id])
+}
+
+model Attendance {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    clockIn    DateTime
+    clockOut   DateTime?
+    employeeId String
+    employee   Employee  @relation(fields: [employeeId], references: [uid])
+    jobId      Int
+    job        Job       @relation(fields: [jobId], references: [id])
+
+    paid Boolean? @default(false)
 }
 
 model Application {

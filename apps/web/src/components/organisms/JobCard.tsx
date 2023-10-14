@@ -22,7 +22,7 @@ export const JobCard = ({ job }: { job: EmployerJobDetailsFragment }) => {
         <Badge variant={'outline'}>{job.status}</Badge>
         <Badge variant={'outline'}>{job.type}</Badge>
       </div>
-      <div className="text-gray">{job.salary}</div>
+      <div className="text-gray">{job.payPerHour}/hr</div>
 
       {job.start ? (
         <div className="py-2 text-sm text-gray">

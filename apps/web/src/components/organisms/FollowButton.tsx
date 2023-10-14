@@ -37,7 +37,7 @@ export const FollowButton = ({ followingId }: { followingId?: string }) => {
   }
 
   if (user.data.user.uid === followingId) {
-    return null
+    return <div>You</div>
   }
 
   if (follow?.id) {

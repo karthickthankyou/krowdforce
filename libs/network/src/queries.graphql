@@ -100,7 +100,7 @@ fragment applications on Application {
 
 fragment employerJobDetails on Job {
   id
-  salary
+  payPerHour
   skills {
     name
     category {
@@ -230,7 +230,7 @@ query SearchJobs($locationFilter: LocationFilterInput!, $jobFilter: JobFilter) {
     }
     description
     end
-    salary
+    payPerHour
     start
     status
     title
@@ -245,7 +245,7 @@ query SearchJobs($locationFilter: LocationFilterInput!, $jobFilter: JobFilter) {
 query Job($where: JobWhereUniqueInput) {
   job(where: $where) {
     id
-    salary
+    payPerHour
     contactInfo
     skills {
       name
@@ -352,7 +352,7 @@ fragment jobFrag on Job {
     name
   }
   start
-  salary
+  payPerHour
   end
   companyId
   description
@@ -708,5 +708,97 @@ query MyEmployments(
     }
     startDate
     endDate
+  }
+}
+
+mutation createAttendance($createAttendanceInput: CreateAttendanceInput!) {
+  createAttendance(createAttendanceInput: $createAttendanceInput) {
+    id
+  }
+}
+
+mutation updateAttendance($updateAttendanceInput: UpdateAttendanceInput!) {
+  updateAttendance(updateAttendanceInput: $updateAttendanceInput) {
+    id
+  }
+}
+
+query Attendance($where: AttendanceWhereUniqueInput) {
+  attendance(where: $where) {
+    id
+    clockIn
+    clockOut
+    jobId
+    employeeId
+  }
+}
+
+query Attendances(
+  $skip: Int
+  $take: Int
+  $orderBy: [AttendanceOrderByWithRelationInput!]
+  $where: AttendanceWhereInput
+) {
+  attendances(skip: $skip, take: $take, orderBy: $orderBy, where: $where) {
+    id
+    jobId
+    employeeId
+    clockIn
+    clockOut
+  }
+}
+
+query MyAttendancesClockOuts {
+  myAttendancesClockOuts {
+    id
+    jobId
+    employeeId
+    clockOut
+    clockIn
+  }
+}
+
+query myEarnings {
+  myEarnings {
+    id
+    job {
+      id
+      title
+      payPerHour
+    }
+    employeeId
+    clockOut
+    clockIn
+    paid
+  }
+}
+
+query CompanyPayments(
+  $skip: Int
+  $take: Int
+  $orderBy: [AttendanceOrderByWithRelationInput!]
+  $where: AttendanceWhereInput
+) {
+  companyPayments(skip: $skip, take: $take, orderBy: $orderBy, where: $where) {
+    id
+    clockOut
+    clockIn
+    paid
+    job {
+      title
+      payPerHour
+    }
+    employee {
+      user {
+        uid
+        name
+      }
+    }
+  }
+}
+
+mutation PayAttendance($attendanceId: Int!) {
+  payAttendance(attendanceId: $attendanceId) {
+    id
   }
 }

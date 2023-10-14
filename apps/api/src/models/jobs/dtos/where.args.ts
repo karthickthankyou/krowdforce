@@ -7,12 +7,14 @@ import {
 import { $Enums, Prisma } from '@prisma/client'
 import {
   DateTimeFilter,
+  FloatFilter,
   IntFilter,
   RestrictProperties,
   StringFilter,
 } from 'src/common/dtos/common.input'
 import { AddressRelationFilter } from 'src/models/addresses/dtos/where.args'
 import { ApplicationListRelationFilter } from 'src/models/applications/dtos/where.args'
+import { AttendanceListRelationFilter } from 'src/models/attendances/dtos/where.args'
 import { BookmarkListRelationFilter } from 'src/models/bookmarks/dtos/where.args'
 import { CompanyRelationFilter } from 'src/models/companies/dtos/where.args'
 import { EmployerRelationFilter } from 'src/models/employers/dtos/where.args'
@@ -33,6 +35,8 @@ registerEnumType($Enums.JobType, { name: 'JobType' })
 export class JobWhereInputStrict
   implements RestrictProperties<JobWhereInputStrict, Prisma.JobWhereInput>
 {
+  payPerHour: FloatFilter
+  Attendance: AttendanceListRelationFilter
   shiftInformation: ShiftInformationRelationFilter
   Employment: EmploymentListRelationFilter
   Bookmark: BookmarkListRelationFilter
@@ -54,7 +58,6 @@ export class JobWhereInputStrict
   type: $Enums.JobType
   start: DateTimeFilter
   end: DateTimeFilter
-  salary: IntFilter
   skills: SubCategoryListRelationFilter
   address: AddressRelationFilter
   // Todo: Add the below field decorator only to the $Enums types.

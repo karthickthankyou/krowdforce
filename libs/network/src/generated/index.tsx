@@ -198,6 +198,74 @@ export type ApplicationWhereUniqueInput = {
   employeeId_jobId: EmployeeIdJobIdCompoundUniqueInput
 }
 
+export type Attendance = {
+  __typename?: 'Attendance'
+  clockIn: Scalars['DateTime']
+  clockOut?: Maybe<Scalars['DateTime']>
+  createdAt: Scalars['DateTime']
+  employee: Employee
+  employeeId: Scalars['String']
+  id: Scalars['Int']
+  job: Job
+  jobId: Scalars['Int']
+  paid: Scalars['Boolean']
+  updatedAt: Scalars['DateTime']
+}
+
+export type AttendanceListRelationFilter = {
+  every?: InputMaybe<AttendanceWhereInput>
+  none?: InputMaybe<AttendanceWhereInput>
+  some?: InputMaybe<AttendanceWhereInput>
+}
+
+export type AttendanceOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type AttendanceOrderByWithRelationInput = {
+  clockIn?: InputMaybe<SortOrder>
+  clockOut?: InputMaybe<SortOrder>
+  createdAt?: InputMaybe<SortOrder>
+  employee?: InputMaybe<EmployeeOrderByWithRelationInput>
+  employeeId?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  job?: InputMaybe<JobOrderByWithRelationInput>
+  jobId?: InputMaybe<SortOrder>
+  paid?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export enum AttendanceScalarFieldEnum {
+  ClockIn = 'clockIn',
+  ClockOut = 'clockOut',
+  CreatedAt = 'createdAt',
+  EmployeeId = 'employeeId',
+  Id = 'id',
+  JobId = 'jobId',
+  Paid = 'paid',
+  UpdatedAt = 'updatedAt',
+}
+
+export type AttendanceWhereInput = {
+  AND?: InputMaybe<Array<AttendanceWhereInput>>
+  NOT?: InputMaybe<Array<AttendanceWhereInput>>
+  OR?: InputMaybe<Array<AttendanceWhereInput>>
+  clockIn?: InputMaybe<DateTimeFilter>
+  clockOut?: InputMaybe<DateTimeFilter>
+  createdAt?: InputMaybe<DateTimeFilter>
+  employee?: InputMaybe<EmployeeRelationFilter>
+  employeeId?: InputMaybe<StringFilter>
+  id?: InputMaybe<IntFilter>
+  job?: InputMaybe<JobRelationFilter>
+  jobId?: InputMaybe<IntFilter>
+  paid?: InputMaybe<BoolFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type AttendanceWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>
+}
+
 export type Bookmark = {
   __typename?: 'Bookmark'
   createdAt: Scalars['DateTime']
@@ -248,6 +316,11 @@ export type BookmarkWhereInput = {
 
 export type BookmarkWhereUniqueInput = {
   employeeId_jobId: EmployeeIdJobIdCompoundUniqueInput
+}
+
+export type BoolFilter = {
+  equals?: InputMaybe<Scalars['Boolean']>
+  not?: InputMaybe<Scalars['Boolean']>
 }
 
 export type Category = {
@@ -361,6 +434,12 @@ export type CreateApplicationInput = {
   jobId: Scalars['Int']
 }
 
+export type CreateAttendanceInput = {
+  clockIn: Scalars['DateTime']
+  employeeId: Scalars['String']
+  jobId: Scalars['Int']
+}
+
 export type CreateBookmarkInput = {
   employeeId: Scalars['String']
   jobId: Scalars['Int']
@@ -404,10 +483,11 @@ export type CreateJobInput = {
   address?: InputMaybe<CreateAddressInput>
   companyAddressId?: InputMaybe<Scalars['Int']>
   companyId: Scalars['Int']
+  contactInfo?: InputMaybe<Scalars['String']>
   description: Scalars['String']
   employerId?: InputMaybe<Scalars['String']>
   end?: InputMaybe<Scalars['DateTime']>
-  salary?: InputMaybe<Scalars['Int']>
+  payPerHour: Scalars['Float']
   shiftInformation?: InputMaybe<CreateShiftInformationInputWithoutJobId>
   skills: Array<ConnectSubCategoryInput>
   start?: InputMaybe<Scalars['DateTime']>
@@ -454,6 +534,7 @@ export type DateTimeFilter = {
   in?: InputMaybe<Array<Scalars['String']>>
   lt?: InputMaybe<Scalars['String']>
   lte?: InputMaybe<Scalars['String']>
+  not?: InputMaybe<Scalars['String']>
   notIn?: InputMaybe<Array<Scalars['String']>>
 }
 
@@ -496,6 +577,7 @@ export type EmployeeOrderByRelationAggregateInput = {
 
 export type EmployeeOrderByWithRelationInput = {
   Application?: InputMaybe<ApplicationOrderByRelationAggregateInput>
+  Attendance?: InputMaybe<AttendanceOrderByRelationAggregateInput>
   Bookmark?: InputMaybe<BookmarkOrderByRelationAggregateInput>
   Employment?: InputMaybe<EmploymentOrderByRelationAggregateInput>
   about?: InputMaybe<SortOrder>
@@ -534,6 +616,7 @@ export type EmployeeStats = {
 export type EmployeeWhereInput = {
   AND?: InputMaybe<Array<EmployeeWhereInput>>
   Application?: InputMaybe<ApplicationListRelationFilter>
+  Attendance?: InputMaybe<AttendanceListRelationFilter>
   Bookmark?: InputMaybe<BookmarkListRelationFilter>
   Employment?: InputMaybe<EmploymentListRelationFilter>
   NOT?: InputMaybe<Array<EmployeeWhereInput>>
@@ -782,7 +865,7 @@ export type Job = {
   employerId?: Maybe<Scalars['String']>
   end?: Maybe<Scalars['DateTime']>
   id: Scalars['Int']
-  salary?: Maybe<Scalars['Int']>
+  payPerHour: Scalars['Float']
   shiftInformation?: Maybe<ShiftInformation>
   skills: Array<SubCategory>
   start?: Maybe<Scalars['DateTime']>
@@ -817,6 +900,7 @@ export type JobOrderByRelationAggregateInput = {
 
 export type JobOrderByWithRelationInput = {
   Application?: InputMaybe<ApplicationOrderByRelationAggregateInput>
+  Attendance?: InputMaybe<AttendanceOrderByRelationAggregateInput>
   Bookmark?: InputMaybe<BookmarkOrderByRelationAggregateInput>
   Company?: InputMaybe<CompanyOrderByWithRelationInput>
   Employer?: InputMaybe<EmployerOrderByWithRelationInput>
@@ -830,7 +914,7 @@ export type JobOrderByWithRelationInput = {
   employerId?: InputMaybe<SortOrder>
   end?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
-  salary?: InputMaybe<SortOrder>
+  payPerHour?: InputMaybe<SortOrder>
   shiftInformation?: InputMaybe<ShiftInformationOrderByWithRelationInput>
   skills?: InputMaybe<SubCategoryOrderByRelationAggregateInput>
   start?: InputMaybe<SortOrder>
@@ -854,7 +938,7 @@ export enum JobScalarFieldEnum {
   EmployerId = 'employerId',
   End = 'end',
   Id = 'id',
-  Salary = 'salary',
+  PayPerHour = 'payPerHour',
   Start = 'start',
   Status = 'status',
   Title = 'title',
@@ -877,6 +961,7 @@ export enum JobType {
 export type JobWhereInput = {
   AND?: InputMaybe<Array<JobWhereInput>>
   Application?: InputMaybe<ApplicationListRelationFilter>
+  Attendance?: InputMaybe<AttendanceListRelationFilter>
   Bookmark?: InputMaybe<BookmarkListRelationFilter>
   Company?: InputMaybe<CompanyRelationFilter>
   Employer?: InputMaybe<EmployerRelationFilter>
@@ -892,7 +977,7 @@ export type JobWhereInput = {
   employerId?: InputMaybe<StringFilter>
   end?: InputMaybe<DateTimeFilter>
   id?: InputMaybe<IntFilter>
-  salary?: InputMaybe<IntFilter>
+  payPerHour?: InputMaybe<FloatFilter>
   shiftInformation?: InputMaybe<ShiftInformationRelationFilter>
   skills?: InputMaybe<SubCategoryListRelationFilter>
   start?: InputMaybe<DateTimeFilter>
@@ -920,6 +1005,7 @@ export type Mutation = {
   createAddress: Address
   createAdmin: Admin
   createApplication: Application
+  createAttendance: Attendance
   createBookmark: Bookmark
   createCategory: Category
   createCompany: Company
@@ -932,9 +1018,11 @@ export type Mutation = {
   createShiftInformation: ShiftInformation
   createSubCategory: SubCategory
   createUser: User
+  payAttendance: Attendance
   removeAddress: Address
   removeAdmin: Admin
   removeApplication: Application
+  removeAttendance: Attendance
   removeBookmark: Bookmark
   removeCategory: Category
   removeCompany: Company
@@ -950,6 +1038,7 @@ export type Mutation = {
   updateAddress: Address
   updateAdmin: Admin
   updateApplication: Application
+  updateAttendance: Attendance
   updateBookmark: Bookmark
   updateCategory: Category
   updateCompany: Company
@@ -982,6 +1071,10 @@ export type MutationCreateAdminArgs = {
 
 export type MutationCreateApplicationArgs = {
   createApplicationInput: CreateApplicationInput
+}
+
+export type MutationCreateAttendanceArgs = {
+  createAttendanceInput: CreateAttendanceInput
 }
 
 export type MutationCreateBookmarkArgs = {
@@ -1032,6 +1125,10 @@ export type MutationCreateUserArgs = {
   createUserInput: CreateUserInput
 }
 
+export type MutationPayAttendanceArgs = {
+  attendanceId: Scalars['Int']
+}
+
 export type MutationRemoveAddressArgs = {
   where?: InputMaybe<AddressWhereUniqueInput>
 }
@@ -1042,6 +1139,10 @@ export type MutationRemoveAdminArgs = {
 
 export type MutationRemoveApplicationArgs = {
   where?: InputMaybe<ApplicationWhereUniqueInput>
+}
+
+export type MutationRemoveAttendanceArgs = {
+  where?: InputMaybe<AttendanceWhereUniqueInput>
 }
 
 export type MutationRemoveBookmarkArgs = {
@@ -1102,6 +1203,10 @@ export type MutationUpdateAdminArgs = {
 
 export type MutationUpdateApplicationArgs = {
   updateApplicationInput: UpdateApplicationInput
+}
+
+export type MutationUpdateAttendanceArgs = {
+  updateAttendanceInput: UpdateAttendanceInput
 }
 
 export type MutationUpdateBookmarkArgs = {
@@ -1221,6 +1326,8 @@ export type Query = {
   admins: Array<Admin>
   application: Application
   applications: Array<Application>
+  attendance: Attendance
+  attendances: Array<Attendance>
   bookmark: Bookmark
   bookmarks: Array<Bookmark>
   categories: Array<Category>
@@ -1231,6 +1338,7 @@ export type Query = {
   companyEmployees: Array<Employee>
   companyEmployers: Array<Employer>
   companyJobs: Array<Job>
+  companyPayments: Array<Attendance>
   companyStats: EmployerStats
   employee: Employee
   employeeAggregate: AggregateCountOutput
@@ -1252,7 +1360,9 @@ export type Query = {
   jobAggregate: AggregateCountOutput
   jobs: Array<Job>
   myApplications: Array<Application>
+  myAttendancesClockOuts: Array<Attendance>
   myBookmarks: Array<Bookmark>
+  myEarnings: Array<Attendance>
   myEmployments: Array<Employment>
   post: Post
   postFeed: Array<Post>
@@ -1304,6 +1414,19 @@ export type QueryApplicationsArgs = {
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
   where?: InputMaybe<ApplicationWhereInput>
+}
+
+export type QueryAttendanceArgs = {
+  where?: InputMaybe<AttendanceWhereUniqueInput>
+}
+
+export type QueryAttendancesArgs = {
+  cursor?: InputMaybe<AttendanceWhereUniqueInput>
+  distinct?: InputMaybe<Array<AttendanceScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<AttendanceOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<AttendanceWhereInput>
 }
 
 export type QueryBookmarkArgs = {
@@ -1379,6 +1502,15 @@ export type QueryCompanyJobsArgs = {
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
   where?: InputMaybe<JobWhereInput>
+}
+
+export type QueryCompanyPaymentsArgs = {
+  cursor?: InputMaybe<AttendanceWhereUniqueInput>
+  distinct?: InputMaybe<Array<AttendanceScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<AttendanceOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<AttendanceWhereInput>
 }
 
 export type QueryEmployeeArgs = {
@@ -1714,6 +1846,14 @@ export type UpdateApplicationInput = {
   status: ApplicationStatus
 }
 
+export type UpdateAttendanceInput = {
+  clockIn?: InputMaybe<Scalars['DateTime']>
+  clockOut?: InputMaybe<Scalars['DateTime']>
+  employeeId?: InputMaybe<Scalars['String']>
+  id: Scalars['Int']
+  jobId?: InputMaybe<Scalars['Int']>
+}
+
 export type UpdateBookmarkInput = {
   employeeId?: InputMaybe<Scalars['String']>
   employeeId_jobId: EmployeeIdJobIdCompoundUniqueInput
@@ -1760,11 +1900,12 @@ export type UpdateFollowInput = {
 export type UpdateJobInput = {
   companyAddressId?: InputMaybe<Scalars['Int']>
   companyId?: InputMaybe<Scalars['Int']>
+  contactInfo?: InputMaybe<Scalars['String']>
   description?: InputMaybe<Scalars['String']>
   employerId?: InputMaybe<Scalars['String']>
   end?: InputMaybe<Scalars['DateTime']>
   id: Scalars['Int']
-  salary?: InputMaybe<Scalars['Int']>
+  payPerHour?: InputMaybe<Scalars['Float']>
   shiftInformation?: InputMaybe<CreateShiftInformationInputWithoutJobId>
   start?: InputMaybe<Scalars['DateTime']>
   status?: InputMaybe<JobStatus>
@@ -1991,7 +2132,7 @@ export type ApplicationsFragment = {
 export type EmployerJobDetailsFragment = {
   __typename?: 'Job'
   id: number
-  salary?: number | null
+  payPerHour: number
   applicationsCount: number
   description: string
   end?: any | null
@@ -2055,7 +2196,7 @@ export type CompanyJobsQuery = {
   companyJobs: Array<{
     __typename?: 'Job'
     id: number
-    salary?: number | null
+    payPerHour: number
     applicationsCount: number
     description: string
     end?: any | null
@@ -2120,7 +2261,7 @@ export type EmployerJobsQuery = {
   employerJobs: Array<{
     __typename?: 'Job'
     id: number
-    salary?: number | null
+    payPerHour: number
     applicationsCount: number
     description: string
     end?: any | null
@@ -2231,7 +2372,7 @@ export type SearchJobsQuery = {
     id: number
     description: string
     end?: any | null
-    salary?: number | null
+    payPerHour: number
     start?: any | null
     status: JobStatus
     title: string
@@ -2262,7 +2403,7 @@ export type JobQuery = {
   job: {
     __typename?: 'Job'
     id: number
-    salary?: number | null
+    payPerHour: number
     contactInfo?: string | null
     start?: any | null
     status: JobStatus
@@ -2385,7 +2526,7 @@ export type JobFragFragment = {
   title: string
   status: JobStatus
   start?: any | null
-  salary?: number | null
+  payPerHour: number
   end?: any | null
   companyId: number
   description: string
@@ -2423,7 +2564,7 @@ export type MyBookmarksQuery = {
       title: string
       status: JobStatus
       start?: any | null
-      salary?: number | null
+      payPerHour: number
       end?: any | null
       companyId: number
       description: string
@@ -2464,7 +2605,7 @@ export type MyApplicationsQuery = {
       title: string
       status: JobStatus
       start?: any | null
-      salary?: number | null
+      payPerHour: number
       end?: any | null
       companyId: number
       description: string
@@ -2506,7 +2647,7 @@ export type CompanyApplicationsQuery = {
       title: string
       status: JobStatus
       start?: any | null
-      salary?: number | null
+      payPerHour: number
       end?: any | null
       companyId: number
       description: string
@@ -2896,6 +3037,128 @@ export type MyEmploymentsQuery = {
   }>
 }
 
+export type CreateAttendanceMutationVariables = Exact<{
+  createAttendanceInput: CreateAttendanceInput
+}>
+
+export type CreateAttendanceMutation = {
+  __typename?: 'Mutation'
+  createAttendance: { __typename?: 'Attendance'; id: number }
+}
+
+export type UpdateAttendanceMutationVariables = Exact<{
+  updateAttendanceInput: UpdateAttendanceInput
+}>
+
+export type UpdateAttendanceMutation = {
+  __typename?: 'Mutation'
+  updateAttendance: { __typename?: 'Attendance'; id: number }
+}
+
+export type AttendanceQueryVariables = Exact<{
+  where?: InputMaybe<AttendanceWhereUniqueInput>
+}>
+
+export type AttendanceQuery = {
+  __typename?: 'Query'
+  attendance: {
+    __typename?: 'Attendance'
+    id: number
+    clockIn: any
+    clockOut?: any | null
+    jobId: number
+    employeeId: string
+  }
+}
+
+export type AttendancesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  orderBy?: InputMaybe<
+    | Array<AttendanceOrderByWithRelationInput>
+    | AttendanceOrderByWithRelationInput
+  >
+  where?: InputMaybe<AttendanceWhereInput>
+}>
+
+export type AttendancesQuery = {
+  __typename?: 'Query'
+  attendances: Array<{
+    __typename?: 'Attendance'
+    id: number
+    jobId: number
+    employeeId: string
+    clockIn: any
+    clockOut?: any | null
+  }>
+}
+
+export type MyAttendancesClockOutsQueryVariables = Exact<{
+  [key: string]: never
+}>
+
+export type MyAttendancesClockOutsQuery = {
+  __typename?: 'Query'
+  myAttendancesClockOuts: Array<{
+    __typename?: 'Attendance'
+    id: number
+    jobId: number
+    employeeId: string
+    clockOut?: any | null
+    clockIn: any
+  }>
+}
+
+export type MyEarningsQueryVariables = Exact<{ [key: string]: never }>
+
+export type MyEarningsQuery = {
+  __typename?: 'Query'
+  myEarnings: Array<{
+    __typename?: 'Attendance'
+    id: number
+    employeeId: string
+    clockOut?: any | null
+    clockIn: any
+    paid: boolean
+    job: { __typename?: 'Job'; id: number; title: string; payPerHour: number }
+  }>
+}
+
+export type CompanyPaymentsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  orderBy?: InputMaybe<
+    | Array<AttendanceOrderByWithRelationInput>
+    | AttendanceOrderByWithRelationInput
+  >
+  where?: InputMaybe<AttendanceWhereInput>
+}>
+
+export type CompanyPaymentsQuery = {
+  __typename?: 'Query'
+  companyPayments: Array<{
+    __typename?: 'Attendance'
+    id: number
+    clockOut?: any | null
+    clockIn: any
+    paid: boolean
+    job: { __typename?: 'Job'; title: string; payPerHour: number }
+    employee: {
+      __typename?: 'Employee'
+      user: { __typename?: 'User'; uid: string; name?: string | null }
+    }
+  }>
+}
+
+export type PayAttendanceMutationVariables = Exact<{
+  attendanceId: Scalars['Int']
+}>
+
+export type PayAttendanceMutation = {
+  __typename?: 'Mutation'
+  payAttendance: { __typename?: 'Attendance'; id: number }
+}
+
 export const namedOperations = {
   Query: {
     Users: 'Users',
@@ -2926,6 +3189,11 @@ export const namedOperations = {
     CompanyEmployees: 'CompanyEmployees',
     CompanyEmployers: 'CompanyEmployers',
     MyEmployments: 'MyEmployments',
+    Attendance: 'Attendance',
+    Attendances: 'Attendances',
+    MyAttendancesClockOuts: 'MyAttendancesClockOuts',
+    myEarnings: 'myEarnings',
+    CompanyPayments: 'CompanyPayments',
   },
   Mutation: {
     CreateUser: 'CreateUser',
@@ -2943,6 +3211,9 @@ export const namedOperations = {
     removeFollow: 'removeFollow',
     createEmployment: 'createEmployment',
     acceptOffer: 'acceptOffer',
+    createAttendance: 'createAttendance',
+    updateAttendance: 'updateAttendance',
+    PayAttendance: 'PayAttendance',
   },
   Fragment: {
     applications: 'applications',
@@ -3027,7 +3298,7 @@ export const EmployerJobDetailsFragmentDoc = /*#__PURE__*/ {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'salary' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'payPerHour' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'skills' },
@@ -3195,7 +3466,7 @@ export const JobFragFragmentDoc = /*#__PURE__*/ {
             },
           },
           { kind: 'Field', name: { kind: 'Name', value: 'start' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'salary' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'payPerHour' } },
           { kind: 'Field', name: { kind: 'Name', value: 'end' } },
           { kind: 'Field', name: { kind: 'Name', value: 'companyId' } },
           { kind: 'Field', name: { kind: 'Name', value: 'description' } },
@@ -3918,7 +4189,7 @@ export const CompanyJobsDocument = /*#__PURE__*/ {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'salary' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'payPerHour' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'skills' },
@@ -4213,7 +4484,7 @@ export const EmployerJobsDocument = /*#__PURE__*/ {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'salary' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'payPerHour' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'skills' },
@@ -4646,7 +4917,7 @@ export const SearchJobsDocument = /*#__PURE__*/ {
                 },
                 { kind: 'Field', name: { kind: 'Name', value: 'description' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'end' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'salary' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'payPerHour' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'start' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'status' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
@@ -4727,7 +4998,7 @@ export const JobDocument = /*#__PURE__*/ {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'salary' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'payPerHour' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'contactInfo' } },
                 {
                   kind: 'Field',
@@ -5394,7 +5665,7 @@ export const MyBookmarksDocument = /*#__PURE__*/ {
             },
           },
           { kind: 'Field', name: { kind: 'Name', value: 'start' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'salary' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'payPerHour' } },
           { kind: 'Field', name: { kind: 'Name', value: 'end' } },
           { kind: 'Field', name: { kind: 'Name', value: 'companyId' } },
           { kind: 'Field', name: { kind: 'Name', value: 'description' } },
@@ -5597,7 +5868,7 @@ export const MyApplicationsDocument = /*#__PURE__*/ {
             },
           },
           { kind: 'Field', name: { kind: 'Name', value: 'start' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'salary' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'payPerHour' } },
           { kind: 'Field', name: { kind: 'Name', value: 'end' } },
           { kind: 'Field', name: { kind: 'Name', value: 'companyId' } },
           { kind: 'Field', name: { kind: 'Name', value: 'description' } },
@@ -5828,7 +6099,7 @@ export const CompanyApplicationsDocument = /*#__PURE__*/ {
             },
           },
           { kind: 'Field', name: { kind: 'Name', value: 'start' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'salary' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'payPerHour' } },
           { kind: 'Field', name: { kind: 'Name', value: 'end' } },
           { kind: 'Field', name: { kind: 'Name', value: 'companyId' } },
           { kind: 'Field', name: { kind: 'Name', value: 'description' } },
@@ -7476,3 +7747,544 @@ export const MyEmploymentsDocument = /*#__PURE__*/ {
     },
   ],
 } as unknown as DocumentNode<MyEmploymentsQuery, MyEmploymentsQueryVariables>
+export const CreateAttendanceDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createAttendance' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createAttendanceInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateAttendanceInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createAttendance' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createAttendanceInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createAttendanceInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateAttendanceMutation,
+  CreateAttendanceMutationVariables
+>
+export const UpdateAttendanceDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'updateAttendance' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'updateAttendanceInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'UpdateAttendanceInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateAttendance' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'updateAttendanceInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'updateAttendanceInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateAttendanceMutation,
+  UpdateAttendanceMutationVariables
+>
+export const AttendanceDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Attendance' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'AttendanceWhereUniqueInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'attendance' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'clockIn' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'clockOut' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'jobId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'employeeId' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AttendanceQuery, AttendanceQueryVariables>
+export const AttendancesDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Attendances' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'orderBy' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: {
+                  kind: 'Name',
+                  value: 'AttendanceOrderByWithRelationInput',
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'AttendanceWhereInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'attendances' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'orderBy' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'jobId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'employeeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'clockIn' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'clockOut' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AttendancesQuery, AttendancesQueryVariables>
+export const MyAttendancesClockOutsDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'MyAttendancesClockOuts' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'myAttendancesClockOuts' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'jobId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'employeeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'clockOut' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'clockIn' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  MyAttendancesClockOutsQuery,
+  MyAttendancesClockOutsQueryVariables
+>
+export const MyEarningsDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'myEarnings' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'myEarnings' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'job' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'payPerHour' },
+                      },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'employeeId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'clockOut' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'clockIn' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'paid' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<MyEarningsQuery, MyEarningsQueryVariables>
+export const CompanyPaymentsDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'CompanyPayments' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'orderBy' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: {
+                  kind: 'Name',
+                  value: 'AttendanceOrderByWithRelationInput',
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'AttendanceWhereInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'companyPayments' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'orderBy' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'clockOut' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'clockIn' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'paid' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'job' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'payPerHour' },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'employee' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'user' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'uid' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'name' },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CompanyPaymentsQuery,
+  CompanyPaymentsQueryVariables
+>
+export const PayAttendanceDocument = /*#__PURE__*/ {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'PayAttendance' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'attendanceId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'payAttendance' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'attendanceId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'attendanceId' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  PayAttendanceMutation,
+  PayAttendanceMutationVariables
+>

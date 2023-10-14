@@ -55,9 +55,10 @@ export async function fetchGraphQLInfer<TData, V>(
   config?: RequestInit,
   apiSecret?: string,
 ): Promise<FetchResult<TData>> {
-  const query = print(document)
   const getCookies = cookies()
   const token = getCookies.get('next-auth.session-token')?.value || ''
+
+  const query = print(document)
 
   return await fetch('http://localhost:3000/graphql', {
     method: 'POST',

@@ -3,6 +3,7 @@
 # ------------------------------------------------------
 
 type Job {
+  payPerHour: Float!
   employerId: String
   contactInfo: String
   addressId: Int
@@ -10,7 +11,6 @@ type Job {
   type: JobType!
   start: DateTime
   end: DateTime
-  salary: Int
   companyId: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -224,6 +224,19 @@ type Employment {
   employee: Employee!
 }
 
+type Attendance {
+  clockOut: DateTime
+  paid: Boolean!
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  clockIn: DateTime!
+  employeeId: String!
+  jobId: Int!
+  job: Job!
+  employee: Employee!
+}
+
 type Query {
   users(distinct: [UserScalarFieldEnum!], where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int): [User!]!
   user(where: UserWhereUniqueInput): User!
@@ -275,6 +288,11 @@ type Query {
   bookmark(where: BookmarkWhereUniqueInput): Bookmark!
   shiftInformations(distinct: [ShiftInformationScalarFieldEnum!], where: ShiftInformationWhereInput, orderBy: [ShiftInformationOrderByWithRelationInput!], cursor: ShiftInformationWhereUniqueInput, take: Int, skip: Int): [ShiftInformation!]!
   shiftInformation(where: ShiftInformationWhereUniqueInput): ShiftInformation!
+  attendances(distinct: [AttendanceScalarFieldEnum!], where: AttendanceWhereInput, orderBy: [AttendanceOrderByWithRelationInput!], cursor: AttendanceWhereUniqueInput, take: Int, skip: Int): [Attendance!]!
+  myAttendancesClockOuts: [Attendance!]!
+  myEarnings: [Attendance!]!
+  companyPayments(distinct: [AttendanceScalarFieldEnum!], where: AttendanceWhereInput, orderBy: [AttendanceOrderByWithRelationInput!], cursor: AttendanceWhereUniqueInput, take: Int, skip: Int): [Attendance!]!
+  attendance(where: AttendanceWhereUniqueInput): Attendance!
 }
 
 enum UserScalarFieldEnum {
@@ -336,6 +354,7 @@ input DateTimeFilter {
   lte: String
   gt: String
   gte: String
+  not: String
 }
 
 input StringFilter {
@@ -389,6 +408,7 @@ input EmployeeRelationFilter {
 }
 
 input EmployeeWhereInput {
+  Attendance: AttendanceListRelationFilter
   Employment: EmploymentListRelationFilter
   contactInfo: StringFilter
   addressId: IntFilter
@@ -406,25 +426,31 @@ input EmployeeWhereInput {
   NOT: [EmployeeWhereInput!]
 }
 
-input EmploymentListRelationFilter {
-  every: EmploymentWhereInput
-  some: EmploymentWhereInput
-  none: EmploymentWhereInput
+input AttendanceListRelationFilter {
+  every: AttendanceWhereInput
+  some: AttendanceWhereInput
+  none: AttendanceWhereInput
 }
 
-input EmploymentWhereInput {
+input AttendanceWhereInput {
+  paid: BoolFilter
   id: IntFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
-  startDate: DateTimeFilter
-  endDate: DateTimeFilter
-  jobId: IntFilter
+  clockIn: DateTimeFilter
+  clockOut: DateTimeFilter
   employeeId: StringFilter
-  job: JobRelationFilter
+  jobId: IntFilter
   employee: EmployeeRelationFilter
-  AND: [EmploymentWhereInput!]
-  OR: [EmploymentWhereInput!]
-  NOT: [EmploymentWhereInput!]
+  job: JobRelationFilter
+  AND: [AttendanceWhereInput!]
+  OR: [AttendanceWhereInput!]
+  NOT: [AttendanceWhereInput!]
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: Boolean
 }
 
 input JobRelationFilter {
@@ -435,6 +461,8 @@ input JobRelationFilter {
 input JobWhereInput {
   status: JobStatus
   type: JobType
+  payPerHour: FloatFilter
+  Attendance: AttendanceListRelationFilter
   shiftInformation: ShiftInformationRelationFilter
   Employment: EmploymentListRelationFilter
   Bookmark: BookmarkListRelationFilter
@@ -452,12 +480,20 @@ input JobWhereInput {
   addressId: IntFilter
   start: DateTimeFilter
   end: DateTimeFilter
-  salary: IntFilter
   skills: SubCategoryListRelationFilter
   address: AddressRelationFilter
   AND: [JobWhereInput!]
   OR: [JobWhereInput!]
   NOT: [JobWhereInput!]
+}
+
+input FloatFilter {
+  equals: Int
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: Int
 }
 
 input ShiftInformationRelationFilter {
@@ -482,6 +518,27 @@ input EnumWeekdayListFilter {
   hasEvery: [Weekday!]
   hasSome: [Weekday!]
   isEmpty: Boolean
+}
+
+input EmploymentListRelationFilter {
+  every: EmploymentWhereInput
+  some: EmploymentWhereInput
+  none: EmploymentWhereInput
+}
+
+input EmploymentWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  startDate: DateTimeFilter
+  endDate: DateTimeFilter
+  jobId: IntFilter
+  employeeId: StringFilter
+  job: JobRelationFilter
+  employee: EmployeeRelationFilter
+  AND: [EmploymentWhereInput!]
+  OR: [EmploymentWhereInput!]
+  NOT: [EmploymentWhereInput!]
 }
 
 input BookmarkListRelationFilter {
@@ -595,15 +652,6 @@ input CompanyListRelationFilter {
   none: CompanyWhereInput
 }
 
-input FloatFilter {
-  equals: Int
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: Int
-}
-
 input EmployerListRelationFilter {
   every: EmployerWhereInput
   some: EmployerWhereInput
@@ -689,12 +737,17 @@ input EmployeeOrderByWithRelationInput {
   uid: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
+  Attendance: AttendanceOrderByRelationAggregateInput
   Employment: EmploymentOrderByRelationAggregateInput
   address: AddressOrderByWithRelationInput
   Bookmark: BookmarkOrderByRelationAggregateInput
   Application: ApplicationOrderByRelationAggregateInput
   user: UserOrderByWithRelationInput
   skills: SubCategoryOrderByRelationAggregateInput
+}
+
+input AttendanceOrderByRelationAggregateInput {
+  _count: SortOrder
 }
 
 input EmploymentOrderByRelationAggregateInput {
@@ -842,13 +895,14 @@ enum JobScalarFieldEnum {
   type
   start
   end
-  salary
+  payPerHour
   contactInfo
   companyId
   employerId
 }
 
 input JobOrderByWithRelationInput {
+  payPerHour: SortOrder
   employerId: SortOrder
   contactInfo: SortOrder
   companyId: SortOrder
@@ -862,7 +916,7 @@ input JobOrderByWithRelationInput {
   type: SortOrder
   start: SortOrder
   end: SortOrder
-  salary: SortOrder
+  Attendance: AttendanceOrderByRelationAggregateInput
   shiftInformation: ShiftInformationOrderByWithRelationInput
   Employment: EmploymentOrderByRelationAggregateInput
   Bookmark: BookmarkOrderByRelationAggregateInput
@@ -1070,6 +1124,34 @@ input ShiftInformationWhereUniqueInput {
   jobId: Int!
 }
 
+enum AttendanceScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  clockIn
+  clockOut
+  employeeId
+  jobId
+  paid
+}
+
+input AttendanceOrderByWithRelationInput {
+  paid: SortOrder
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  clockIn: SortOrder
+  clockOut: SortOrder
+  employeeId: SortOrder
+  jobId: SortOrder
+  employee: EmployeeOrderByWithRelationInput
+  job: JobOrderByWithRelationInput
+}
+
+input AttendanceWhereUniqueInput {
+  id: Int
+}
+
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
@@ -1118,6 +1200,10 @@ type Mutation {
   createShiftInformation(createShiftInformationInput: CreateShiftInformationInput!): ShiftInformation!
   updateShiftInformation(updateShiftInformationInput: UpdateShiftInformationInput!): ShiftInformation!
   removeShiftInformation(where: ShiftInformationWhereUniqueInput): ShiftInformation!
+  createAttendance(createAttendanceInput: CreateAttendanceInput!): Attendance!
+  payAttendance(attendanceId: Int!): Attendance!
+  updateAttendance(updateAttendanceInput: UpdateAttendanceInput!): Attendance!
+  removeAttendance(where: AttendanceWhereUniqueInput): Attendance!
 }
 
 input CreateUserInput {
@@ -1190,13 +1276,13 @@ input UpdateCompanyInput {
 }
 
 input CreateJobInput {
+  payPerHour: Float!
   employerId: String
   contactInfo: String
   status: JobStatus!
   type: JobType!
   start: DateTime
   end: DateTime
-  salary: Int
   companyId: Int!
   title: String!
   description: String!
@@ -1217,13 +1303,13 @@ input ConnectSubCategoryInput {
 }
 
 input UpdateJobInput {
+  payPerHour: Float
   employerId: String
   contactInfo: String
   status: JobStatus
   type: JobType
   start: DateTime
   end: DateTime
-  salary: Int
   companyId: Int
   title: String
   description: String
@@ -1331,4 +1417,18 @@ input UpdateShiftInformationInput {
   jobId: Int!
   startTime: String
   endTime: String
+}
+
+input CreateAttendanceInput {
+  clockIn: DateTime!
+  employeeId: String!
+  jobId: Int!
+}
+
+input UpdateAttendanceInput {
+  clockIn: DateTime
+  employeeId: String
+  jobId: Int
+  clockOut: DateTime
+  id: Int!
 }

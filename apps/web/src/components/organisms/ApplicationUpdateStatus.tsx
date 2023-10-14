@@ -21,7 +21,7 @@ export const ApplicationUpdateStatusCard: React.FC<{
       <ul className="mt-2">
         <li>Type: {job.type}</li>
         <li>Status: {job.status}</li>
-        <li>Salary: {job.salary}</li>
+        <li>Salary: {job.payPerHour}/hr</li>
         <li>Address: {job?.address?.address}</li>
       </ul>
       <div className="mt-2">

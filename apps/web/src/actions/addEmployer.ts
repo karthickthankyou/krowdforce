@@ -13,6 +13,7 @@ export async function addEmployer({ uid }: { uid: string }) {
       uid,
     },
   })
-
-  revalidateTag(namedOperations.Query.CompanyEmployers)
+  if (data?.addEmployer) {
+    revalidateTag(namedOperations.Query.CompanyEmployers)
+  }
 }

@@ -116,8 +116,8 @@ export const NewJob = ({ employerCompany }: EmployerCompanyQuery) => {
               placeholder="Job description"
             />
           </Label>
-          <Label title="Salary" error={errors.salary?.message}>
-            <Input {...register('salary')} placeholder="Salary" />
+          <Label title="Salary" error={errors.payPerHour?.message}>
+            <Input {...register('payPerHour')} placeholder="Salary" />
           </Label>
           <Label title="Job type">
             <Select

@@ -57,7 +57,7 @@ export const formSchemaCreateJob = z.object({
   type: z.nativeEnum(JobType),
   start: z.string().optional(),
   end: z.string().optional(),
-  salary: z.coerce.number().optional(),
+  payPerHour: z.coerce.number(),
   skills: z.array(z.object({ name: z.string() })),
   companyId: z.number(),
   employerId: z.string(),

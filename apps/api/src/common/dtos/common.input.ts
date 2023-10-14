@@ -22,6 +22,7 @@ export class DateTimeFilter {
   lte?: string
   gt?: string
   gte?: string
+  not?: string
 }
 
 registerEnumType(Prisma.QueryMode, {

@@ -2,10 +2,10 @@ import {
   MyEmploymentsDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { Title, Title2, Title3 } from '../../../components/atoms/typography'
+import { Title } from '../../../components/atoms/typography'
 import { fetchGraphQLInfer } from '../../util/fetch'
-import { generateTimeline } from '../../../util/shifts'
-import { Timeline } from '../../../components/organisms/Timeline'
+import { CheckOutList } from '../../../components/organisms/CheckOutList'
+import { EmployeeShiftList } from '../../../components/organisms/EmployeeShiftList'
 
 export default async function ShiftsPage() {
   const myEmployments = await fetchGraphQLInfer(
@@ -15,31 +15,23 @@ export default async function ShiftsPage() {
   )
 
   return (
-    <main>
-      <Title className={'mb-4'}>Upcoming shifts</Title>
-      <div className="flex flex-col gap-6">
-        {generateTimeline(myEmployments.data?.myEmployments).map((timeline) => (
-          <Timeline
-            title={
-              <div className={timeline.shifts.length === 0 ? 'text-gray' : ''}>
-                {timeline.date}
-              </div>
-            }
-            key={timeline.date}
-          >
-            <div className="flex flex-col gap-2">
-              {timeline.shifts.map((shift) => (
-                <div key={shift.title}>
-                  <Title3>{shift.time}</Title3>
-                  <div>{shift.title}</div>
-                </div>
-              ))}
-            </div>
-            {timeline.shifts.length === 0 ? (
-              <div className="text-gray">No shifts.</div>
-            ) : null}
-          </Timeline>
-        ))}
+    <main className="space-y-12">
+      <CheckOutList />
+      <div>
+        <Title className={'mb-4'}>Todays shifts</Title>
+        <EmployeeShiftList
+          shifts={myEmployments.data?.myEmployments || []}
+          startDay={0}
+          endDay={1}
+        />
+      </div>
+      <div>
+        <Title className={'mb-4'}>Upcoming shifts</Title>
+        <EmployeeShiftList
+          shifts={myEmployments.data?.myEmployments || []}
+          startDay={1}
+          endDay={7}
+        />
       </div>
     </main>
   )

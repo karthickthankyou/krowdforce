@@ -1,9 +1,11 @@
-import { Field, ObjectType } from '@nestjs/graphql'
+import { Field, Float, ObjectType } from '@nestjs/graphql'
 import { $Enums, Job as JobType } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 
 @ObjectType()
 export class Job implements RestrictProperties<Job, JobType> {
+  @Field(() => Float)
+  payPerHour: number
   @Field({ nullable: true })
   employerId: string
   @Field({ nullable: true })
@@ -24,8 +26,7 @@ export class Job implements RestrictProperties<Job, JobType> {
   start: Date
   @Field({ nullable: true })
   end: Date
-  @Field({ nullable: true })
-  salary: number
+
   // Todo Add below to make optional fields optional.
   // @Field({ nullable: true })
 }

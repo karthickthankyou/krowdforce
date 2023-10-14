@@ -152,7 +152,7 @@ export const MarkerWithPopup = ({
               <TitleValue title="Company">{marker.company.name}</TitleValue>
               <div className="grid grid-cols-2 gap-1">
                 <TitleValue title="Status">{marker.status}</TitleValue>
-                <TitleValue title="Salary">{marker.salary || '-'}</TitleValue>
+                <TitleValue title="Salary">{marker.payPerHour}</TitleValue>
               </div>
               <TitleValue title="Type">{marker.type}</TitleValue>
               <div className="flex">
