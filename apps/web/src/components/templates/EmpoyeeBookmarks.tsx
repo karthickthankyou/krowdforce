@@ -2,15 +2,14 @@ import {
   MyBookmarksDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { fetchGraphQLInfer } from '../../app/util/fetch'
+import { fetchGraphQL } from '../../app/util/fetch'
 import { BookmarkCard } from '../organisms/BookmarkCard'
 
 export const EmpoyeeBookmarks = async () => {
-  const myBookmarks = await fetchGraphQLInfer(
-    MyBookmarksDocument,
-    {},
-    { next: { tags: [namedOperations.Query.myBookmarks] } },
-  )
+  const myBookmarks = await fetchGraphQL({
+    document: MyBookmarksDocument,
+    config: { next: { tags: [namedOperations.Query.myBookmarks] } },
+  })
 
   return (
     <main>

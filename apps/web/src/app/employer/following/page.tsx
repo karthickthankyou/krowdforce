@@ -3,22 +3,20 @@ import {
   FollowersDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { fetchGraphQLInfer } from '../../util/fetch'
+import { fetchGraphQL } from '../../util/fetch'
 import { Title } from '../../../components/atoms/typography'
 import { FollowCard } from '../../../components/organisms/FollowCard'
 import { FollowSuggestions } from '../../../components/organisms/FollowSuggestions'
 
 export default async function ApplicationPage() {
-  const followedByMe = await fetchGraphQLInfer(
-    FollowedByMeDocument,
-    {},
-    { next: { tags: [namedOperations.Query.followedByMe] } },
-  )
-  const followers = await fetchGraphQLInfer(
-    FollowersDocument,
-    {},
-    { next: { tags: [namedOperations.Query.followers] } },
-  )
+  const followedByMe = await fetchGraphQL({
+    document: FollowedByMeDocument,
+    config: { next: { tags: [namedOperations.Query.followedByMe] } },
+  })
+  const followers = await fetchGraphQL({
+    document: FollowersDocument,
+    config: { next: { tags: [namedOperations.Query.followers] } },
+  })
 
   return (
     <main>

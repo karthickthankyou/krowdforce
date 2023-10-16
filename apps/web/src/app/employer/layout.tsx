@@ -6,7 +6,7 @@ import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import { createEmployer } from '../../actions/createEmployer'
 import { authOptions } from '../api/auth/authOptions'
-import { fetchGraphQLInfer } from '../util/fetch'
+import { fetchGraphQL } from '../util/fetch'
 import { EmployerDilemma } from '../../components/organisms/EmployerDilemma'
 import { EmployerMenu } from '../../components/organisms/EmployerMenu'
 import { EmployerSidebar } from '../../components/molecules/EmployerSidebar'
@@ -22,15 +22,14 @@ export default async function EmployerLayout({
     return <Link href="/api/auth/signin">Login</Link>
   }
 
-  const { data, error } = await fetchGraphQLInfer(
-    EmployerMeDocument,
-    {},
-    {
+  const { data, error } = await fetchGraphQL({
+    document: EmployerMeDocument,
+    config: {
       next: {
         tags: [namedOperations.Query.EmployerMe],
       },
     },
-  )
+  })
 
   if (!data?.employerMe?.uid) {
     await createEmployer({ uid: user.user.uid })

@@ -3,17 +3,16 @@ import {
   MyAttendancesClockOutsDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { fetchGraphQLInfer } from '../../app/util/fetch'
+import { fetchGraphQL } from '../../app/util/fetch'
 import { Title } from '../atoms/typography'
 import { Button } from '../atoms/button'
 import { updateAttendance } from '../../actions/attendance'
 
 export const CheckOutList = async () => {
-  const myAttendance = await fetchGraphQLInfer(
-    MyAttendancesClockOutsDocument,
-    {},
-    { next: { tags: [namedOperations.Query.MyAttendancesClockOuts] } },
-  )
+  const myAttendance = await fetchGraphQL({
+    document: MyAttendancesClockOutsDocument,
+    config: { next: { tags: [namedOperations.Query.MyAttendancesClockOuts] } },
+  })
   console.log('myAttendance', myAttendance.data?.myAttendancesClockOuts)
 
   if (!myAttendance.data?.myAttendancesClockOuts.length) {

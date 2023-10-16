@@ -125,7 +125,7 @@ export class EmployeesResolver {
 
   @Query(() => AggregateCountOutput, { name: 'employeeAggregate' })
   async employeeAggregate(
-    @Args('employeeFilter', { nullable: true }) { where }: EmployeeFilter,
+    @Args('employeeFilter', { nullable: true }) { where = {} }: EmployeeFilter,
     @Args('locationFilter') locationFilter: LocationFilterInput,
   ) {
     const { ne_lat, ne_lng, sw_lat, sw_lng } = locationFilter

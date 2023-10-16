@@ -5,7 +5,7 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
-import { fetchGraphQLInfer } from '../app/util/fetch'
+import { fetchGraphQL } from '../app/util/fetch'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../app/api/auth/authOptions'
 import { z } from 'zod'
@@ -29,13 +29,16 @@ export async function createEmployee({
 
   if (result.success) {
     const { about, address, skills } = result.data
-    const { data, error } = await fetchGraphQLInfer(CreateEmployeeDocument, {
-      createEmployeeInput: {
-        uid: user.user.uid,
-        address,
-        about,
-        skills,
-        contactInfo: result.data.contactInfo,
+    const { data, error } = await fetchGraphQL({
+      document: CreateEmployeeDocument,
+      variables: {
+        createEmployeeInput: {
+          uid: user.user.uid,
+          address,
+          about,
+          skills,
+          contactInfo: result.data.contactInfo,
+        },
       },
     })
   }

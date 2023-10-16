@@ -5,13 +5,16 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
-import { fetchGraphQLInfer } from '../app/util/fetch'
+import { fetchGraphQL } from '../app/util/fetch'
 
 export async function createEmployer({ uid }: { uid: string }) {
   try {
-    const { data, error } = await fetchGraphQLInfer(CreateEmployerDocument, {
-      createEmployerInput: {
-        uid,
+    const { data, error } = await fetchGraphQL({
+      document: CreateEmployerDocument,
+      variables: {
+        createEmployerInput: {
+          uid,
+        },
       },
     })
 

@@ -3,14 +3,17 @@ import {
   CompanyApplicationsDocument,
 } from '@krowdforce/network/src/generated'
 import Image from 'next/image'
-import { fetchGraphQLInfer } from '../../app/util/fetch'
+import { fetchGraphQL } from '../../app/util/fetch'
 import { AddEmployeeDialog } from '../organisms/AddEmployeeDialog'
 import { Description, Title, Title2 } from '../atoms/typography'
 
 export const AcceptedOffers = async () => {
-  const data = await fetchGraphQLInfer(CompanyApplicationsDocument, {
-    where: {
-      status: ApplicationStatus.Accepted,
+  const data = await fetchGraphQL({
+    document: CompanyApplicationsDocument,
+    variables: {
+      where: {
+        status: ApplicationStatus.Accepted,
+      },
     },
   })
   if (!data.data?.companyApplications.length) {

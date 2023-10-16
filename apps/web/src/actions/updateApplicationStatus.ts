@@ -10,7 +10,7 @@ import {
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { fetchGraphQLInfer } from '../app/util/fetch'
+import { fetchGraphQL } from '../app/util/fetch'
 
 export async function updateApplicationStatus(formData: {
   status: ApplicationStatus
@@ -18,8 +18,11 @@ export async function updateApplicationStatus(formData: {
 }) {
   const { status, employeeId_jobId } = formData
 
-  const { data, error } = await fetchGraphQLInfer(UpdateApplicationDocument, {
-    updateApplicationInput: { employeeId_jobId, status },
+  const { data, error } = await fetchGraphQL({
+    document: UpdateApplicationDocument,
+    variables: {
+      updateApplicationInput: { employeeId_jobId, status },
+    },
   })
   revalidateTag(namedOperations.Query.Users)
 }

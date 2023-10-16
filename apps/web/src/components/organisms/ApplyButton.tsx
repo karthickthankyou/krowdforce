@@ -7,7 +7,7 @@ import {
   ApplicationStatus,
 } from '@krowdforce/network/src/generated'
 import { useSession } from 'next-auth/react'
-import { fetchGraphQLNoAuth } from '../../app/util/fetchNoAuth'
+import { fetchGraphQL } from '../../app/util/fetch'
 import {
   acceptOfferApplication,
   createApplication,
@@ -28,9 +28,12 @@ export const ApplyButton: FC<{
 
   const fetchApplication = useCallback(async () => {
     if (user.data?.user?.uid) {
-      const userApplication = await fetchGraphQLNoAuth(ApplicationDocument, {
-        where: {
-          employeeId_jobId: { employeeId: user.data.user.uid, jobId },
+      const userApplication = await fetchGraphQL({
+        document: ApplicationDocument,
+        variables: {
+          where: {
+            employeeId_jobId: { employeeId: user.data.user.uid, jobId },
+          },
         },
       })
       if (userApplication.data) {

@@ -1,5 +1,5 @@
 import { JobDocument } from '@krowdforce/network/src/generated'
-import { fetchGraphQLInfer } from '../../util/fetch'
+import { fetchGraphQL } from '../../util/fetch'
 import { JobPage } from '../../../components/templates/JobPage'
 
 export default async function JobPagePage({
@@ -9,8 +9,11 @@ export default async function JobPagePage({
 }) {
   const jobId = +params.slug
 
-  const data = await fetchGraphQLInfer(JobDocument, {
-    where: { id: jobId },
+  const data = await fetchGraphQL({
+    document: JobDocument,
+    variables: {
+      where: { id: jobId },
+    },
   })
 
   const job = data.data?.job

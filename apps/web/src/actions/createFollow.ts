@@ -6,7 +6,7 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
-import { fetchGraphQLInfer } from '../app/util/fetch'
+import { fetchGraphQL } from '../app/util/fetch'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../app/api/auth/authOptions'
 
@@ -16,10 +16,13 @@ export async function createFollow({ followingId }: { followingId: string }) {
     throw new Error('You are not logged in.')
   }
 
-  const { data, error } = await fetchGraphQLInfer(CreateFollowDocument, {
-    createFollowInput: {
-      followerId: user.user.uid,
-      followingId,
+  const { data, error } = await fetchGraphQL({
+    document: CreateFollowDocument,
+    variables: {
+      createFollowInput: {
+        followerId: user.user.uid,
+        followingId,
+      },
     },
   })
   if (data?.createFollow) {
@@ -36,11 +39,14 @@ export async function removeFollow({ followingId }: { followingId: string }) {
     throw new Error('You are not logged in.')
   }
 
-  const { data, error } = await fetchGraphQLInfer(RemoveFollowDocument, {
-    where: {
-      followerId_followingId: {
-        followerId: user.user.uid,
-        followingId,
+  const { data, error } = await fetchGraphQL({
+    document: RemoveFollowDocument,
+    variables: {
+      where: {
+        followerId_followingId: {
+          followerId: user.user.uid,
+          followingId,
+        },
       },
     },
   })

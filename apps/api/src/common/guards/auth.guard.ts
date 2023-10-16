@@ -70,7 +70,9 @@ export class AuthGuard implements CanActivate {
     const authCookie = req.cookies['next-auth.session-token']
 
     const chosenToken = authCookie || token
-
+    if (!chosenToken) {
+      throw new UnauthorizedException('No token provided.')
+    }
     try {
       // Decode and verify JWT.
       const user = await this.jwtService.verify(chosenToken, {

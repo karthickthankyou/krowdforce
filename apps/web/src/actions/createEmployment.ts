@@ -7,7 +7,7 @@ import {
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { fetchGraphQLInfer } from '../app/util/fetch'
+import { fetchGraphQL } from '../app/util/fetch'
 import { FormTypeCreateEmployment } from '@krowdforce/forms/createEmployment'
 
 export async function createEmployment(formData: FormTypeCreateEmployment) {
@@ -24,11 +24,14 @@ export async function createEmployment(formData: FormTypeCreateEmployment) {
 
   const { employeeId, startDate, jobId } = result.data
 
-  const { data, error } = await fetchGraphQLInfer(CreateEmploymentDocument, {
-    createEmploymentInput: {
-      employeeId,
-      startDate,
-      jobId,
+  const { data, error } = await fetchGraphQL({
+    document: CreateEmploymentDocument,
+    variables: {
+      createEmploymentInput: {
+        employeeId,
+        startDate,
+        jobId,
+      },
     },
   })
 

@@ -3,16 +3,15 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { Title } from '../../../components/atoms/typography'
-import { fetchGraphQLInfer } from '../../util/fetch'
+import { fetchGraphQL } from '../../util/fetch'
 import { CheckOutList } from '../../../components/organisms/CheckOutList'
 import { EmployeeShiftList } from '../../../components/organisms/EmployeeShiftList'
 
 export default async function ShiftsPage() {
-  const myEmployments = await fetchGraphQLInfer(
-    MyEmploymentsDocument,
-    {},
-    { next: { tags: [namedOperations.Query.MyEmployments] } },
-  )
+  const myEmployments = await fetchGraphQL({
+    document: MyEmploymentsDocument,
+    config: { next: { tags: [namedOperations.Query.MyEmployments] } },
+  })
 
   return (
     <main className="space-y-12">

@@ -8,7 +8,7 @@ import {
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
-import { fetchGraphQLInfer } from '../app/util/fetch'
+import { fetchGraphQL } from '../app/util/fetch'
 
 type FormTypeCreateJob = z.infer<typeof formSchemaCreateJob>
 
@@ -33,22 +33,25 @@ export async function createJob(formData: FormTypeCreateJob) {
       contactInfo,
     } = result.data
 
-    const { data, error } = await fetchGraphQLInfer(CreateJobDocument, {
-      createJobInput: {
-        description,
-        status,
-        title,
-        type,
-        companyId,
-        end,
-        payPerHour,
-        start,
-        address,
-        skills,
-        companyAddressId,
-        employerId,
-        shiftInformation,
-        contactInfo,
+    const { data, error } = await fetchGraphQL({
+      document: CreateJobDocument,
+      variables: {
+        createJobInput: {
+          description,
+          status,
+          title,
+          type,
+          companyId,
+          end,
+          payPerHour,
+          start,
+          address,
+          skills,
+          companyAddressId,
+          employerId,
+          shiftInformation,
+          contactInfo,
+        },
       },
     })
 

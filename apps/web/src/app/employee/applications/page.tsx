@@ -3,17 +3,18 @@ import {
   MyBookmarksDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { fetchGraphQLInfer } from '../../util/fetch'
+import { fetchGraphQL } from '../../util/fetch'
 import { BookmarkCard } from '../../../components/organisms/BookmarkCard'
 import { Title } from '../../../components/atoms/typography'
 import { ApplicationCard } from '../../../components/organisms/ApplicationCard'
 
 export default async function ApplicationPage() {
-  const myApplications = await fetchGraphQLInfer(
-    MyApplicationsDocument,
-    {},
-    { next: { tags: [namedOperations.Query.myApplications] } },
-  )
+  const myApplications = await fetchGraphQL({
+    document: MyApplicationsDocument,
+    config: {
+      next: { tags: [namedOperations.Query.myApplications] },
+    },
+  })
 
   return (
     <main>

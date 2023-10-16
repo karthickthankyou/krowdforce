@@ -3,7 +3,7 @@ import {
   SortOrder,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { fetchGraphQLInfer } from '../../app/util/fetch'
+import { fetchGraphQL } from '../../app/util/fetch'
 import { FollowCard } from './FollowCard'
 import { Title2 } from '../atoms/typography'
 
@@ -12,15 +12,15 @@ export const FollowSuggestions = async ({
 }: {
   className?: string
 }) => {
-  const followSuggestions = await fetchGraphQLInfer(
-    FollowSuggestionsDocument,
-    {
+  const followSuggestions = await fetchGraphQL({
+    document: FollowSuggestionsDocument,
+    variables: {
       orderBy: {
         followedBy: { _count: SortOrder.Desc },
       },
     },
-    { next: { tags: [namedOperations.Query.followSuggestions] } },
-  )
+    config: { next: { tags: [namedOperations.Query.followSuggestions] } },
+  })
   return (
     <div className={className}>
       <Title2>Popular users</Title2>

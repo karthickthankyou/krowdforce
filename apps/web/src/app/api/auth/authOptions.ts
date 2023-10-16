@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 import { NextAuthOptions } from 'next-auth'
 import { JWT } from 'next-auth/jwt'
 import GoogleProvider from 'next-auth/providers/google'
-import { fetchGraphQLInfer } from '../../util/fetch'
+import { fetchGraphQL } from '../../util/fetch'
 
 const MAX_AGE = 1 * 24 * 60 * 60
 // import { prisma } from '@/prisma/client'
@@ -67,23 +67,22 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user }) {
       const { id: uid, name, email, image } = user
 
-      const existingUser = await fetchGraphQLInfer(
-        UserDocument,
-        {
+      const existingUser = await fetchGraphQL({
+        document: UserDocument,
+        variables: {
           where: { uid },
         },
-        {},
-      )
+      })
 
       if (!existingUser.data?.user.uid) {
-        const newUser = await fetchGraphQLInfer(
-          CreateUserDocument,
-          {
+        const newUser = await fetchGraphQL({
+          document: CreateUserDocument,
+          variables: {
             createUserInput: { uid, image, name },
           },
-          {},
-          process.env.INTERNAL_API_SECRET,
-        )
+
+          apiSecret: process.env.INTERNAL_API_SECRET,
+        })
       }
       return true
     },

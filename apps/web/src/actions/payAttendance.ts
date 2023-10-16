@@ -5,7 +5,7 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
-import { fetchGraphQLInfer } from '../app/util/fetch'
+import { fetchGraphQL } from '../app/util/fetch'
 
 export async function payAttendance(formData: FormData) {
   const attendanceId = formData.get('attendanceId')
@@ -13,8 +13,11 @@ export async function payAttendance(formData: FormData) {
     throw new Error('attendanceId not valid')
   }
 
-  const { data, error } = await fetchGraphQLInfer(PayAttendanceDocument, {
-    attendanceId: +attendanceId,
+  const { data, error } = await fetchGraphQL({
+    document: PayAttendanceDocument,
+    variables: {
+      attendanceId: +attendanceId,
+    },
   })
   if (data?.payAttendance) {
     revalidateTag(namedOperations.Query.CompanyPayments)

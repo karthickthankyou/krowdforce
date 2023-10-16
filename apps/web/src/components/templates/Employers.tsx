@@ -2,15 +2,14 @@ import {
   CompanyEmployersDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { fetchGraphQLInfer } from '../../app/util/fetch'
+import { fetchGraphQL } from '../../app/util/fetch'
 import { EmployerCard } from '../organisms/EmployerCard'
 
 export const Employers = async () => {
-  const data = await fetchGraphQLInfer(
-    CompanyEmployersDocument,
-    {},
-    { next: { tags: [namedOperations.Query.CompanyEmployers] } },
-  )
+  const data = await fetchGraphQL({
+    document: CompanyEmployersDocument,
+    config: { next: { tags: [namedOperations.Query.CompanyEmployers] } },
+  })
   if (!data.data?.companyEmployers) {
     return <div>No employers.</div>
   }

@@ -7,7 +7,7 @@ import {
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
-import { fetchGraphQLInfer } from '../app/util/fetch'
+import { fetchGraphQL } from '../app/util/fetch'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../app/api/auth/authOptions'
 import { redirect } from 'next/navigation'
@@ -26,12 +26,15 @@ export async function createCompany(formData: FormTypeCreateCompany) {
   if (result.success) {
     const { name, address, description } = result.data
 
-    const { data, error } = await fetchGraphQLInfer(CreateCompanyDocument, {
-      createCompanyInput: {
-        address,
-        name,
-        description,
-        uid,
+    const { data, error } = await fetchGraphQL({
+      document: CreateCompanyDocument,
+      variables: {
+        createCompanyInput: {
+          address,
+          name,
+          description,
+          uid,
+        },
       },
     })
 

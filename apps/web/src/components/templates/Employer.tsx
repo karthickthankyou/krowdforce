@@ -3,16 +3,15 @@ import {
   EmployerMeQuery,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { fetchGraphQLInfer } from '../../app/util/fetch'
+import { fetchGraphQL } from '../../app/util/fetch'
 import { StatCard } from '../organisms/StatCard'
 import { Title } from '../atoms/typography'
 
 export const EmployerDashboard = async ({ employerMe }: EmployerMeQuery) => {
-  const companyStats = await fetchGraphQLInfer(
-    CompanyStatsDocument,
-    {},
-    { next: { tags: [namedOperations.Query.CompanyStats] } },
-  )
+  const companyStats = await fetchGraphQL({
+    document: CompanyStatsDocument,
+    config: { next: { tags: [namedOperations.Query.CompanyStats] } },
+  })
 
   return (
     <div className="my-4">

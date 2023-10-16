@@ -10,7 +10,7 @@ import {
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { fetchGraphQLInfer } from '../app/util/fetch'
+import { fetchGraphQL } from '../app/util/fetch'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../app/api/auth/authOptions'
 
@@ -21,10 +21,13 @@ export async function createApplication({ jobId }: { jobId: number }) {
     throw new Error('User uid not valid')
   }
 
-  const { data, error } = await fetchGraphQLInfer(CreateApplicationDocument, {
-    createApplicationInput: {
-      employeeId: user.user.uid,
-      jobId,
+  const { data, error } = await fetchGraphQL({
+    document: CreateApplicationDocument,
+    variables: {
+      createApplicationInput: {
+        employeeId: user.user.uid,
+        jobId,
+      },
     },
   })
   if (data?.createApplication) {
@@ -40,11 +43,14 @@ export async function removeApplication({ jobId }: { jobId: number }) {
     throw new Error('User uid not valid')
   }
 
-  const { data, error } = await fetchGraphQLInfer(RemoveApplicationDocument, {
-    where: {
-      employeeId_jobId: {
-        employeeId: user.user.uid,
-        jobId,
+  const { data, error } = await fetchGraphQL({
+    document: RemoveApplicationDocument,
+    variables: {
+      where: {
+        employeeId_jobId: {
+          employeeId: user.user.uid,
+          jobId,
+        },
       },
     },
   })
@@ -61,13 +67,16 @@ export async function acceptOfferApplication({ jobId }: { jobId: number }) {
     throw new Error('User uid not valid')
   }
 
-  const { data, error } = await fetchGraphQLInfer(AcceptOfferDocument, {
-    updateApplicationInput: {
-      employeeId_jobId: {
-        employeeId: user.user.uid,
-        jobId,
+  const { data, error } = await fetchGraphQL({
+    document: AcceptOfferDocument,
+    variables: {
+      updateApplicationInput: {
+        employeeId_jobId: {
+          employeeId: user.user.uid,
+          jobId,
+        },
+        status: ApplicationStatus.Accepted,
       },
-      status: ApplicationStatus.Accepted,
     },
   })
 

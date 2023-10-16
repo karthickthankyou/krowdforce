@@ -3,18 +3,17 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { Title, Title2 } from '../../../components/atoms/typography'
-import { fetchGraphQLInfer } from '../../util/fetch'
+import { fetchGraphQL } from '../../util/fetch'
 import { format } from 'date-fns'
 import { Weekdays } from '../../../components/organisms/Weekdays'
 import { IconArrowRight, IconExchange } from '@tabler/icons-react'
 import { generateTimeline } from '../../../util/shifts'
 
 export default async function EmploymentsPage() {
-  const myEmployments = await fetchGraphQLInfer(
-    MyEmploymentsDocument,
-    {},
-    { next: { tags: [namedOperations.Query.MyEmployments] } },
-  )
+  const myEmployments = await fetchGraphQL({
+    document: MyEmploymentsDocument,
+    config: { next: { tags: [namedOperations.Query.MyEmployments] } },
+  })
 
   return (
     <main>

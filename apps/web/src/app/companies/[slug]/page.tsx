@@ -3,7 +3,7 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { Company } from '../../../components/templates/Company'
-import { fetchGraphQLInfer } from '../../util/fetch'
+import { fetchGraphQL } from '../../util/fetch'
 
 export default async function CompanyPage({
   params,
@@ -12,15 +12,15 @@ export default async function CompanyPage({
 }) {
   const companyId = +params.slug
 
-  const { data, error } = await fetchGraphQLInfer(
-    CompanyDocument,
-    { where: { id: companyId } },
-    {
+  const { data, error } = await fetchGraphQL({
+    document: CompanyDocument,
+    variables: { where: { id: companyId } },
+    config: {
       next: {
         tags: [namedOperations.Query.Company],
       },
     },
-  )
+  })
 
   if (!data?.company?.name) {
     return null

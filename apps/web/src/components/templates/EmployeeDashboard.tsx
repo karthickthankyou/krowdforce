@@ -15,7 +15,7 @@ import { Title } from '../atoms/typography'
 import { EmployeeApplications } from './EmployeeApplications'
 import { EmpoyeeBookmarks } from './EmpoyeeBookmarks'
 import { EmployeeFollowing } from './EmployeeFollowing'
-import { fetchGraphQLInfer } from '../../app/util/fetch'
+import { fetchGraphQL } from '../../app/util/fetch'
 import { StatCard } from '../organisms/StatCard'
 
 export const EmployeeDashboardTabChoices = {
@@ -25,11 +25,10 @@ export const EmployeeDashboardTabChoices = {
 }
 
 export const EmployeeDashboard = async ({ employeeMe }: EmployeeMeQuery) => {
-  const followSuggestions = await fetchGraphQLInfer(
-    EmployeeStatsDocument,
-    {},
-    { next: { tags: [namedOperations.Query.EmployeeStats] } },
-  )
+  const followSuggestions = await fetchGraphQL({
+    document: EmployeeStatsDocument,
+    config: { next: { tags: [namedOperations.Query.EmployeeStats] } },
+  })
   return (
     <div className="mt-4">
       <div className="text-xl font-semibold">{employeeMe?.user.name}</div>

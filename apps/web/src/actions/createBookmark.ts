@@ -7,7 +7,7 @@ import {
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { fetchGraphQLInfer } from '../app/util/fetch'
+import { fetchGraphQL } from '../app/util/fetch'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../app/api/auth/authOptions'
 
@@ -18,10 +18,13 @@ export async function createBookmark({ jobId }: { jobId: number }) {
     throw new Error('User uid not valid')
   }
 
-  const { data, error } = await fetchGraphQLInfer(CreateBookmarkDocument, {
-    createBookmarkInput: {
-      employeeId: user.user.uid,
-      jobId,
+  const { data, error } = await fetchGraphQL({
+    document: CreateBookmarkDocument,
+    variables: {
+      createBookmarkInput: {
+        employeeId: user.user.uid,
+        jobId,
+      },
     },
   })
   if (data?.createBookmark) {
@@ -37,11 +40,14 @@ export async function removeBookmark({ jobId }: { jobId: number }) {
     throw new Error('User uid not valid')
   }
 
-  const { data, error } = await fetchGraphQLInfer(RemoveBookmarkDocument, {
-    where: {
-      employeeId_jobId: {
-        employeeId: user.user.uid,
-        jobId,
+  const { data, error } = await fetchGraphQL({
+    document: RemoveBookmarkDocument,
+    variables: {
+      where: {
+        employeeId_jobId: {
+          employeeId: user.user.uid,
+          jobId,
+        },
       },
     },
   })

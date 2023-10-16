@@ -8,7 +8,7 @@ import {
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { fetchGraphQLInfer } from '../app/util/fetch'
+import { fetchGraphQL } from '../app/util/fetch'
 
 export async function createUser(formData: FormTypeCreateUser) {
   const result = formSchemaCreateUser.safeParse(formData)
@@ -17,11 +17,14 @@ export async function createUser(formData: FormTypeCreateUser) {
     console.log('result. data', result.data)
     const { uid, name, image } = result.data
 
-    const { data, error } = await fetchGraphQLInfer(CreateUserDocument, {
-      createUserInput: {
-        uid,
-        name,
-        image,
+    const { data, error } = await fetchGraphQL({
+      document: CreateUserDocument,
+      variables: {
+        createUserInput: {
+          uid,
+          name,
+          image,
+        },
       },
     })
     revalidateTag(namedOperations.Query.Users)

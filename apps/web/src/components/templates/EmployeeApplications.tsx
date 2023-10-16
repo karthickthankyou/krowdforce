@@ -2,15 +2,14 @@ import {
   MyApplicationsDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { fetchGraphQLInfer } from '../../app/util/fetch'
+import { fetchGraphQL } from '../../app/util/fetch'
 import { ApplicationCard } from '../organisms/ApplicationCard'
 
 export const EmployeeApplications = async () => {
-  const myApplications = await fetchGraphQLInfer(
-    MyApplicationsDocument,
-    {},
-    { next: { tags: [namedOperations.Query.myApplications] } },
-  )
+  const myApplications = await fetchGraphQL({
+    document: MyApplicationsDocument,
+    config: { next: { tags: [namedOperations.Query.myApplications] } },
+  })
 
   return (
     <main>

@@ -7,7 +7,7 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { revalidateTag } from 'next/cache'
-import { fetchGraphQLInfer } from '../app/util/fetch'
+import { fetchGraphQL } from '../app/util/fetch'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../app/api/auth/authOptions'
 
@@ -21,11 +21,14 @@ export async function createAttendance({
     throw new Error('You are not logged in.')
   }
 
-  const { data, error } = await fetchGraphQLInfer(CreateAttendanceDocument, {
-    createAttendanceInput: {
-      clockIn,
-      employeeId,
-      jobId,
+  const { data, error } = await fetchGraphQL({
+    document: CreateAttendanceDocument,
+    variables: {
+      createAttendanceInput: {
+        clockIn,
+        employeeId,
+        jobId,
+      },
     },
   })
   if (data?.createAttendance) {
@@ -42,10 +45,13 @@ export async function updateAttendance(formData: FormData) {
     throw new Error('attendanceId not valid')
   }
   console.log('attendanceId', attendanceId)
-  const { data, error } = await fetchGraphQLInfer(UpdateAttendanceDocument, {
-    updateAttendanceInput: {
-      id: +attendanceId,
-      clockOut: new Date(),
+  const { data, error } = await fetchGraphQL({
+    document: UpdateAttendanceDocument,
+    variables: {
+      updateAttendanceInput: {
+        id: +attendanceId,
+        clockOut: new Date(),
+      },
     },
   })
 

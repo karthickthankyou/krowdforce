@@ -2,7 +2,7 @@ import {
   MyEarningsDocument,
   namedOperations,
 } from '@krowdforce/network/src/generated'
-import { fetchGraphQLInfer } from '../../app/util/fetch'
+import { fetchGraphQL } from '../../app/util/fetch'
 import {
   Table,
   TableCaption,
@@ -16,11 +16,10 @@ import {
 import { differenceInMinutes, format } from 'date-fns'
 
 export const EmployeeEarnings = async () => {
-  const myEarnings = await fetchGraphQLInfer(
-    MyEarningsDocument,
-    {},
-    { next: { tags: [namedOperations.Query.myEarnings] } },
-  )
+  const myEarnings = await fetchGraphQL({
+    document: MyEarningsDocument,
+    config: { next: { tags: [namedOperations.Query.myEarnings] } },
+  })
   return (
     <Table>
       <TableCaption>List of completed shifts.</TableCaption>
