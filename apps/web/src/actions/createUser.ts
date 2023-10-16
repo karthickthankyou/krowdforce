@@ -14,7 +14,6 @@ export async function createUser(formData: FormTypeCreateUser) {
   const result = formSchemaCreateUser.safeParse(formData)
 
   if (result.success) {
-    console.log('result. data', result.data)
     const { uid, name, image } = result.data
 
     const { data, error } = await fetchGraphQL({
@@ -27,8 +26,10 @@ export async function createUser(formData: FormTypeCreateUser) {
         },
       },
     })
-    revalidateTag(namedOperations.Query.Users)
-    redirect('/')
+    if (data?.createUser) {
+      revalidateTag(namedOperations.Query.Users)
+      redirect('/')
+    }
   } else {
     console.log(
       'result.error.flatten().fieldErrors',

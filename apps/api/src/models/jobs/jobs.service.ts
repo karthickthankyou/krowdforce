@@ -54,7 +54,6 @@ export class JobsService {
 
   async findOne(args: FindUniqueJobArgs) {
     const job = await this.prisma.job.findUnique(args)
-    console.log('job ', job)
     return job
   }
 

@@ -13,7 +13,6 @@ export const CheckOutList = async () => {
     document: MyAttendancesClockOutsDocument,
     config: { next: { tags: [namedOperations.Query.MyAttendancesClockOuts] } },
   })
-  console.log('myAttendance', myAttendance.data?.myAttendancesClockOuts)
 
   if (!myAttendance.data?.myAttendancesClockOuts.length) {
     return null

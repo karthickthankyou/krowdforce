@@ -152,7 +152,7 @@ export class AttendancesResolver {
         job: { include: { Company: { include: { Employer: true } } } },
       },
     })
-    console.log('attendance, attendanceId', attendance, attendanceId)
+
     if (attendance.paid) {
       throw new BadRequestException('Attendance is already paid')
     }

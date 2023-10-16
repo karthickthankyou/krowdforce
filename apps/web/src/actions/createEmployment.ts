@@ -12,7 +12,6 @@ import { FormTypeCreateEmployment } from '@krowdforce/forms/createEmployment'
 
 export async function createEmployment(formData: FormTypeCreateEmployment) {
   const result = formSchemaCreateEmployment.safeParse(formData)
-  console.log('result', result)
 
   if (!result.success) {
     console.log(

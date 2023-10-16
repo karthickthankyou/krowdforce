@@ -10,7 +10,7 @@ export const CompanyEmployees = async () => {
     document: CompanyEmployeesDocument,
     config: { next: { tags: [namedOperations.Query.CompanyEmployees] } },
   })
-  console.log('data', data)
+
   if (!data.data?.companyEmployees.length) {
     return <div>No employees.</div>
   }

@@ -44,7 +44,7 @@ export async function updateAttendance(formData: FormData) {
   if (!attendanceId) {
     throw new Error('attendanceId not valid')
   }
-  console.log('attendanceId', attendanceId)
+
   const { data, error } = await fetchGraphQL({
     document: UpdateAttendanceDocument,
     variables: {
@@ -55,9 +55,6 @@ export async function updateAttendance(formData: FormData) {
     },
   })
 
-  if (error) {
-    console.log('error', error)
-  }
   if (data?.updateAttendance) {
     revalidateTag(namedOperations.Query.MyEmployments)
     revalidateTag(namedOperations.Query.MyAttendancesClockOuts)
