@@ -16,7 +16,7 @@ import { IconPick, IconX } from '@tabler/icons-react'
 import { Loader } from 'lucide-react'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { Popup, ViewStateChangeEvent } from 'react-map-gl'
-import { fetchGraphQL } from '../../app/util/fetch'
+import { fetchGraphQLStatic } from '../../app/util/fetchStatic'
 import { buttonVariants } from '../atoms/button'
 import { Pagination } from '../atoms/pagination'
 import { Description, Title } from '../atoms/typography'
@@ -37,11 +37,22 @@ export const SearchJobs = ({ jobs }: { jobs: SearchJobsQuery }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    console.log('hey')
+    const getToken = async () => {
+      const tokenFromApi = await fetch('/api/auth/token').then(async (res) => {
+        return await res.json()
+      })
+      console.log('tokenFromApi', tokenFromApi)
+    }
+    getToken()
+  }, [])
+
+  useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
       try {
         const take = ITEMS_PER_PAGE
-        const response = await fetchGraphQL({
+        const response = await fetchGraphQLStatic({
           document: SearchJobsDocument,
           variables: {
             locationFilter: bounds || initialBounds,

@@ -1,6 +1,5 @@
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import { print } from 'graphql'
-import { cookies } from 'next/headers'
 
 interface FetchResult<T> {
   data?: T
@@ -12,26 +11,16 @@ interface GraphqlRequestOptions<TData, V> {
   variables?: V
   config?: RequestInit
   apiSecret?: string
+  jwtToken?: string
 }
 
-/**
- * Sends a GraphQL request and returns the response data.
- *
- * @param {TypedDocumentNode<TData, V>} document - The GraphQL query/mutation document.
- * @param {V} [variables] - The variables for the GraphQL query/mutation.
- * @param {RequestInit} [config] - Optional configuration for the fetch request.
- *
- * @returns {Promise<FetchResult<TData>>} The result of the GraphQL request.
- */
-export async function fetchGraphQL<TData, V>({
+export async function fetchGraphQLStatic<TData, V>({
   document,
   variables,
   apiSecret,
+  jwtToken,
   config,
 }: GraphqlRequestOptions<TData, V>): Promise<FetchResult<TData>> {
-  const getCookies = cookies()
-  const token = getCookies.get('next-auth.session-token')?.value || ''
-
   const query = print(document)
 
   return await fetch('http://localhost:3000/graphql', {
@@ -39,7 +28,7 @@ export async function fetchGraphQL<TData, V>({
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : null),
+      ...(jwtToken ? { Authorization: `Bearer ${jwtToken}` } : null),
       ...(apiSecret ? { 'X-API-Secret': apiSecret } : null),
     },
     body: JSON.stringify({ query, variables }),

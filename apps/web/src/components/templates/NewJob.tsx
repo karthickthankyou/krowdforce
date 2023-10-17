@@ -29,7 +29,7 @@ import {
 import { IconBuilding, IconPick } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 
-import { fetchGraphQL } from '@krowdforce/web/src/app/util/fetch'
+import { fetchGraphQLStatic } from '@krowdforce/web/src/app/util/fetchStatic'
 import { useSession } from 'next-auth/react'
 import { DatePickerWithRange } from '../atoms/date-picker'
 import { AsyncSelect, Select } from '../atoms/react-select'
@@ -243,7 +243,7 @@ export const SelectMultiSkills = ({
   setValue: (skills: string[]) => void
 }) => {
   const loadOptions = async (inputValue: string) => {
-    const skills = await fetchGraphQL({
+    const skills = await fetchGraphQLStatic({
       document: SubCategoriesDocument,
       variables: {
         ...(inputValue

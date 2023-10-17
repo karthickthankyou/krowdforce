@@ -7,7 +7,7 @@ import {
   namedOperations,
 } from '@krowdforce/network/src/generated'
 import { useSession } from 'next-auth/react'
-import { fetchGraphQL } from '../../app/util/fetch'
+import { fetchGraphQLStatic } from '../../app/util/fetchStatic'
 import { createBookmark, removeBookmark } from '../../actions/createBookmark'
 
 export const BookmarkButton: FC<{
@@ -20,7 +20,7 @@ export const BookmarkButton: FC<{
 
   const fetchBookmark = useCallback(async () => {
     if (user.data?.user?.uid) {
-      const userBookmark = await fetchGraphQL({
+      const userBookmark = await fetchGraphQLStatic({
         document: BookmarkDocument,
         variables: {
           where: {

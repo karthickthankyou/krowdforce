@@ -125,10 +125,11 @@ export class EmployeesResolver {
 
   @Query(() => AggregateCountOutput, { name: 'employeeAggregate' })
   async employeeAggregate(
-    @Args('employeeFilter', { nullable: true }) { where = {} }: EmployeeFilter,
+    @Args('employeeFilter', { nullable: true }) employeeFilter: EmployeeFilter,
     @Args('locationFilter') locationFilter: LocationFilterInput,
   ) {
     const { ne_lat, ne_lng, sw_lat, sw_lng } = locationFilter
+    const { where = {} } = employeeFilter
 
     const employeesCount = await this.prisma.employee.aggregate({
       _count: { _all: true },

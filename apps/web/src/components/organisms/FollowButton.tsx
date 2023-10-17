@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useState } from 'react'
 import { createFollow, removeFollow } from '../../actions/createFollow'
 import { Button } from '../atoms/button'
-import { fetchGraphQL } from '../../app/util/fetch'
+import { fetchGraphQLStatic } from '../../app/util/fetchStatic'
 import { FollowDocument, FollowQuery } from '@krowdforce/network/src/generated'
 
 export const FollowButton = ({ followingId }: { followingId?: string }) => {
@@ -12,7 +12,7 @@ export const FollowButton = ({ followingId }: { followingId?: string }) => {
   const [loading, setLoading] = useState(false)
   const fetchFollow = useCallback(async () => {
     if (user.data?.user?.uid && followingId) {
-      const followData = await fetchGraphQL({
+      const followData = await fetchGraphQLStatic({
         document: FollowDocument,
         variables: {
           where: {
